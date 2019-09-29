@@ -1,0 +1,6 @@
+rootProject.name = 'project-management'
+
+include 'utility'
+include 'auth-service'
+include 'account-service'
+include 'application'
