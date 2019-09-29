@@ -23,6 +23,6 @@ public class UserController {
     @GetMapping("/user/me")
     @PreAuthorize("hasRole('USER')")
     public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
-        return userService.getCurrentUser(userPrincipal.getId());
+        return userService.getUserById(userPrincipal.getId());
     }
 }

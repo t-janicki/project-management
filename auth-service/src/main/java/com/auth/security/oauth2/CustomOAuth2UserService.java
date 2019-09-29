@@ -1,8 +1,12 @@
 package com.auth.security.oauth2;
 
 import com.account.domain.AuthProvider;
+import com.account.domain.Role;
+import com.account.domain.RoleName;
 import com.account.domain.User;
+import com.account.repository.RoleRepository;
 import com.account.repository.UserRepository;
+import com.utility.exception.NotFoundException;
 import com.utility.exception.OAuth2AuthenticationProcessingException;
 import com.auth.security.UserPrincipal;
 import com.auth.security.oauth2.user.OAuth2UserInfo;
@@ -17,16 +21,20 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private UserRepository userRepository;
+    private RoleRepository roleRepository;
 
     @Autowired
-    public CustomOAuth2UserService(UserRepository userRepository) {
+    public CustomOAuth2UserService(UserRepository userRepository,
+                                   RoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -69,11 +77,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private User registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
         User user = new User();
 
+        Role role = roleRepository.findByName(RoleName.ROLE_USER)
+                .orElseThrow(() -> new NotFoundException("Role not found"));
+
         user.setProvider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()));
         user.setProviderId(oAuth2UserInfo.getId());
         user.setName(oAuth2UserInfo.getName());
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setImageUrl(oAuth2UserInfo.getImageUrl());
+        user.setRoles(Collections.singleton(role));
         return userRepository.save(user);
     }
 

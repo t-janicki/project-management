@@ -7,5 +7,5 @@ public interface UserService {
 
     User registerUser(SignUpRequest request);
 
-    User getCurrentUser(Long id);
+    User getUserById(Long id);
 }
