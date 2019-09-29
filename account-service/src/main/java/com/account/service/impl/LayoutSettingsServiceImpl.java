@@ -1,8 +1,8 @@
 package com.account.service.impl;
 
-
 import com.account.domain.User;
 import com.account.domain.layout.Settings;
+import com.account.domain.layout.Shortcut;
 import com.account.domain.layout.settings.Layout;
 import com.account.domain.layout.settings.layout.Config;
 import com.account.domain.layout.settings.layout.config.Footer;
@@ -65,7 +65,8 @@ public class LayoutSettingsServiceImpl implements LayoutSettingsService {
                         "defaultDark",
                         "defaultDark",
                         "defaultDark"
-                )
+                ),
+                new Shortcut("0")
         );
     }
 

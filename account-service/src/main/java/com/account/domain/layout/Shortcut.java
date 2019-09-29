@@ -5,18 +5,15 @@ import com.account.domain.User;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "shortcut")
+@Table(name = "shortcuts")
 public class Shortcut {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "shortcut")
+    @Column(name = "shortcuts")
     private String shortcut;
-
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    private User user;
 
     public Shortcut() {
     }
@@ -27,7 +24,6 @@ public class Shortcut {
 
     public Shortcut(String shortcut, User user) {
         this.shortcut = shortcut;
-        this.user = user;
     }
 
     public Long getId() {
@@ -42,20 +38,11 @@ public class Shortcut {
         this.shortcut = shortcut;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     @Override
     public String toString() {
         return "Shortcut{" +
                 "id=" + id +
                 ", shortcut='" + shortcut + '\'' +
-                ", accountUser=" + user +
                 '}';
     }
 }

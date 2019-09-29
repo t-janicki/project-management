@@ -25,8 +25,10 @@ public class Settings {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Theme theme;
 
-    public Settings() {
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Shortcut shortcut;
 
+    public Settings() {
     }
 
     public Settings(Layout layout, Theme theme) {
@@ -34,11 +36,13 @@ public class Settings {
         this.theme = theme;
     }
 
-    public Settings(String photoURL, Boolean customScrollbars, Layout layout, Theme theme) {
+    public Settings(String photoURL, Boolean customScrollbars,
+                    Layout layout, Theme theme, Shortcut shortcut) {
         this.photoURL = photoURL;
         this.customScrollbars = customScrollbars;
         this.layout = layout;
         this.theme = theme;
+        this.shortcut = shortcut;
     }
 
     public Long getId() {
@@ -77,4 +81,11 @@ public class Settings {
         this.theme = theme;
     }
 
+    public Shortcut getShortcut() {
+        return shortcut;
+    }
+
+    public void setShortcut(Shortcut shortcut) {
+        this.shortcut = shortcut;
+    }
 }

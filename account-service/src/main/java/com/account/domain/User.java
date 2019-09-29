@@ -148,16 +148,16 @@ public class User {
         return isActive;
     }
 
-    public void setActive(Boolean active) {
-        isActive = active;
+    public void setActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 
     public Boolean getDeleted() {
         return isDeleted;
     }
 
-    public void setDeleted(Boolean deleted) {
-        isDeleted = deleted;
+    public void setDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     public Set<Role> getRoles() {

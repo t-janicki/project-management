@@ -27,27 +27,27 @@ public class LayoutShortcutServiceImpl implements LayoutShortcutService {
         this.shortcutRepository = shortcutRepository;
     }
 
-    public Shortcut createDefaultLayoutShortcut() {
-        return new Shortcut("0");
-    }
+//    public Shortcut createDefaultLayoutShortcut() {
+//        return new Shortcut("0");
+//    }
 
-    public Shortcut assignDefaultShortcut(Long id) {
-        User user = userService.getUserById(id);
-
-        Shortcut shortcut = createDefaultLayoutShortcut();
-
-        shortcut.setUser(user);
-
-        shortcutRepository.save(shortcut);
-
-        return shortcut;
-    }
+//    public Shortcut assignDefaultShortcut(Long id) {
+//        User user = userService.getUserById(id);
+//
+//        Shortcut shortcut = createDefaultLayoutShortcut();
+//
+//        shortcutRepository.save(shortcut);
+//
+//        return shortcut;
+//    }
 
     public List<String> addLayoutShortcut(Long userId, List<Shortcut> shortcuts) {
         User user = userService.getUserById(userId);
 
-        Shortcut result = shortcutRepository.findByUserId(user.getId())
-                .orElse(new Shortcut());
+        Long shortcutId = user.getSettings().getShortcut().getId();
+
+        Shortcut result = shortcutRepository.findById(shortcutId)
+                .orElse(new Shortcut("0"));
 
         if (!shortcuts.isEmpty()) {
             Set<String> shortcutsNames = shortcuts.stream()
@@ -57,12 +57,10 @@ public class LayoutShortcutServiceImpl implements LayoutShortcutService {
             String shortcutsAsString = String.join(", ", shortcutsNames);
 
             result.setShortcut(shortcutsAsString);
-            result.setUser(user);
         }
 
         if (shortcuts.isEmpty()) {
             result.setShortcut("0");
-            result.setUser(user);
         }
 
         shortcutRepository.save(result);
@@ -71,7 +69,9 @@ public class LayoutShortcutServiceImpl implements LayoutShortcutService {
     }
 
     public String[] getLayoutShortcuts(Long userId) {
-        Shortcut result = shortcutRepository.findByUserId(userId)
+        Long shortcutId = userService.getUserById(userId).getSettings().getShortcut().getId();
+
+        Shortcut result = shortcutRepository.findById(shortcutId)
                 .orElseThrow(() -> new NotFoundException("Shortcut not found"));
 
         String shortcutName = result.getShortcut();
@@ -79,12 +79,4 @@ public class LayoutShortcutServiceImpl implements LayoutShortcutService {
         return shortcutName.split(", ");
     }
 
-    public String[] getLayoutShortcutsFromAccountId(Long id) {
-        Shortcut result = shortcutRepository.findByUserId(id)
-                .orElseThrow(() -> new NotFoundException("Shortcut not found"));
-
-        String shortcutName = result.getShortcut();
-
-        return shortcutName.split(", ");
-    }
 }

@@ -2,10 +2,11 @@ package com.application.web;
 
 import com.account.domain.User;
 import com.account.service.UserService;
-import com.auth.service.AuthService;
+import com.application.facade.UserAuthFacade;
 import com.utility.web.request.user.LoginRequest;
 import com.utility.web.request.user.SignUpRequest;
 import com.utility.web.response.ApiResponse;
+import com.utility.web.response.user.AuthResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,17 +19,18 @@ import java.net.URI;
 @RequestMapping("/auth")
 public class AuthController {
     private UserService userService;
-    private AuthService authService;
+    private UserAuthFacade userAuthFacade;
 
     @Autowired
-    public AuthController(UserService userService, AuthService authService) {
+    public AuthController(UserService userService,
+                          UserAuthFacade userAuthFacade) {
         this.userService = userService;
-        this.authService = authService;
+        this.userAuthFacade = userAuthFacade;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-        return ResponseEntity.ok(authService.authenticateUser(loginRequest));
+    public ResponseEntity<AuthResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+        return ResponseEntity.ok(userAuthFacade.authenticateUser(loginRequest));
     }
 
     @PostMapping("/signup")

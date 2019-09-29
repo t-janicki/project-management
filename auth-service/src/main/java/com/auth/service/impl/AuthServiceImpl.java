@@ -1,5 +1,7 @@
 package com.auth.service.impl;
 
+import com.account.domain.User;
+import com.account.service.UserService;
 import com.auth.security.TokenProvider;
 import com.auth.service.AuthService;
 import com.utility.web.request.user.LoginRequest;
@@ -15,12 +17,15 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
     private TokenProvider tokenProvider;
     private AuthenticationManager authenticationManager;
+    private UserService userService;
 
     @Autowired
     public AuthServiceImpl(TokenProvider tokenProvider,
-                           AuthenticationManager authenticationManager) {
+                           AuthenticationManager authenticationManager,
+                           UserService userService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
+        this.userService = userService;
     }
 
     public AuthResponse authenticateUser(LoginRequest loginRequest) {
@@ -36,5 +41,11 @@ public class AuthServiceImpl implements AuthService {
         String token = tokenProvider.createToken(authentication);
 
         return new AuthResponse(token);
+    }
+
+    public User getUserFromToken(String token) {
+        Long userId = tokenProvider.getUserIdFromToken(token);
+
+        return userService.getUserById(userId);
     }
 }
