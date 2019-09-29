@@ -6,6 +6,7 @@ import com.account.domain.RoleName;
 import com.account.domain.User;
 import com.account.repository.RoleRepository;
 import com.account.repository.UserRepository;
+import com.account.service.LayoutSettingsService;
 import com.utility.exception.NotFoundException;
 import com.utility.exception.OAuth2AuthenticationProcessingException;
 import com.auth.security.UserPrincipal;
@@ -29,12 +30,21 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+    private LayoutSettingsService settingsService;
 
     @Autowired
-    public CustomOAuth2UserService(UserRepository userRepository,
-                                   RoleRepository roleRepository) {
+    public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    @Autowired
+    public void setRoleRepository(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
+    }
+
+    @Autowired
+    public void setSettingsService(LayoutSettingsService settingsService) {
+        this.settingsService = settingsService;
     }
 
     @Override
@@ -85,7 +95,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setName(oAuth2UserInfo.getName());
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setImageUrl(oAuth2UserInfo.getImageUrl());
+        user.setActive(Boolean.TRUE);
+        user.setDeleted(Boolean.FALSE);
+        user.setEmailVerificationToken(null);
         user.setRoles(Collections.singleton(role));
+        user.setSettings(settingsService.createDefaultLayoutSettings());
+
         return userRepository.save(user);
     }
 
