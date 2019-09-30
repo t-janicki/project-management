@@ -1,9 +1,9 @@
 package com.utility.web.response.user;
 
-import com.utility.web.response.user.layout.SettingsDTO;
+import com.utility.dto.SettingsDTO;
 
 public class AuthResponse {
-    private UserResponse userDetails;
+    private UserInfoResponse userInfo;
     private SettingsDTO settings;
     private String[] shortcuts;
     private String accessToken;
@@ -12,17 +12,17 @@ public class AuthResponse {
     public AuthResponse() {
     }
 
-    public AuthResponse(UserResponse userDetails, SettingsDTO settings,
+    public AuthResponse(UserInfoResponse userInfo, SettingsDTO settings,
                         String[] shortcuts, String accessToken) {
-        this.userDetails = userDetails;
+        this.userInfo = userInfo;
         this.settings = settings;
         this.shortcuts = shortcuts;
         this.accessToken = accessToken;
     }
 
-    public AuthResponse(UserResponse userDetails, SettingsDTO settings,
+    public AuthResponse(UserInfoResponse userInfo, SettingsDTO settings,
                         String[] shortcuts) {
-        this.userDetails = userDetails;
+        this.userInfo = userInfo;
         this.settings = settings;
         this.shortcuts = shortcuts;
     }
@@ -47,8 +47,8 @@ public class AuthResponse {
         this.tokenType = tokenType;
     }
 
-    public UserResponse getUserDetails() {
-        return userDetails;
+    public UserInfoResponse getUserInfo() {
+        return userInfo;
     }
 
     public SettingsDTO getSettings() {

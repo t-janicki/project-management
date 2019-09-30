@@ -41,7 +41,11 @@ public class Config {
         this.footer = footer;
     }
 
-    public Config(Navbar navbar, Toolbar toolbar, Footer footer) {
+    public Config(Long id, String scroll, String mode, Navbar navbar,
+                  Toolbar toolbar, Footer footer) {
+        this.id = id;
+        this.scroll = scroll;
+        this.mode = mode;
         this.navbar = navbar;
         this.toolbar = toolbar;
         this.footer = footer;

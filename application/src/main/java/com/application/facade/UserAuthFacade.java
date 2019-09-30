@@ -8,7 +8,7 @@ import com.auth.security.UserPrincipal;
 import com.auth.service.AuthService;
 import com.utility.web.request.user.LoginRequest;
 import com.utility.web.response.user.AuthResponse;
-import com.utility.web.response.user.UserResponse;
+import com.utility.web.response.user.UserInfoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,7 +40,7 @@ public final class UserAuthFacade {
         AuthResponse response = getUserData(userId);
 
         return new AuthResponse(
-                response.getUserDetails(),
+                response.getUserInfo(),
                 response.getSettings(),
                 response.getShortcuts(),
                 token
@@ -51,16 +51,16 @@ public final class UserAuthFacade {
         return getUserData(userPrincipal.getId());
     }
 
-    public AuthResponse getUserData(Long id) {
+    private AuthResponse getUserData(Long id) {
         User user = userService.getUserById(id);
 
         String[] shortcuts = shortcutService.getLayoutShortcuts(user.getId());
 
-        UserResponse userDetailsResponse = new UserResponse(
+        UserInfoResponse userDetailsResponse = new UserInfoResponse(
                 user.getId(),
                 roleToString(user),
                 user.getName(),
-                user.getSettings().getPhotoURL(),
+                user.getImageUrl(),
                 user.getEmail(),
                 user.getPhone()
         );

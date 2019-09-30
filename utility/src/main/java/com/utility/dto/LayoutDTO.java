@@ -1,6 +1,6 @@
-package com.utility.web.response.user.layout;
+package com.utility.dto;
 
-public class LayoutDTO {
+public final class LayoutDTO {
     private Long id;
     private String style;
     private ConfigDTO config;

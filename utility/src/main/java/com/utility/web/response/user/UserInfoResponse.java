@@ -1,6 +1,6 @@
 package com.utility.web.response.user;
 
-public class UserResponse {
+public class UserInfoResponse {
     //    private Long createdAt;
 //    private Long updatedAt;
 //    private String createdByUserId;
@@ -8,21 +8,21 @@ public class UserResponse {
     private Long id;
     private String role;
     private String name;
-    private String photoURL;
+    private String imageUrl;
     private String email;
     private String phone;
 
-    public UserResponse() {
+    public UserInfoResponse() {
     }
 
-    public UserResponse(Long id, String role,
-                        String name, String photoURL,
-                        String email, String phone) {
+    public UserInfoResponse(Long id, String role,
+                            String name, String imageUrl,
+                            String email, String phone) {
 
         this.id = id;
         this.role = role;
         this.name = name;
-        this.photoURL = photoURL;
+        this.imageUrl = imageUrl;
         this.email = email;
         this.phone = phone;
     }
@@ -39,8 +39,8 @@ public class UserResponse {
         return name;
     }
 
-    public String getPhotoURL() {
-        return photoURL;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     public String getEmail() {

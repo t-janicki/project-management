@@ -29,6 +29,13 @@ public class Footer {
         this.position = position;
     }
 
+    public Footer(Long id, Boolean display, String style, String position) {
+        this.id = id;
+        this.display = display;
+        this.style = style;
+        this.position = position;
+    }
+
     public Long getId() {
         return id;
     }

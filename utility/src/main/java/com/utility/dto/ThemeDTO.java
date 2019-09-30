@@ -1,6 +1,6 @@
-package com.utility.web.response.user.layout;
+package com.utility.dto;
 
-public class ThemeDTO {
+public final class ThemeDTO {
     private Long id;
     private String main;
     private String navbar;

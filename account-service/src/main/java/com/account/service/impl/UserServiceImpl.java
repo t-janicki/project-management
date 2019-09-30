@@ -55,6 +55,7 @@ public class UserServiceImpl implements UserService {
         user.setDeleted(Boolean.FALSE);
         user.setEmailVerificationToken(null);
         user.setRoles(Collections.singleton(role));
+        user.setImageUrl("assets/images/avatars/profile.jpg");
         user.setSettings(settingsService.createDefaultLayoutSettings());
 
         return userRepository.save(user);

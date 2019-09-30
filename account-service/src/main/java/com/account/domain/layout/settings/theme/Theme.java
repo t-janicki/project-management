@@ -33,6 +33,15 @@ public class Theme {
         this.footer = footer;
     }
 
+    public Theme(Long id, String main, String navbar,
+                 String toolbar, String footer) {
+        this.id = id;
+        this.main = main;
+        this.navbar = navbar;
+        this.toolbar = toolbar;
+        this.footer = footer;
+    }
+
     public Long getId() {
         return id;
     }

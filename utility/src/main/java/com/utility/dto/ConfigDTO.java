@@ -1,8 +1,9 @@
-package com.utility.web.response.user.layout;
+package com.utility.dto;
 
-public class ConfigDTO {
+public final class ConfigDTO {
     private Long id;
     private String scroll;
+    private String mode;
     private NavbarDTO navbar;
     private ToolbarDTO toolbar;
     private FooterDTO footer;
@@ -11,10 +12,11 @@ public class ConfigDTO {
 
     }
 
-    public ConfigDTO(Long id, String scroll,
+    public ConfigDTO(Long id, String scroll, String mode,
                      NavbarDTO navbar, ToolbarDTO toolbar, FooterDTO footer) {
         this.id = id;
         this.scroll = scroll;
+        this.mode = mode;
         this.navbar = navbar;
         this.toolbar = toolbar;
         this.footer = footer;
@@ -26,6 +28,10 @@ public class ConfigDTO {
 
     public String getScroll() {
         return scroll;
+    }
+
+    public String getMode() {
+        return mode;
     }
 
     public NavbarDTO getNavbar() {

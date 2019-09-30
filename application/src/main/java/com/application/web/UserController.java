@@ -1,41 +1,40 @@
 package com.application.web;
 
-
-import com.account.domain.User;
-import com.account.service.UserService;
 import com.application.facade.UserAuthFacade;
+import com.application.facade.UserSettingsFacade;
 import com.auth.security.CurrentUser;
 import com.auth.security.UserPrincipal;
+import com.utility.web.request.user.UserSettingsUpdateRequest;
+import com.utility.web.response.ApiResponse;
 import com.utility.web.response.user.AuthResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 public class UserController {
 
-    private UserService userService;
     private UserAuthFacade userAuthFacade;
+    private UserSettingsFacade settingsFacade;
 
     @Autowired
-    public UserController(UserService userService,
-                          UserAuthFacade userAuthFacade) {
-        this.userService = userService;
+    public UserController(UserAuthFacade userAuthFacade,
+                          UserSettingsFacade settingsFacade) {
         this.userAuthFacade = userAuthFacade;
+        this.settingsFacade = settingsFacade;
     }
 
-//    @GetMapping("/user/me")
-//    @PreAuthorize("hasRole('USER')")
-//    public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
-//        return userService.getUserById(userPrincipal.getId());
-//    }
-
-    @GetMapping("/user/me")
+    @GetMapping("/me")
     @PreAuthorize("hasRole('USER')")
     public AuthResponse getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
         return userAuthFacade.getUserData(userPrincipal);
+    }
+
+    @PutMapping(value = "/me/settings", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public ApiResponse updateUserSettings(@CurrentUser UserPrincipal userPrincipal, @RequestBody UserSettingsUpdateRequest request) {
+        return settingsFacade.updateUserSettings(userPrincipal, request);
     }
 }

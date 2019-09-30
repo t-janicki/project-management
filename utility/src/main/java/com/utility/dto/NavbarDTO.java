@@ -1,6 +1,6 @@
-package com.utility.web.response.user.layout;
+package com.utility.dto;
 
-public class NavbarDTO {
+public final class NavbarDTO {
     private Long id;
     private Boolean display;
     private Boolean folded;

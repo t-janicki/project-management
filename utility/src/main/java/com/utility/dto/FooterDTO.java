@@ -1,6 +1,6 @@
-package com.utility.web.response.user.layout;
+package com.utility.dto;
 
-public class FooterDTO {
+public final class FooterDTO {
     private Long id;
     private Boolean display;
     private String style;

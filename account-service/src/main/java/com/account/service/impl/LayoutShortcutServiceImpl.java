@@ -27,21 +27,7 @@ public class LayoutShortcutServiceImpl implements LayoutShortcutService {
         this.shortcutRepository = shortcutRepository;
     }
 
-//    public Shortcut createDefaultLayoutShortcut() {
-//        return new Shortcut("0");
-//    }
-
-//    public Shortcut assignDefaultShortcut(Long id) {
-//        User user = userService.getUserById(id);
-//
-//        Shortcut shortcut = createDefaultLayoutShortcut();
-//
-//        shortcutRepository.save(shortcut);
-//
-//        return shortcut;
-//    }
-
-    public List<String> addLayoutShortcut(Long userId, List<Shortcut> shortcuts) {
+    public void addLayoutShortcut(Long userId, List<Shortcut> shortcuts) {
         User user = userService.getUserById(userId);
 
         Long shortcutId = user.getSettings().getShortcut().getId();
@@ -64,8 +50,6 @@ public class LayoutShortcutServiceImpl implements LayoutShortcutService {
         }
 
         shortcutRepository.save(result);
-
-        return new ArrayList<>();
     }
 
     public String[] getLayoutShortcuts(Long userId) {

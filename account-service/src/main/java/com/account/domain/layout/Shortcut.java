@@ -22,7 +22,8 @@ public class Shortcut {
         this.shortcut = shortcut;
     }
 
-    public Shortcut(String shortcut, User user) {
+    public Shortcut(Long id, String shortcut) {
+        this.id = id;
         this.shortcut = shortcut;
     }
 

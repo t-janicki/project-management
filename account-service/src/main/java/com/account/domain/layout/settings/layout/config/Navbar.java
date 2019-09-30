@@ -29,6 +29,13 @@ public class Navbar {
         this.position = position;
     }
 
+    public Navbar(Long id, Boolean display, Boolean folded, String position) {
+        this.id = id;
+        this.display = display;
+        this.folded = folded;
+        this.position = position;
+    }
+
     public Long getId() {
         return id;
     }

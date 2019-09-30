@@ -10,7 +10,7 @@ public interface LayoutShortcutService {
 //
 //    Shortcut assignDefaultShortcut(Long id);
 
-    List<String> addLayoutShortcut(Long userId, List<Shortcut> shortcuts);
+    void addLayoutShortcut(Long userId, List<Shortcut> shortcuts);
 
     String[] getLayoutShortcuts(Long userId);
 

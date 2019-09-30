@@ -28,6 +28,12 @@ public class Layout {
         this.config = config;
     }
 
+    public Layout(Long id, String style, Config config) {
+        this.id = id;
+        this.style = style;
+        this.config = config;
+    }
+
     public Layout(Config config) {
         this.config = config;
     }
