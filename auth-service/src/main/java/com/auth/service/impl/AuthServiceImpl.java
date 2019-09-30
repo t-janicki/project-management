@@ -43,9 +43,7 @@ public class AuthServiceImpl implements AuthService {
         return new AuthResponse(token);
     }
 
-    public User getUserFromToken(String token) {
-        Long userId = tokenProvider.getUserIdFromToken(token);
-
-        return userService.getUserById(userId);
+    public Long getUserIdFromToken(String token) {
+        return tokenProvider.getUserIdFromToken(token);
     }
 }

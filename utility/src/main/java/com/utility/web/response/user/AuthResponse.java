@@ -20,6 +20,13 @@ public class AuthResponse {
         this.accessToken = accessToken;
     }
 
+    public AuthResponse(UserResponse userDetails, SettingsDTO settings,
+                        String[] shortcuts) {
+        this.userDetails = userDetails;
+        this.settings = settings;
+        this.shortcuts = shortcuts;
+    }
+
     public AuthResponse(String accessToken) {
         this.accessToken = accessToken;
     }
