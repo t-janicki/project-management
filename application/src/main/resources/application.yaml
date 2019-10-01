@@ -19,21 +19,21 @@ spring:
           google:
             clientId: 1005341210495-ff6sk7er5e4dibb0vptalurue2gsaien.apps.googleusercontent.com
             clientSecret: m-YPsxC-DUqtlntUouS8QGni
-            redirectUriTemplate: "{baseUrl}/oauth2/callback/{registrationId}"
+            redirectUriTemplate: "{baseUrl}/api/oauth2/callback/{registrationId}"
             scope:
               - email
               - profile
           facebook:
             clientId: 2433073510350081
             clientSecret: e89405bc6a3e56a621b31ad66d5cb3d3
-            redirectUriTemplate: "{baseUrl}/oauth2/callback/{registrationId}"
+            redirectUriTemplate: "{baseUrl}/api/oauth2/callback/{registrationId}"
             scope:
               - email
               - public_profile
           github:
             clientId: 338a53cb7e83a6dc5109
             clientSecret: 371629c398859d2d880a66065295c7b7d9932c48
-            redirectUriTemplate: "{baseUrl}/oauth2/callback/{registrationId}"
+            redirectUriTemplate: "{baseUrl}/api/oauth2/callback/{registrationId}"
             scope:
               - user:email
               - read:user
