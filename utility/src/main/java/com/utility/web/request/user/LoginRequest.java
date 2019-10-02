@@ -3,7 +3,7 @@ package com.utility.web.request.user;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-public class LoginRequest {
+public final class LoginRequest {
     @NotBlank
     @Email
     private String email;

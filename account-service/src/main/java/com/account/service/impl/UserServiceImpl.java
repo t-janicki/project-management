@@ -8,15 +8,21 @@ import com.account.repository.RoleRepository;
 import com.account.repository.UserRepository;
 import com.account.service.LayoutSettingsService;
 import com.account.service.UserService;
+import com.utility.dto.user.UserDTO;
 import com.utility.exception.BadRequestException;
 import com.utility.exception.NotFoundException;
 import com.utility.exception.ResourceNotFoundException;
+import com.utility.exception.user.UserMessages;
+import com.utility.web.request.user.NewPasswordRequest;
 import com.utility.web.request.user.SignUpRequest;
+import com.utility.web.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+
+import static com.utility.validation.PhoneValidation.validatePhoneNumberFormat;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -38,9 +44,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(SignUpRequest request) {
-        if(userRepository.existsByEmail(request.getEmail())) {
-            throw new BadRequestException("Email address already in use.");
-        }
+        this.checkEmailAvailability(request.getEmail());
 
         Role role = roleRepository.findByName(RoleName.ROLE_USER)
                 .orElseThrow(() -> new NotFoundException("Role not found"));
@@ -64,5 +68,57 @@ public class UserServiceImpl implements UserService {
     public User getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+    }
+
+    public ApiResponse newPasswordRequest(Long id, NewPasswordRequest request) {
+        User user = getUserById(id);
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+
+            throw new BadRequestException(UserMessages.ACCESS_DENIED.getMessage());
+
+        } else if (passwordEncoder.matches(request.getNewPassword(), user.getPassword())) {
+
+            throw new BadRequestException(UserMessages.DIFFERENT_PASSWORD.getMessage());
+
+        } else if (!request.getNewPassword().equals(request.getConfirmNewPassword())) {
+
+            throw new BadRequestException(UserMessages.PASSWORDS_EQUALS.getMessage());
+        }
+
+        String encodedPassword = passwordEncoder.encode(request.getNewPassword());
+
+        user.setPassword(encodedPassword);
+        userRepository.save(user);
+
+        return new ApiResponse(true, UserMessages.PASSWORD_CHANGED.getMessage());
+    }
+
+    public User updateUser(Long id, UserDTO request) {
+        User user = getUserById(id);
+
+        if (!user.getEmail().equals(request.getEmail())) {
+            this.checkEmailAvailability(request.getEmail());
+        }
+
+        if (!request.getPhone().isEmpty()) {
+            validatePhoneNumberFormat(request.getPhone());
+        }
+
+        user.setName(request.getName());
+        user.setEmail(request.getEmail());
+        user.setPhone(request.getPhone());
+        user.setJobTitle(request.getJobTitle());
+        user.setImageUrl(request.getImageUrl());
+
+        userRepository.save(user);
+
+        return user;
+    }
+
+    private void checkEmailAvailability(String email) {
+        if(userRepository.existsByEmailAndIsDeletedIsFalse(email)) {
+            throw new BadRequestException("Email address already in use.");
+        }
     }
 }

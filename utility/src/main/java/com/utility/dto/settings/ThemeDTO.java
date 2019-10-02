@@ -1,4 +1,4 @@
-package com.utility.dto;
+package com.utility.dto.settings;
 
 public final class ThemeDTO {
     private Long id;

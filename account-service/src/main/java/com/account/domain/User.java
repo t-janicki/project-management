@@ -26,6 +26,7 @@ public class User {
     @Column(nullable = false)
     private String email;
 
+    @Column
     private String imageUrl;
 
     @Column(nullable = false)
@@ -60,6 +61,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private AuthProvider provider;
 
+    @Column
     private String providerId;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

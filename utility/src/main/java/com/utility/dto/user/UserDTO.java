@@ -1,53 +1,43 @@
-package com.utility.web.response.user;
+package com.utility.dto.user;
 
-public class UserInfoResponse {
-    //    private Long createdAt;
-//    private Long updatedAt;
+public final class UserDTO {
+//    private String createdAt;
+//    private String updatedAt;
 //    private String createdByUserId;
 //    private String updatedByUserId;
     private Long id;
-    private String role;
     private String name;
-    private String imageUrl;
     private String email;
     private String phone;
+    private String jobTitle;
+    private String imageUrl;
     private Boolean isActive;
     private Boolean emailVerified;
-    private String jobTitle;
+    private String role;
 
-    public UserInfoResponse() {
+    public UserDTO() {
     }
 
-    public UserInfoResponse(Long id, String role,
-                            String name, String imageUrl,
-                            String email, String phone,
-                            Boolean isActive, Boolean emailVerified,
-                            String jobTitle) {
+    public UserDTO(Long id, String name, String email,
+                   String phone, String jobTitle, String imageUrl,
+                   Boolean isActive, Boolean emailVerified, String role) {
         this.id = id;
-        this.role = role;
         this.name = name;
-        this.imageUrl = imageUrl;
         this.email = email;
         this.phone = phone;
+        this.jobTitle = jobTitle;
+        this.imageUrl = imageUrl;
         this.isActive = isActive;
         this.emailVerified = emailVerified;
-        this.jobTitle = jobTitle;
+        this.role = role;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getRole() {
-        return role;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
     }
 
     public String getEmail() {
@@ -58,6 +48,14 @@ public class UserInfoResponse {
         return phone;
     }
 
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
     public Boolean getActive() {
         return isActive;
     }
@@ -66,7 +64,7 @@ public class UserInfoResponse {
         return emailVerified;
     }
 
-    public String getJobTitle() {
-        return jobTitle;
+    public String getRole() {
+        return role;
     }
 }

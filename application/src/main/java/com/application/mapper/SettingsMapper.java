@@ -8,7 +8,7 @@ import com.account.domain.layout.settings.layout.config.Footer;
 import com.account.domain.layout.settings.layout.config.Navbar;
 import com.account.domain.layout.settings.layout.config.Toolbar;
 import com.account.domain.layout.settings.theme.Theme;
-import com.utility.dto.*;
+import com.utility.dto.settings.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

@@ -1,16 +1,16 @@
-package com.utility.dto;
+package com.utility.dto.settings;
 
-public final class ToolbarDTO {
+public final class FooterDTO {
     private Long id;
     private Boolean display;
     private String style;
     private String position;
 
-    public ToolbarDTO() {
+    public FooterDTO() {
 
     }
 
-    public ToolbarDTO(Long id, Boolean display, String style, String position) {
+    public FooterDTO(Long id, Boolean display, String style, String position) {
         this.id = id;
         this.display = display;
         this.style = style;

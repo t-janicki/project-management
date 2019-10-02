@@ -6,7 +6,10 @@ import com.account.service.UserService;
 import com.application.mapper.SettingsMapper;
 import com.auth.security.UserPrincipal;
 import com.auth.service.AuthService;
+import com.utility.dto.user.UserDTO;
 import com.utility.web.request.user.LoginRequest;
+import com.utility.web.request.user.NewPasswordRequest;
+import com.utility.web.response.ApiResponse;
 import com.utility.web.response.user.AuthResponse;
 import com.utility.web.response.user.UserInfoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +65,10 @@ public final class UserAuthFacade {
                 user.getName(),
                 user.getImageUrl(),
                 user.getEmail(),
-                user.getPhone()
+                user.getPhone(),
+                user.getActive(),
+                user.getEmailVerified(),
+                user.getJobTitle()
         );
 
         return new AuthResponse(
@@ -70,5 +76,13 @@ public final class UserAuthFacade {
                 settingsMapper.mapToSettingsDTO(user.getSettings()),
                 shortcuts
         );
+    }
+
+    public ApiResponse newPasswordRequest(Long id, NewPasswordRequest request) {
+        return userService.newPasswordRequest(id, request);
+    }
+
+    public User updateUser(Long id, UserDTO userDTO) {
+        return userService.updateUser(id, userDTO);
     }
 }

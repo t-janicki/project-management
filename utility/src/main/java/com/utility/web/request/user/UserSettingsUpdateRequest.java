@@ -1,7 +1,7 @@
 package com.utility.web.request.user;
 
-import com.utility.dto.SettingsDTO;
-import com.utility.dto.ShortcutDTO;
+import com.utility.dto.settings.SettingsDTO;
+import com.utility.dto.settings.ShortcutDTO;
 
 import java.util.List;
 

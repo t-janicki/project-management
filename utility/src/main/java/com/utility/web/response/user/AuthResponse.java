@@ -1,6 +1,6 @@
 package com.utility.web.response.user;
 
-import com.utility.dto.SettingsDTO;
+import com.utility.dto.settings.SettingsDTO;
 
 public class AuthResponse {
     private UserInfoResponse userInfo;

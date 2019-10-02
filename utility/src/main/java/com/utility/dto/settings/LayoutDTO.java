@@ -1,4 +1,4 @@
-package com.utility.dto;
+package com.utility.dto.settings;
 
 public final class LayoutDTO {
     private Long id;

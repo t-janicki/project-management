@@ -15,6 +15,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -43,5 +45,4 @@ public class AuthController {
         return ResponseEntity.created(location)
                 .body(new ApiResponse(true, "User registered successfully@"));
     }
-
 }

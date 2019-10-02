@@ -1,19 +1,18 @@
-package com.utility.dto;
+package com.utility.dto.settings;
 
-public final class FooterDTO {
+public final class NavbarDTO {
     private Long id;
     private Boolean display;
-    private String style;
+    private Boolean folded;
     private String position;
 
-    public FooterDTO() {
-
+    public NavbarDTO() {
     }
 
-    public FooterDTO(Long id, Boolean display, String style, String position) {
+    public NavbarDTO(Long id, Boolean display, Boolean folded, String position) {
         this.id = id;
         this.display = display;
-        this.style = style;
+        this.folded = folded;
         this.position = position;
     }
 
@@ -25,8 +24,8 @@ public final class FooterDTO {
         return display;
     }
 
-    public String getStyle() {
-        return style;
+    public Boolean getFolded() {
+        return folded;
     }
 
     public String getPosition() {
