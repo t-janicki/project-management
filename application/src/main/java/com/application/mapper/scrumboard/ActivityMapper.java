@@ -11,7 +11,7 @@ public final class ActivityMapper {
         return new Activity(
                 activityDTO.getId(),
                 activityDTO.getType(),
-                activityDTO.getMemberId(),
+                activityDTO.getIdMember(),
                 activityDTO.getMessage(),
                 activityDTO.getTime()
         );

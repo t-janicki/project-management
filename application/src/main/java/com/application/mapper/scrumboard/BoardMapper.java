@@ -3,8 +3,10 @@ package com.application.mapper.scrumboard;
 import com.scrumboard.domain.Board;
 import com.utility.dto.scrumboard.BoardDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -47,5 +49,11 @@ public final class BoardMapper {
                         .map(v -> labelMapper.mapToLabelDTO(v))
                         .collect(Collectors.toList())
         );
+    }
+
+    public List<BoardDTO> mapToBoardDTOList(List<Board> boards) {
+        return boards.stream()
+                .map(this::mapToBoardDTO)
+                .collect(Collectors.toList());
     }
 }

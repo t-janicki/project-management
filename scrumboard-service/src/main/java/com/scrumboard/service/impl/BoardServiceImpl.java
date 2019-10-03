@@ -5,11 +5,15 @@ import com.scrumboard.domain.BoardSettings;
 import com.scrumboard.domain.Label;
 import com.scrumboard.repository.BoardRepository;
 import com.scrumboard.service.BoardService;
+import com.utility.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -39,5 +43,15 @@ public class BoardServiceImpl implements BoardService {
         boardRepository.save(board);
 
         return board;
+    }
+
+
+    public List<Board> getBoards() {
+        return boardRepository.findAll();
+    }
+
+    public Board getBoardById(Long id) {
+        return boardRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Board not found with id: " + id));
     }
 }

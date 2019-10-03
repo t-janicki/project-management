@@ -3,15 +3,15 @@ package com.utility.dto.scrumboard;
 public class CheckItemDTO {
     private Long id;
     private String name;
-    private Boolean isChecked;
+    private Boolean checked;
 
     public CheckItemDTO() {
     }
 
-    public CheckItemDTO(Long id, String name, Boolean isChecked) {
+    public CheckItemDTO(Long id, String name, Boolean checked) {
         this.id = id;
         this.name = name;
-        this.isChecked = isChecked;
+        this.checked = checked;
     }
 
     public Long getId() {
@@ -31,10 +31,10 @@ public class CheckItemDTO {
     }
 
     public Boolean getChecked() {
-        return isChecked;
+        return checked;
     }
 
     public void setChecked(Boolean checked) {
-        isChecked = checked;
+        this.checked = checked;
     }
 }

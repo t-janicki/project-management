@@ -3,15 +3,15 @@ package com.utility.dto.scrumboard;
 public class BoardListDTO {
     private Long id;
     private String name;
-    private String[] cardsIds;
+    private String[] idCards;
 
     public BoardListDTO() {
     }
 
-    public BoardListDTO(Long id, String name, String[] cardsIds) {
+    public BoardListDTO(Long id, String name, String[] idCards) {
         this.id = id;
         this.name = name;
-        this.cardsIds = cardsIds;
+        this.idCards = idCards;
     }
 
     public Long getId() {
@@ -30,11 +30,11 @@ public class BoardListDTO {
         this.name = name;
     }
 
-    public String[] getCardsIds() {
-        return cardsIds;
+    public String[] getIdCards() {
+        return idCards;
     }
 
-    public void setCardsIds(String[] cardsIds) {
-        this.cardsIds = cardsIds;
+    public void setIdCards(String[] idCards) {
+        this.idCards = idCards;
     }
 }

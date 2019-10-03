@@ -8,11 +8,11 @@ public class CardDTO {
     private String description;
     private String dueDate;
     private String idAttachmentCover;
-    private String[] membersIds;
-    private String[] labelsIds;
-    private Boolean isSubscribed;
+    private String[] idMembers;
+    private String[] idLabels;
+    private Boolean subscribed;
     private List<AttachmentDTO> attachments;
-    private List<CheckListDTO> checkLists;
+    private List<CheckListDTO> checklists;
     private List<ActivityDTO> activities;
 
     public CardDTO() {
@@ -20,19 +20,19 @@ public class CardDTO {
 
     public CardDTO(Long id, String name, String description,
                    String dueDate, String idAttachmentCover,
-                   String[] membersIds, String[] labelsIds,
-                   Boolean isSubscribed, List<AttachmentDTO> attachments,
-                   List<CheckListDTO> checkLists, List<ActivityDTO> activities) {
+                   String[] idMembers, String[] idLabels,
+                   Boolean subscribed, List<AttachmentDTO> attachments,
+                   List<CheckListDTO> checklists, List<ActivityDTO> activities) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.dueDate = dueDate;
         this.idAttachmentCover = idAttachmentCover;
-        this.membersIds = membersIds;
-        this.labelsIds = labelsIds;
-        this.isSubscribed = isSubscribed;
+        this.idMembers = idMembers;
+        this.idLabels = idLabels;
+        this.subscribed = subscribed;
         this.attachments = attachments;
-        this.checkLists = checkLists;
+        this.checklists = checklists;
         this.activities = activities;
     }
 
@@ -76,28 +76,28 @@ public class CardDTO {
         this.idAttachmentCover = idAttachmentCover;
     }
 
-    public String[] getMembersIds() {
-        return membersIds;
+    public String[] getIdMembers() {
+        return idMembers;
     }
 
-    public void setMembersIds(String[] membersIds) {
-        this.membersIds = membersIds;
+    public void setIdMembers(String[] idMembers) {
+        this.idMembers = idMembers;
     }
 
-    public String[] getLabelsIds() {
-        return labelsIds;
+    public String[] getIdLabels() {
+        return idLabels;
     }
 
-    public void setLabelsIds(String[] labelsIds) {
-        this.labelsIds = labelsIds;
+    public void setIdLabels(String[] idLabels) {
+        this.idLabels = idLabels;
     }
 
     public Boolean getSubscribed() {
-        return isSubscribed;
+        return subscribed;
     }
 
     public void setSubscribed(Boolean subscribed) {
-        isSubscribed = subscribed;
+        this.subscribed = subscribed;
     }
 
     public List<AttachmentDTO> getAttachments() {
@@ -108,12 +108,12 @@ public class CardDTO {
         this.attachments = attachments;
     }
 
-    public List<CheckListDTO> getCheckLists() {
-        return checkLists;
+    public List<CheckListDTO> getChecklists() {
+        return checklists;
     }
 
-    public void setCheckLists(List<CheckListDTO> checkLists) {
-        this.checkLists = checkLists;
+    public void setChecklists(List<CheckListDTO> checklists) {
+        this.checklists = checklists;
     }
 
     public List<ActivityDTO> getActivities() {
