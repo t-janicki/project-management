@@ -1,4 +1,4 @@
-package com.application.mapper;
+package com.application.mapper.user;
 
 import com.account.domain.RoleName;
 import com.account.domain.User;

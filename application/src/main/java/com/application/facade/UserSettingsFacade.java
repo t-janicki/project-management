@@ -3,7 +3,7 @@ package com.application.facade;
 import com.account.domain.layout.Shortcut;
 import com.account.service.LayoutSettingsService;
 import com.account.service.LayoutShortcutService;
-import com.application.mapper.SettingsMapper;
+import com.application.mapper.user.SettingsMapper;
 import com.auth.security.UserPrincipal;
 import com.utility.web.request.user.UserSettingsUpdateRequest;
 import com.utility.web.response.ApiResponse;

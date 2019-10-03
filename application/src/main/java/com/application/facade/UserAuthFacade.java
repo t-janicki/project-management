@@ -3,7 +3,7 @@ package com.application.facade;
 import com.account.domain.User;
 import com.account.service.LayoutShortcutService;
 import com.account.service.UserService;
-import com.application.mapper.SettingsMapper;
+import com.application.mapper.user.SettingsMapper;
 import com.auth.security.UserPrincipal;
 import com.auth.service.AuthService;
 import com.utility.dto.user.UserDTO;
@@ -15,7 +15,7 @@ import com.utility.web.response.user.UserInfoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static com.application.mapper.RoleMapper.roleToString;
+import static com.application.mapper.user.RoleMapper.roleToString;
 
 @Component
 public final class UserAuthFacade {

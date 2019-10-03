@@ -22,12 +22,15 @@ repositories {
 }
 
 dependencies {
+    compile project(':utility')
+    compile project(':account-service')
+    compile project(':auth-service')
+    compile project(':scrumboard-service')
+
     compile 'org.springframework.boot:spring-boot-starter-actuator'
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-hateoas'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     compile 'org.springframework.boot:spring-boot-starter-security'
-    compile project(':utility')
-    compile project(':account-service')
-    compile project(':auth-service')
+
 }
