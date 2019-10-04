@@ -25,7 +25,7 @@ public class BoardListServiceImpl implements BoardListService {
 
         BoardList boardList = new BoardList();
 
-        boardList.setCardsIds("0");
+        boardList.setCardsIds("");
         boardList.setName(name);
 
         board.getLists().add(boardList);

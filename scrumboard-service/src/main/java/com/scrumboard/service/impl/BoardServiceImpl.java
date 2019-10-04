@@ -54,4 +54,8 @@ public class BoardServiceImpl implements BoardService {
         return boardRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Board not found with id: " + id));
     }
+
+    public void deleteAllBoards() {
+        boardRepository.deleteAll();
+    }
 }

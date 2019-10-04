@@ -22,7 +22,7 @@ public class Board {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BoardList> lists;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Card> cards;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

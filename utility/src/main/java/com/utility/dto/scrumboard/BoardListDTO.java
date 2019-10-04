@@ -1,14 +1,16 @@
 package com.utility.dto.scrumboard;
 
+import java.util.List;
+
 public class BoardListDTO {
     private Long id;
     private String name;
-    private String[] idCards;
+    private List<String> idCards;
 
     public BoardListDTO() {
     }
 
-    public BoardListDTO(Long id, String name, String[] idCards) {
+    public BoardListDTO(Long id, String name, List<String> idCards) {
         this.id = id;
         this.name = name;
         this.idCards = idCards;
@@ -30,11 +32,11 @@ public class BoardListDTO {
         this.name = name;
     }
 
-    public String[] getIdCards() {
+    public List getIdCards() {
         return idCards;
     }
 
-    public void setIdCards(String[] idCards) {
+    public void setIdCards(List<String> idCards) {
         this.idCards = idCards;
     }
 }
