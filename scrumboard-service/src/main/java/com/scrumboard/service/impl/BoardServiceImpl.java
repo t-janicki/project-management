@@ -2,13 +2,12 @@ package com.scrumboard.service.impl;
 
 import com.scrumboard.domain.Board;
 import com.scrumboard.domain.BoardSettings;
+import com.scrumboard.domain.Card;
 import com.scrumboard.domain.Label;
 import com.scrumboard.repository.BoardRepository;
 import com.scrumboard.service.BoardService;
 import com.utility.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -57,5 +56,13 @@ public class BoardServiceImpl implements BoardService {
 
     public void deleteAllBoards() {
         boardRepository.deleteAll();
+    }
+
+    public void addCardToBoard(Long boardId, Card card) {
+        Board board = getBoardById(boardId);
+
+        board.getCards().add(card);
+
+        boardRepository.save(board);
     }
 }

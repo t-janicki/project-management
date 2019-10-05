@@ -1,6 +1,7 @@
 package com.scrumboard.service;
 
 import com.scrumboard.domain.Board;
+import com.scrumboard.domain.Card;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface BoardService {
     Board getBoardById(Long id);
 
     void deleteAllBoards();
+
+    void addCardToBoard(Long boardId, Card card);
 }

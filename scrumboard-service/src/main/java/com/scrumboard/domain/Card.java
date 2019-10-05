@@ -43,10 +43,11 @@ public class Card {
     public Card() {
     }
 
-    public Card(String name, String description, String dueDate,
+    public Card(Long id, String name, String description, String dueDate,
                 String idAttachmentCover, String membersIds, String labelsIds,
                 Boolean isSubscribed, List<Attachment> attachments,
                 List<CheckList> checkLists, List<Activity> activities) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.dueDate = dueDate;

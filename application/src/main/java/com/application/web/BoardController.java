@@ -10,6 +10,7 @@ import com.scrumboard.service.BoardService;
 import com.scrumboard.service.CardService;
 import com.utility.dto.scrumboard.BoardDTO;
 import com.utility.dto.scrumboard.BoardListDTO;
+import com.utility.dto.scrumboard.CardDTO;
 import com.utility.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -81,23 +82,16 @@ public class BoardController {
     BoardDTO createNewCard(@PathVariable Long boardId,
                            @PathVariable Long listId,
                            @PathVariable String cardTitle) {
-        Card card = cardService.createNewCard(boardId, cardTitle);
+        Card card = cardService.createNewCard(boardId, cardTitle, listId);
 
-        BoardList boardList = boardListRepository.findById(listId)
-                .orElseThrow(() -> new NotFoundException("Board list not found"));
-
-        String idCards = boardList.getCardsIds();
-
-        if (idCards.isEmpty()) {
-            idCards = card.getId().toString();
-        } else {
-            idCards = idCards + ", " + card.getId().toString();
-        }
-
-        boardList.setCardsIds(idCards);
-
-        boardListRepository.save(boardList);
+//        cardService.addCardIdToBoardList(card.getId(), listId);
 
         return boardMapper.mapToBoardDTO(boardService.getBoardById(boardId));
     }
+
+//    @PutMapping(value = "/test", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+//    public @ResponseBody
+//    CardDTO updateCard(@RequestBody CardDTO cardDTO) {
+//
+//    }
 }

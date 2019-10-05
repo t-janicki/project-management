@@ -1,32 +1,32 @@
 package com.scrumboard.service.impl;
 
 import com.scrumboard.domain.*;
-import com.scrumboard.repository.BoardRepository;
+import com.scrumboard.repository.BoardListRepository;
 import com.scrumboard.repository.CardRepository;
 import com.scrumboard.service.BoardService;
 import com.scrumboard.service.CardService;
+import com.utility.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 @Service
 public class CardServiceImpl implements CardService {
     private BoardService boardService;
-    private BoardRepository boardRepository;
     private CardRepository cardRepository;
+    private BoardListRepository boardListRepository;
 
     @Autowired
     public CardServiceImpl(BoardService boardService,
-                           BoardRepository boardRepository,
-                           CardRepository cardRepository) {
+                           CardRepository cardRepository,
+                           BoardListRepository boardListRepository) {
         this.boardService = boardService;
-        this.boardRepository = boardRepository;
         this.cardRepository = cardRepository;
+        this.boardListRepository = boardListRepository;
     }
 
-    public Card createNewCard(Long boardId, String cardTitle) {
+    public Card createNewCard(Long boardId, String cardTitle, Long listId) {
         Card card = new Card();
 
         card.setName(cardTitle);
@@ -42,16 +42,30 @@ public class CardServiceImpl implements CardService {
 
         cardRepository.save(card);
 
-        addCardToBoard(boardId, card);
+        boardService.addCardToBoard(boardId, card);
+        addCardIdToBoardList(card.getId(), listId);
 
         return card;
     }
 
-    private void addCardToBoard(Long boardId, Card card) {
-        Board board = boardService.getBoardById(boardId);
+    private void addCardIdToBoardList(Long cardId, Long listId) {
+        BoardList boardList = boardListRepository.findById(listId)
+                .orElseThrow(() -> new NotFoundException("Board list not found"));
 
-        board.getCards().add(card);
+        String idCards = boardList.getCardsIds();
 
-        boardRepository.save(board);
+        if (idCards.isEmpty()) {
+            idCards = cardId.toString();
+        } else {
+            idCards = idCards + ", " + cardId.toString();
+        }
+
+        boardList.setCardsIds(idCards);
+
+        boardListRepository.save(boardList);
     }
+
+//    public Card updateCard(Card card) {
+//
+//    }
 }

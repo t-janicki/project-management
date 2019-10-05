@@ -5,6 +5,7 @@ import com.utility.dto.scrumboard.CardDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -59,6 +60,31 @@ public final class CardMapper {
                         .collect(Collectors.toList()),
                 card.getActivities().stream()
                         .map(v -> activityMapper.mapToActivityDTO(v))
+                        .collect(Collectors.toList())
+        );
+    }
+
+    public Card mapToCard(CardDTO cardDTO) {
+        String membersIds = "";
+        String labelsIds = "";
+
+        return new Card(
+                cardDTO.getId(),
+                cardDTO.getName(),
+                cardDTO.getDescription(),
+                cardDTO.getDueDate(),
+                cardDTO.getIdAttachmentCover(),
+                membersIds,
+                labelsIds,
+                cardDTO.getSubscribed(),
+                cardDTO.getAttachments().stream()
+                        .map(v -> attachmentMapper.mapToAttachment(v))
+                        .collect(Collectors.toList()),
+                cardDTO.getChecklists().stream()
+                        .map(v -> checkListMapper.mapToCheckList(v))
+                        .collect(Collectors.toList()),
+                cardDTO.getActivities().stream()
+                        .map(v -> activityMapper.mapToActivity(v))
                         .collect(Collectors.toList())
         );
     }
