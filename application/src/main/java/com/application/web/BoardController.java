@@ -75,10 +75,12 @@ public class BoardController {
         boardService.deleteAllBoards();
     }
 
-    @PutMapping(value = "/{boardId}/list/{listId}/cardTitle={cardTitle}", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public BoardDTO createNewCard(@PathVariable Long boardId,
-                                  @PathVariable Long listId,
-                                  @PathVariable String cardTitle) {
+    @PostMapping(value = "/{boardId}/list/{listId}/cardTitle={cardTitle}",
+            produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    BoardDTO createNewCard(@PathVariable Long boardId,
+                           @PathVariable Long listId,
+                           @PathVariable String cardTitle) {
         Card card = cardService.createNewCard(boardId, cardTitle);
 
         BoardList boardList = boardListRepository.findById(listId)
@@ -95,9 +97,6 @@ public class BoardController {
         boardList.setCardsIds(idCards);
 
         boardListRepository.save(boardList);
-
-        System.out.println("Id Cards");
-        System.out.println(idCards);
 
         return boardMapper.mapToBoardDTO(boardService.getBoardById(boardId));
     }

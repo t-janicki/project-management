@@ -27,13 +27,6 @@ public class CardServiceImpl implements CardService {
     }
 
     public Card createNewCard(Long boardId, String cardTitle) {
-
-        CheckItem checkItem = new CheckItem();
-        checkItem.setChecked(Boolean.FALSE);
-
-        CheckList checkList = new CheckList();
-        checkList.setCheckItems(Collections.singletonList(checkItem));
-
         Card card = new Card();
 
         card.setName(cardTitle);
@@ -44,7 +37,7 @@ public class CardServiceImpl implements CardService {
         card.setLabelsIds("");
         card.setSubscribed(true);
         card.setAttachments(new ArrayList<>());
-        card.setCheckLists(Collections.singletonList(checkList));
+        card.setCheckLists(new ArrayList<>());
         card.setActivities(new ArrayList<>());
 
         cardRepository.save(card);

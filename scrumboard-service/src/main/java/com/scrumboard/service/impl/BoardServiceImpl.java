@@ -34,7 +34,7 @@ public class BoardServiceImpl implements BoardService {
 
         board.setName("Untitled Board");
         board.setUri("untitled-board");
-        board.setBoardSettings(new BoardSettings("", true, false));
+        board.setBoardSettings(new BoardSettings("", true, true));
         board.setLists(new ArrayList<>());
         board.setCards(new ArrayList<>());
         board.setMembers(new ArrayList<>());
