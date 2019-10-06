@@ -36,7 +36,7 @@ public class CheckItem {
         this.name = name;
     }
 
-    public Boolean getChecked() {
+    public Boolean isChecked() {
         return isChecked;
     }
 

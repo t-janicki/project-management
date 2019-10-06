@@ -19,7 +19,7 @@ public final class CheckItemMapper {
         return new CheckItemDTO(
                 checkItem.getId(),
                 checkItem.getName(),
-                checkItem.getChecked()
+                checkItem.isChecked()
         );
     }
 }

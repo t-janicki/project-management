@@ -1,17 +1,16 @@
 package com.application.web;
 
 import com.application.mapper.scrumboard.BoardMapper;
+import com.application.mapper.scrumboard.CardMapper;
 import com.scrumboard.domain.Board;
 import com.scrumboard.domain.BoardList;
 import com.scrumboard.domain.Card;
-import com.scrumboard.repository.BoardListRepository;
 import com.scrumboard.service.BoardListService;
 import com.scrumboard.service.BoardService;
 import com.scrumboard.service.CardService;
 import com.utility.dto.scrumboard.BoardDTO;
 import com.utility.dto.scrumboard.BoardListDTO;
 import com.utility.dto.scrumboard.CardDTO;
-import com.utility.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,19 +26,20 @@ public class BoardController {
     private BoardMapper boardMapper;
     private BoardListService boardListService;
     private CardService cardService;
-    private BoardListRepository boardListRepository;
+    private CardMapper cardMapper;
+
 
     @Autowired
     public BoardController(BoardService boardService,
                            BoardMapper boardMapper,
                            BoardListService boardListService,
                            CardService cardService,
-                           BoardListRepository boardListRepository) {
+                           CardMapper cardMapper) {
         this.boardService = boardService;
         this.boardMapper = boardMapper;
         this.boardListService = boardListService;
         this.cardService = cardService;
-        this.boardListRepository = boardListRepository;
+        this.cardMapper = cardMapper;
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE)
@@ -82,16 +82,20 @@ public class BoardController {
     BoardDTO createNewCard(@PathVariable Long boardId,
                            @PathVariable Long listId,
                            @PathVariable String cardTitle) {
-        Card card = cardService.createNewCard(boardId, cardTitle, listId);
-
-//        cardService.addCardIdToBoardList(card.getId(), listId);
+        cardService.createNewCard(boardId, cardTitle, listId);
 
         return boardMapper.mapToBoardDTO(boardService.getBoardById(boardId));
     }
 
-//    @PutMapping(value = "/test", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-//    public @ResponseBody
-//    CardDTO updateCard(@RequestBody CardDTO cardDTO) {
-//
-//    }
+    @PostMapping(value = "/test", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    CardDTO updateCard(@RequestBody CardDTO cardDTO) {
+        Card card = cardMapper.mapToCard(cardDTO);
+
+        Card result = cardService.updateCard(card);
+
+        Card test = result;
+
+        return cardMapper.mapToCardDTO(result);
+    }
 }
