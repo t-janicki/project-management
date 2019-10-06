@@ -1,6 +1,7 @@
 package com.application.mapper.scrumboard;
 
 import com.scrumboard.domain.Card;
+import com.scrumboard.domain.Member;
 import com.utility.dto.scrumboard.CardDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -65,8 +66,10 @@ public final class CardMapper {
     }
 
     public Card mapToCard(CardDTO cardDTO) {
-        String membersIds = "";
-        String labelsIds = "";
+
+        String membersIds = String.join(", ", cardDTO.getIdMembers());
+
+        String labelsIds = String.join(", ", cardDTO.getIdLabels());
 
         return new Card(
                 cardDTO.getId(),

@@ -57,7 +57,6 @@ public class CheckListServiceImpl implements CheckListService {
     }
 
     private void deleteChecklist(Card current, Card request) {
-
         List<Long> currentChecklistIds = current.getCheckLists().stream()
                 .map(CheckList::getId)
                 .collect(Collectors.toList());
