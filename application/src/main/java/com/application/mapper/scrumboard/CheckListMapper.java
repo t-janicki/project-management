@@ -21,6 +21,7 @@ public final class CheckListMapper {
         return new CheckList(
                 checkListDTO.getId(),
                 checkListDTO.getName(),
+                checkListDTO.isDeleted(),
                 checkListDTO.getCheckItems().stream()
                         .map(v -> checkItemMapper.mapToCheckItem(v))
                         .collect(Collectors.toList())
@@ -31,6 +32,7 @@ public final class CheckListMapper {
         return new CheckListDTO(
                 checkList.getId(),
                 checkList.getName(),
+                checkList.isDeleted(),
                 checkList.getCheckItems().stream()
                         .map(v -> checkItemMapper.mapToCheckItemDTO(v))
                         .collect(Collectors.toList())

@@ -5,16 +5,24 @@ import java.util.List;
 public class CheckListDTO {
     private Long id;
     private String name;
+    private Boolean isDeleted;
     private List<CheckItemDTO> checkItems;
 
     public CheckListDTO() {
 
     }
 
-    public CheckListDTO(Long id, String name, List<CheckItemDTO> checkItems) {
+    public CheckListDTO(Long id, String name, Boolean isDeleted, List<CheckItemDTO> checkItems) {
         this.id = id;
         this.name = name;
+        this.isDeleted = isDeleted;
         this.checkItems = checkItems;
+    }
+
+    public CheckListDTO(Long id, String name, Boolean isDeleted) {
+        this.id = id;
+        this.name = name;
+        this.isDeleted = isDeleted;
     }
 
     public Long getId() {
@@ -31,6 +39,10 @@ public class CheckListDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean isDeleted() {
+        return isDeleted;
     }
 
     public List<CheckItemDTO> getCheckItems() {

@@ -34,7 +34,7 @@ public class Card {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Attachment> attachments;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CheckList> checkLists;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

@@ -2,18 +2,23 @@ package com.application.web;
 
 import com.application.mapper.scrumboard.BoardMapper;
 import com.application.mapper.scrumboard.CardMapper;
+import com.application.mapper.scrumboard.CheckListMapper;
 import com.scrumboard.domain.Board;
 import com.scrumboard.domain.BoardList;
 import com.scrumboard.domain.Card;
+import com.scrumboard.domain.CheckList;
 import com.scrumboard.service.BoardListService;
 import com.scrumboard.service.BoardService;
 import com.scrumboard.service.CardService;
+import com.scrumboard.service.CheckListService;
 import com.utility.dto.scrumboard.BoardDTO;
 import com.utility.dto.scrumboard.BoardListDTO;
 import com.utility.dto.scrumboard.CardDTO;
+import com.utility.dto.scrumboard.CheckListDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -27,6 +32,8 @@ public class BoardController {
     private BoardListService boardListService;
     private CardService cardService;
     private CardMapper cardMapper;
+    private CheckListService checkListService;
+    private CheckListMapper checkListMapper;
 
 
     @Autowired
@@ -34,12 +41,16 @@ public class BoardController {
                            BoardMapper boardMapper,
                            BoardListService boardListService,
                            CardService cardService,
-                           CardMapper cardMapper) {
+                           CardMapper cardMapper,
+                           CheckListService checkListService,
+                           CheckListMapper checkListMapper) {
         this.boardService = boardService;
         this.boardMapper = boardMapper;
         this.boardListService = boardListService;
         this.cardService = cardService;
         this.cardMapper = cardMapper;
+        this.checkListService = checkListService;
+        this.checkListMapper = checkListMapper;
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE)
@@ -87,7 +98,8 @@ public class BoardController {
         return boardMapper.mapToBoardDTO(boardService.getBoardById(boardId));
     }
 
-    @PostMapping(value = "/test", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/test",
+            produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public @ResponseBody
     CardDTO updateCard(@RequestBody CardDTO cardDTO) {
         Card card = cardMapper.mapToCard(cardDTO);
@@ -97,5 +109,19 @@ public class BoardController {
         Card test = result;
 
         return cardMapper.mapToCardDTO(result);
+    }
+
+    @PostMapping(value = "/card/newCheckList/{name}",
+            produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    CheckListDTO newCheckList(@PathVariable String name) {
+        CheckList checkList = checkListService.newCheckList(name);
+
+        return new CheckListDTO(
+                checkList.getId(),
+                checkList.getName(),
+                checkList.isDeleted(),
+                new ArrayList<>()
+        );
     }
 }

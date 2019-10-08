@@ -19,6 +19,16 @@ public class CheckListServiceImpl implements CheckListService {
         this.checkListRepository = checkListRepository;
     }
 
+    public CheckList newCheckList(String name) {
+        CheckList checkList = new CheckList();
+        checkList.setDeleted(Boolean.FALSE);
+        checkList.setName(name);
+
+        checkListRepository.save(checkList);
+
+        return checkList;
+    }
+
     public void updateChecklist(Card current, Card request) {
         int currentChecklistSize = current.getCheckLists().size();
         int requestChecklistSize = request.getCheckLists().size();
@@ -42,18 +52,24 @@ public class CheckListServiceImpl implements CheckListService {
     }
 
     private void addChecklist(Card current, Card request) {
-        request.getCheckLists().stream()
-                .filter(v -> v.getId() == null)
-                .findAny()
-                .ifPresent(checkList -> {
+        List<Long> currentChecklistIds = current.getCheckLists().stream()
+                .map(CheckList::getId)
+                .collect(Collectors.toList());
 
-                    CheckList newCheckList = new CheckList();
-                    newCheckList.setName(checkList.getName());
+        List<Long> requestChecklistIds = request.getCheckLists().stream()
+                .map(CheckList::getId)
+                .collect(Collectors.toList());
 
-                    checkListRepository.save(checkList);
+        List<Long> result = requestChecklistIds.stream()
+                .filter(v -> !currentChecklistIds.contains(v))
+                .collect(Collectors.toList());
 
-                    current.getCheckLists().add(checkList);
-                });
+
+        List<CheckList> checkLists = checkListRepository.findAllByIdIn(result);
+
+        if (!checkLists.isEmpty()) {
+            current.getCheckLists().addAll(checkLists);
+        }
     }
 
     private void deleteChecklist(Card current, Card request) {
@@ -71,7 +87,13 @@ public class CheckListServiceImpl implements CheckListService {
 
         List<CheckList> checkLists = checkListRepository.findAllByIdIn(result);
 
-        checkListRepository.deleteAll(checkLists);
+        if (!checkLists.isEmpty()) {
+
+            checkLists.forEach(v -> {
+                v.setDeleted(Boolean.TRUE);
+                checkListRepository.save(v);
+            });
+        }
 
         current.getCheckLists().removeAll(checkLists);
     }

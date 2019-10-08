@@ -13,15 +13,20 @@ public class CheckList {
     @Column
     private String name;
 
+    @Column
+    private Boolean isDeleted = false;
+
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<CheckItem> checkItems;
 
     public CheckList() {
     }
 
-    public CheckList(Long id, String name, List<CheckItem> checkItems) {
+    public CheckList(Long id, String name, Boolean isDeleted, List<CheckItem> checkItems) {
         this.id = id;
         this.name = name;
+        this.isDeleted = isDeleted;
         this.checkItems = checkItems;
     }
 
@@ -35,6 +40,14 @@ public class CheckList {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public Boolean isDeleted() {
+        return isDeleted;
     }
 
     public List<CheckItem> getCheckItems() {
