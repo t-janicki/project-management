@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public final class BoardListMapper {
@@ -25,5 +26,21 @@ public final class BoardListMapper {
                 boardList.getName(),
                 result
         );
+    }
+
+    public BoardList mapToBoardList(BoardListDTO boardListDTO) {
+        String cardsIds = String.join(", ", boardListDTO.getIdCards());
+        System.out.println(cardsIds);
+        return new BoardList(
+                boardListDTO.getId(),
+                boardListDTO.getName(),
+                cardsIds
+        );
+    }
+
+    public List<BoardList> mapToBoardLists(List<BoardListDTO> lists) {
+        return lists.stream()
+                .map(this::mapToBoardList)
+                .collect(Collectors.toList());
     }
 }

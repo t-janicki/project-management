@@ -18,6 +18,12 @@ public class BoardList {
     public BoardList() {
     }
 
+    public BoardList(Long id, String name, String cardsIds) {
+        this.id = id;
+        this.name = name;
+        this.cardsIds = cardsIds;
+    }
+
     public Long getId() {
         return id;
     }

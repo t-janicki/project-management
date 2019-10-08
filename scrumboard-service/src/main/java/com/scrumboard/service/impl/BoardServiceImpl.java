@@ -26,6 +26,8 @@ public class BoardServiceImpl implements BoardService {
     public Board createNewEmptyBoard() {
         Board board = new Board();
 
+
+
         Label sampleLabel1 = new Label("High Priority", "bg-red text-white");
         Label sampleLabel2 = new Label("Design", "bg-orange text-white");
         Label sampleLabel3 = new Label("App", "bg-blue text-white");

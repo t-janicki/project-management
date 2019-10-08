@@ -32,7 +32,7 @@ public class BoardListDTO {
         this.name = name;
     }
 
-    public List getIdCards() {
+    public List<String> getIdCards() {
         return idCards;
     }
 
