@@ -3,18 +3,9 @@ package com.application.web;
 import com.application.mapper.scrumboard.BoardMapper;
 import com.application.mapper.scrumboard.CardMapper;
 import com.application.mapper.scrumboard.CheckListMapper;
-import com.scrumboard.domain.Board;
-import com.scrumboard.domain.BoardList;
-import com.scrumboard.domain.Card;
-import com.scrumboard.domain.CheckList;
-import com.scrumboard.service.BoardListService;
-import com.scrumboard.service.BoardService;
-import com.scrumboard.service.CardService;
-import com.scrumboard.service.CheckListService;
-import com.utility.dto.scrumboard.BoardDTO;
-import com.utility.dto.scrumboard.BoardListDTO;
-import com.utility.dto.scrumboard.CardDTO;
-import com.utility.dto.scrumboard.CheckListDTO;
+import com.scrumboard.domain.*;
+import com.scrumboard.service.*;
+import com.utility.dto.scrumboard.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,8 +24,7 @@ public class BoardController {
     private CardService cardService;
     private CardMapper cardMapper;
     private CheckListService checkListService;
-    private CheckListMapper checkListMapper;
-
+    private CheckItemService checkItemService;
 
     @Autowired
     public BoardController(BoardService boardService,
@@ -43,14 +33,14 @@ public class BoardController {
                            CardService cardService,
                            CardMapper cardMapper,
                            CheckListService checkListService,
-                           CheckListMapper checkListMapper) {
+                           CheckItemService checkItemService) {
         this.boardService = boardService;
         this.boardMapper = boardMapper;
         this.boardListService = boardListService;
         this.cardService = cardService;
         this.cardMapper = cardMapper;
         this.checkListService = checkListService;
-        this.checkListMapper = checkListMapper;
+        this.checkItemService = checkItemService;
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE)
@@ -122,6 +112,20 @@ public class BoardController {
                 checkList.getName(),
                 checkList.isDeleted(),
                 new ArrayList<>()
+        );
+    }
+
+    @PostMapping(value = "/card/newCheckItem/{name}",
+            produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    CheckItemDTO newCheckItem(@PathVariable String name) {
+        CheckItem checkItem = checkItemService.newCheckItem(name);
+
+        return new CheckItemDTO(
+                checkItem.getId(),
+                checkItem.getName(),
+                checkItem.isChecked(),
+                checkItem.isDeleted()
         );
     }
 }

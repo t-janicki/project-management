@@ -11,7 +11,8 @@ public final class CheckItemMapper {
         return new CheckItem(
                 checkItemDTO.getId(),
                 checkItemDTO.getName(),
-                checkItemDTO.getChecked()
+                checkItemDTO.getChecked(),
+                checkItemDTO.isDeleted()
         );
     }
 
@@ -19,7 +20,8 @@ public final class CheckItemMapper {
         return new CheckItemDTO(
                 checkItem.getId(),
                 checkItem.getName(),
-                checkItem.isChecked()
+                checkItem.isChecked(),
+                checkItem.isDeleted()
         );
     }
 }

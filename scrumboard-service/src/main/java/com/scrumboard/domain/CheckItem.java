@@ -15,13 +15,17 @@ public class CheckItem {
     @Column
     private Boolean isChecked;
 
+    @Column
+    private Boolean isDeleted;
+
     public CheckItem() {
     }
 
-    public CheckItem(Long id, String name, Boolean isChecked) {
+    public CheckItem(Long id, String name, Boolean isChecked, Boolean isDeleted) {
         this.id = id;
         this.name = name;
         this.isChecked = isChecked;
+        this.isDeleted = isDeleted;
     }
 
     public Long getId() {
@@ -42,5 +46,13 @@ public class CheckItem {
 
     public void setChecked(Boolean checked) {
         isChecked = checked;
+    }
+
+    public Boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 }
