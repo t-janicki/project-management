@@ -4,10 +4,9 @@ import com.application.mapper.scrumboard.BoardListMapper;
 import com.application.mapper.scrumboard.BoardMapper;
 import com.application.mapper.scrumboard.CardMapper;
 import com.scrumboard.domain.*;
-import com.scrumboard.repository.BoardListRepository;
-import com.scrumboard.repository.BoardRepository;
 import com.scrumboard.service.*;
 import com.utility.dto.scrumboard.*;
+import com.utility.exception.NotFoundException;
 import com.utility.web.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -144,7 +143,7 @@ public class BoardController {
         );
     }
 
-    @PostMapping(value = "/lists/reorder",
+    @PutMapping(value = "/lists/reorder",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public @ResponseBody
     ApiResponse reorderBoardLists(@RequestBody BoardDTO boardDTO) {
@@ -157,4 +156,18 @@ public class BoardController {
         return new ApiResponse(true, "List order saved. ");
     }
 
+    @PutMapping(value = "/{boardId}/list/{listId}/listTitle={listTitle}",
+            produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    public ApiResponse renameBoardList(@PathVariable Long boardId,
+                                       @PathVariable Long listId,
+                                       @PathVariable String listTitle) {
+//        Board board = boardService.getBoardById(boardId);
+//
+//        BoardList boardList = board.getLists().stream().filter(bl -> bl.getId().equals(listId)).findFirst()
+//                .orElseThrow(() -> new NotFoundException("Board List not found"));
+
+        boardListService.renameBoardList(boardId, listId, listTitle);
+
+        return new ApiResponse(true, "List renamed. ");
+    }
 }

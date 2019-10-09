@@ -9,4 +9,6 @@ public interface BoardListService {
     BoardList newBoardList(Long boardId, String listTitle);
 
     List<BoardList> reorderBoardList(List<BoardList> boardList);
+
+    BoardList renameBoardList(Long boardId, Long listId, String listTitle);
 }

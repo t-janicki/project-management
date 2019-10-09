@@ -6,6 +6,7 @@ import com.scrumboard.repository.BoardListRepository;
 import com.scrumboard.repository.BoardRepository;
 import com.scrumboard.service.BoardListService;
 import com.scrumboard.service.BoardService;
+import com.utility.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,5 +55,16 @@ public class BoardListServiceImpl implements BoardListService {
         return boardListRepository.saveAll(boardLists);
 
 
+    }
+
+    public BoardList renameBoardList(Long boardId, Long listId, String listTitle) {
+        Board board = boardService.getBoardById(boardId);
+
+        BoardList boardList = board.getLists().stream().filter(bl -> bl.getId().equals(listId)).findFirst()
+                .orElseThrow(() -> new NotFoundException("Board List not found"));
+
+        boardList.setName(listTitle);
+
+        return boardListRepository.save(boardList);
     }
 }
