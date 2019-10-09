@@ -15,6 +15,9 @@ public class BoardList {
     @Column
     private String cardsIds;
 
+    @Column
+    private Integer position;
+
     public BoardList() {
     }
 
@@ -44,4 +47,11 @@ public class BoardList {
         this.cardsIds = cardsIds;
     }
 
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
 }

@@ -2,22 +2,28 @@ package com.scrumboard.service.impl;
 
 import com.scrumboard.domain.Board;
 import com.scrumboard.domain.BoardList;
+import com.scrumboard.repository.BoardListRepository;
 import com.scrumboard.repository.BoardRepository;
 import com.scrumboard.service.BoardListService;
 import com.scrumboard.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BoardListServiceImpl implements BoardListService {
     private BoardService boardService;
     private BoardRepository boardRepository;
+    private BoardListRepository boardListRepository;
 
     @Autowired
     public BoardListServiceImpl(BoardService boardService,
-                                BoardRepository boardRepository) {
+                                BoardRepository boardRepository,
+                                BoardListRepository boardListRepository) {
         this.boardService = boardService;
         this.boardRepository = boardRepository;
+        this.boardListRepository = boardListRepository;
     }
 
     public BoardList newBoardList(Long boardId, String name) {
@@ -25,13 +31,28 @@ public class BoardListServiceImpl implements BoardListService {
 
         BoardList boardList = new BoardList();
 
+        int position = board.getLists().size();
+
         boardList.setCardsIds("");
         boardList.setName(name);
+        boardList.setPosition(position);
 
         board.getLists().add(boardList);
 
         boardRepository.save(board);
 
         return boardList;
+    }
+
+    public List<BoardList> reorderBoardList(List<BoardList> boardLists) {
+        final int[] position = {0};
+
+        boardLists.forEach(v -> {
+            v.setPosition(position[0]++);
+        });
+
+        return boardListRepository.saveAll(boardLists);
+
+
     }
 }

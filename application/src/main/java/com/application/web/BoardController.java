@@ -8,15 +8,15 @@ import com.scrumboard.repository.BoardListRepository;
 import com.scrumboard.repository.BoardRepository;
 import com.scrumboard.service.*;
 import com.utility.dto.scrumboard.*;
+import com.utility.web.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.http.MediaType.sortByQualityValue;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -30,8 +30,6 @@ public class BoardController {
     private CheckListService checkListService;
     private CheckItemService checkItemService;
     private BoardListMapper boardListMapper;
-    private BoardRepository boardRepository;
-    private BoardListRepository boardListRepository;
 
     @Autowired
     public BoardController(BoardService boardService,
@@ -42,8 +40,7 @@ public class BoardController {
                            CheckListService checkListService,
                            CheckItemService checkItemService,
                            BoardListMapper boardListMapper,
-                           BoardRepository boardRepository,
-                           BoardListRepository boardListRepository) {
+                           BoardListService b) {
         this.boardService = boardService;
         this.boardMapper = boardMapper;
         this.boardListService = boardListService;
@@ -52,8 +49,6 @@ public class BoardController {
         this.checkListService = checkListService;
         this.checkItemService = checkItemService;
         this.boardListMapper = boardListMapper;
-        this.boardRepository = boardRepository;
-        this.boardListRepository = boardListRepository;
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE)
@@ -65,12 +60,19 @@ public class BoardController {
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
     public List<BoardDTO> getBoards() {
-        return boardMapper.mapToBoardDTOList(boardService.getBoards());
+        List<Board> boards = boardService.getBoards();
+
+        boards.forEach(v -> v.getLists()
+                .sort(Comparator.comparing(BoardList::getPosition)));
+
+        return boardMapper.mapToBoardDTOList(boards);
     }
 
     @GetMapping(value = "/{boardId}", produces = APPLICATION_JSON_VALUE)
     public BoardDTO getBoardById(@PathVariable Long boardId) {
         Board board = boardService.getBoardById(boardId);
+
+        board.getLists().sort(Comparator.comparing(BoardList::getPosition));
 
         return boardMapper.mapToBoardDTO(board);
     }
@@ -145,24 +147,14 @@ public class BoardController {
     @PostMapping(value = "/lists/reorder",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public @ResponseBody
-    BoardDTO reorderBoardLists(@RequestBody BoardDTO boardDTO) {
-        Board board = boardService.getBoardById(boardDTO.getId());
-        List<BoardListDTO> boardListsDTO  = boardDTO.getLists();
+    ApiResponse reorderBoardLists(@RequestBody BoardDTO boardDTO) {
+        List<BoardListDTO> boardListsDTO = boardDTO.getLists();
 
         List<BoardList> boardLists = boardListMapper.mapToBoardLists(boardListsDTO);
 
+        boardListService.reorderBoardList(boardLists);
 
-        Collections.swap(boardLists, 0, 3);
-
-        System.out.println(boardLists);
-        boardListRepository.saveAll(boardLists);
-
-
-        board.setLists(boardLists);
-        boardRepository.save(board);
-
-        System.out.println(boardDTO);
-        return null;
+        return new ApiResponse(true, "List order saved. ");
     }
 
 }
