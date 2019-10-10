@@ -6,10 +6,7 @@ import com.utility.dto.scrumboard.CardDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -67,9 +64,17 @@ public final class CardMapper {
 
     public Card mapToCard(CardDTO cardDTO) {
 
-        String membersIds = String.join(", ", cardDTO.getIdMembers());
+        Set<String> setLabelsIds = new HashSet<>(cardDTO.getIdLabels());
 
-        String labelsIds = String.join(", ", cardDTO.getIdLabels());
+        List<String> labels = new ArrayList<>(setLabelsIds);
+
+        String labelsIds = String.join(", ", labels);
+
+        Set<String> setMembersIds = new HashSet<>(cardDTO.getIdMembers());
+
+        List<String> membersId = new ArrayList<>(setMembersIds);
+
+        String membersIds = String.join(", ", membersId);
 
         return new Card(
                 cardDTO.getId(),

@@ -74,6 +74,8 @@ public class CardServiceImpl implements CardService {
         Card card = cardRepository.findById(request.getId())
                 .orElseThrow(() -> new NotFoundException("Card not found"));
 
+        System.out.println("labels ids");
+        System.out.println(request.getLabelsIds());
         card.setName(request.getName());
         card.setDescription(request.getDescription());
         card.setDueDate(request.getDueDate());

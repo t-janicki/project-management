@@ -5,6 +5,7 @@ import com.application.mapper.scrumboard.BoardMapper;
 import com.application.mapper.scrumboard.CardMapper;
 import com.scrumboard.domain.*;
 import com.scrumboard.service.*;
+import com.sun.xml.internal.ws.api.client.WSPortInfo;
 import com.utility.dto.scrumboard.*;
 import com.utility.exception.NotFoundException;
 import com.utility.web.response.ApiResponse;
@@ -108,6 +109,7 @@ public class BoardController {
     CardDTO updateCard(@RequestBody CardDTO cardDTO) {
         Card card = cardMapper.mapToCard(cardDTO);
 
+
         Card result = cardService.updateCard(card);
 
         Card test = result;
@@ -161,13 +163,20 @@ public class BoardController {
     public ApiResponse renameBoardList(@PathVariable Long boardId,
                                        @PathVariable Long listId,
                                        @PathVariable String listTitle) {
-//        Board board = boardService.getBoardById(boardId);
-//
-//        BoardList boardList = board.getLists().stream().filter(bl -> bl.getId().equals(listId)).findFirst()
-//                .orElseThrow(() -> new NotFoundException("Board List not found"));
 
         boardListService.renameBoardList(boardId, listId, listTitle);
 
         return new ApiResponse(true, "List renamed. ");
+    }
+
+    @PutMapping(value = "/{boardId}/list/{listId}/delete",
+    produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    public ApiResponse deleteList(@PathVariable Long boardId,
+                                  @PathVariable Long listId) {
+
+        System.out.println(boardId);
+        System.out.println(listId);
+
+        return new ApiResponse(true, "List deleted. ");
     }
 }

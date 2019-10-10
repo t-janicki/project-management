@@ -18,6 +18,9 @@ public class BoardList {
     @Column
     private Integer position;
 
+    @Column
+    private Boolean isDeleted;
+
     public BoardList() {
     }
 
@@ -53,5 +56,13 @@ public class BoardList {
 
     public void setPosition(Integer position) {
         this.position = position;
+    }
+
+    public Boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 }
