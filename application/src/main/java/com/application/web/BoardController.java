@@ -117,6 +117,21 @@ public class BoardController {
         return boardMapper.mapToBoardDTO(boardService.getBoardById(boardId));
     }
 
+    @DeleteMapping(value = "/{boardId}/card/{cardId}")
+    public ApiResponse deleteCard(@PathVariable Long boardId,
+                                  @PathVariable Long cardId) {
+
+        Board board = boardService.getBoardById(boardId);
+
+        Card card = cardService.getCardById(cardId);
+
+        board.getCards().remove(card);
+
+        cardService.deleteCard(card.getId());
+
+        return new ApiResponse(true, "Card deleted. ");
+    }
+
     @PostMapping(value = "/card/update",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public @ResponseBody

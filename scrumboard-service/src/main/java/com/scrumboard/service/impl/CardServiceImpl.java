@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class CardServiceImpl implements CardService {
@@ -29,6 +28,12 @@ public class CardServiceImpl implements CardService {
         this.cardRepository = cardRepository;
         this.boardListRepository = boardListRepository;
         this.checkListService = checkListService;
+    }
+
+    @Override
+    public Card getCardById(Long cardId) {
+        return cardRepository.findById(cardId)
+                .orElseThrow(() -> new NotFoundException("Card not found"));
     }
 
     public Card createNewCard(Long boardId, String cardTitle, Long listId) {
@@ -125,6 +130,11 @@ public class CardServiceImpl implements CardService {
         cardRepository.save(card);
 
         return card;
+    }
+
+    @Override
+    public void deleteCard(Long cardId) {
+        cardRepository.deleteById(cardId);
     }
 }
 
