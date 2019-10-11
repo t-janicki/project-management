@@ -3,11 +3,10 @@ package com.application.web;
 import com.application.mapper.scrumboard.BoardListMapper;
 import com.application.mapper.scrumboard.BoardMapper;
 import com.application.mapper.scrumboard.CardMapper;
+import com.application.mapper.scrumboard.LabelMapper;
 import com.scrumboard.domain.*;
 import com.scrumboard.service.*;
-import com.sun.xml.internal.ws.api.client.WSPortInfo;
 import com.utility.dto.scrumboard.*;
-import com.utility.exception.NotFoundException;
 import com.utility.web.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +29,8 @@ public class BoardController {
     private CheckListService checkListService;
     private CheckItemService checkItemService;
     private BoardListMapper boardListMapper;
+    private LabelService labelService;
+    private LabelMapper labelMapper;
 
     @Autowired
     public BoardController(BoardService boardService,
@@ -40,7 +41,8 @@ public class BoardController {
                            CheckListService checkListService,
                            CheckItemService checkItemService,
                            BoardListMapper boardListMapper,
-                           BoardListService b) {
+                           LabelService labelService,
+                           LabelMapper labelMapper) {
         this.boardService = boardService;
         this.boardMapper = boardMapper;
         this.boardListService = boardListService;
@@ -49,6 +51,8 @@ public class BoardController {
         this.checkListService = checkListService;
         this.checkItemService = checkItemService;
         this.boardListMapper = boardListMapper;
+        this.labelService = labelService;
+        this.labelMapper = labelMapper;
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE)
@@ -131,7 +135,7 @@ public class BoardController {
         );
     }
 
-    @PostMapping(value = "/card/newCheckItem/{name}",
+    @PostMapping(value = "/card/newCheckItem/name={name}",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public @ResponseBody
     CheckItemDTO newCheckItem(@PathVariable String name) {
@@ -143,6 +147,18 @@ public class BoardController {
                 checkItem.isChecked(),
                 checkItem.isDeleted()
         );
+    }
+
+    @PostMapping(value = "/{boardId}/card/newLabel/name={name}",
+            produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    LabelDTO newLabel(@PathVariable Long boardId,
+                      @PathVariable String name) {
+        System.out.println("Board ID CONTROLLER");
+        System.out.println(boardId);
+        Label label = labelService.newLabel(boardId, name);
+
+        return labelMapper.mapToLabelDTO(label);
     }
 
     @PutMapping(value = "/lists/reorder",
@@ -170,7 +186,7 @@ public class BoardController {
     }
 
     @PutMapping(value = "/{boardId}/list/{listId}/delete",
-    produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+            produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ApiResponse deleteList(@PathVariable Long boardId,
                                   @PathVariable Long listId) {
 
