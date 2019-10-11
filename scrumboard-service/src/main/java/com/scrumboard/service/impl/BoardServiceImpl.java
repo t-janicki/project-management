@@ -56,6 +56,14 @@ public class BoardServiceImpl implements BoardService {
                 .orElseThrow(() -> new NotFoundException("Board not found with id: " + id));
     }
 
+    public Board renameBoard(Long boardId, String name) {
+        Board board = getBoardById(boardId);
+
+        board.setName(name);
+
+        return boardRepository.save(board);
+    }
+
     public void deleteAllBoards() {
         boardRepository.deleteAll();
     }

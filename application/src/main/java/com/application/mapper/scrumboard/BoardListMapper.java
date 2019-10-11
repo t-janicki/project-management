@@ -30,7 +30,6 @@ public final class BoardListMapper {
 
     public BoardList mapToBoardList(BoardListDTO boardListDTO) {
         String cardsIds = String.join(", ", boardListDTO.getIdCards());
-        System.out.println(cardsIds);
         return new BoardList(
                 boardListDTO.getId(),
                 boardListDTO.getName(),

@@ -81,6 +81,16 @@ public class BoardController {
         return boardMapper.mapToBoardDTO(board);
     }
 
+    @PutMapping(value = "/{boardId}/name={name}",
+            produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    public ApiResponse renameBoard(@PathVariable Long boardId,
+                                   @PathVariable String name) {
+
+        boardService.renameBoard(boardId, name);
+
+        return new ApiResponse(true, "Board renamed. ");
+    }
+
     @PostMapping(value = "/{boardId}/list/{name}", produces = APPLICATION_JSON_VALUE)
     public List<BoardListDTO> newBoardList(@PathVariable Long boardId,
                                            @PathVariable String name) {
@@ -154,8 +164,6 @@ public class BoardController {
     public @ResponseBody
     LabelDTO newLabel(@PathVariable Long boardId,
                       @PathVariable String name) {
-        System.out.println("Board ID CONTROLLER");
-        System.out.println(boardId);
         Label label = labelService.newLabel(boardId, name);
 
         return labelMapper.mapToLabelDTO(label);

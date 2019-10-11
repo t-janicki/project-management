@@ -13,6 +13,8 @@ public interface BoardService {
 
     Board getBoardById(Long id);
 
+    Board renameBoard(Long boardId, String name);
+
     void deleteAllBoards();
 
     void addCardToBoard(Long boardId, Card card);
