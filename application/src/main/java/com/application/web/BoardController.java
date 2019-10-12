@@ -1,14 +1,12 @@
 package com.application.web;
 
-import com.application.mapper.scrumboard.BoardListMapper;
-import com.application.mapper.scrumboard.BoardMapper;
-import com.application.mapper.scrumboard.CardMapper;
-import com.application.mapper.scrumboard.LabelMapper;
+import com.application.mapper.scrumboard.*;
 import com.scrumboard.domain.*;
 import com.scrumboard.service.*;
 import com.utility.dto.scrumboard.*;
 import com.utility.web.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -31,6 +29,8 @@ public class BoardController {
     private BoardListMapper boardListMapper;
     private LabelService labelService;
     private LabelMapper labelMapper;
+    private ActivityService activityService;
+    private ActivityMapper activityMapper;
 
     @Autowired
     public BoardController(BoardService boardService,
@@ -42,7 +42,9 @@ public class BoardController {
                            CheckItemService checkItemService,
                            BoardListMapper boardListMapper,
                            LabelService labelService,
-                           LabelMapper labelMapper) {
+                           LabelMapper labelMapper,
+                           ActivityService activityService,
+                           ActivityMapper activityMapper) {
         this.boardService = boardService;
         this.boardMapper = boardMapper;
         this.boardListService = boardListService;
@@ -53,6 +55,8 @@ public class BoardController {
         this.boardListMapper = boardListMapper;
         this.labelService = labelService;
         this.labelMapper = labelMapper;
+        this.activityService = activityService;
+        this.activityMapper = activityMapper;
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE)
@@ -172,6 +176,16 @@ public class BoardController {
                 checkItem.isChecked(),
                 checkItem.isDeleted()
         );
+    }
+
+    @PostMapping(value = "/card/{cardId}/newActivity/message={message}",
+            produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    public @ResponseBody
+    ActivityDTO newActivity(@PathVariable Long cardId,
+                            @PathVariable String message) {
+        Activity activity = activityService.newActivity(cardId, message);
+
+        return activityMapper.mapToActivityDTO(activity);
     }
 
     @PostMapping(value = "/{boardId}/card/newLabel/name={name}",

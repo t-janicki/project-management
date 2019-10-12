@@ -87,45 +87,7 @@ public class CardServiceImpl implements CardService {
         card.setLabelsIds(request.getLabelsIds());
         card.setSubscribed(request.getSubscribed());
 
-        card.getAttachments().forEach(attachment -> {
-
-            attachment.setName(request.getAttachments().stream()
-                    .map(Attachment::getName)
-                    .toString());
-
-            attachment.setSrc(request.getAttachments().stream()
-                    .map(Attachment::getSrc)
-                    .toString());
-
-            attachment.setTime(request.getAttachments().stream()
-                    .map(Attachment::getTime)
-                    .toString());
-
-            attachment.setType(request.getAttachments().stream()
-                    .map(Attachment::getType)
-                    .toString());
-        });
-
         checkListService.updateChecklist(card, request);
-
-        card.getActivities().forEach(activity -> {
-            activity.setType(request.getActivities().stream()
-                    .map(Activity::getType)
-                    .toString());
-
-            activity.setMemberId(request.getActivities().stream()
-                    .map(Activity::getMemberId)
-                    .toString());
-
-            activity.setMessage(request.getActivities().stream()
-                    .map(Activity::getMessage)
-                    .toString());
-
-            activity.setTime(request.getActivities().stream()
-                    .map(Activity::getTime)
-                    .toString());
-
-        });
 
         cardRepository.save(card);
 

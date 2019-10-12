@@ -19,17 +19,16 @@ public class Activity {
     private String message;
 
     @Column
-    private String time;
+    private Long time;
 
     public Activity() {
     }
 
-    public Activity(Long id, String type, String memberId, String message, String time) {
+    public Activity(Long id, String type, String memberId, String message) {
         this.id = id;
         this.type = type;
         this.memberId = memberId;
         this.message = message;
-        this.time = time;
     }
 
     public Long getId() {
@@ -60,11 +59,11 @@ public class Activity {
         this.message = message;
     }
 
-    public String getTime() {
+    public Long getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Long time) {
         this.time = time;
     }
 }
