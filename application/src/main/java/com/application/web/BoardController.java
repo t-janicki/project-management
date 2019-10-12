@@ -4,18 +4,20 @@ import com.application.mapper.scrumboard.*;
 import com.auth.security.CurrentUser;
 import com.auth.security.UserPrincipal;
 import com.scrumboard.domain.*;
+import com.scrumboard.repository.BoardRepository;
+import com.scrumboard.repository.CardRepository;
 import com.scrumboard.service.*;
 import com.utility.dto.scrumboard.*;
 import com.utility.web.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.sortByQualityValue;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -33,6 +35,8 @@ public class BoardController {
     private LabelMapper labelMapper;
     private ActivityService activityService;
     private ActivityMapper activityMapper;
+    private CardRepository cardRepository;
+    private BoardRepository boardRepository;
 
     @Autowired
     public BoardController(BoardService boardService,
@@ -46,7 +50,9 @@ public class BoardController {
                            LabelService labelService,
                            LabelMapper labelMapper,
                            ActivityService activityService,
-                           ActivityMapper activityMapper) {
+                           ActivityMapper activityMapper,
+                           CardRepository cardRepository,
+                           BoardRepository boardRepository) {
         this.boardService = boardService;
         this.boardMapper = boardMapper;
         this.boardListService = boardListService;
@@ -59,6 +65,8 @@ public class BoardController {
         this.labelMapper = labelMapper;
         this.activityService = activityService;
         this.activityMapper = activityMapper;
+        this.cardRepository = cardRepository;
+        this.boardRepository = boardRepository;
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE)
@@ -76,7 +84,7 @@ public class BoardController {
     }
 
     @GetMapping(value = "/{boardId}", produces = APPLICATION_JSON_VALUE)
-    public BoardDTO getBoardById(@CurrentUser  UserPrincipal userPrincipal,
+    public BoardDTO getBoardById(@CurrentUser UserPrincipal userPrincipal,
                                  @PathVariable Long boardId) {
         Board board = boardService.getBoardById(boardId, userPrincipal.getId());
 
@@ -85,7 +93,7 @@ public class BoardController {
 
     @PutMapping(value = "/{boardId}/name={name}",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public ApiResponse renameBoard(@CurrentUser  UserPrincipal userPrincipal,
+    public ApiResponse renameBoard(@CurrentUser UserPrincipal userPrincipal,
                                    @PathVariable Long boardId,
                                    @PathVariable String name) {
 
@@ -131,19 +139,26 @@ public class BoardController {
     }
 
     @DeleteMapping(value = "/{boardId}/card/{cardId}")
-    public ApiResponse deleteCard(@CurrentUser UserPrincipal userPrincipal,
-                                  @PathVariable Long boardId,
-                                  @PathVariable Long cardId) {
+    public List<BoardListDTO> deleteCard(@CurrentUser UserPrincipal userPrincipal,
+                                         @PathVariable Long boardId,
+                                         @PathVariable Long cardId) {
 
         Board board = boardService.getBoardById(boardId, userPrincipal.getId());
 
-        Card card = cardService.getCardById(cardId);
+        List<BoardListDTO> boardListsDTO = boardMapper.mapToBoardDTO(board).getLists();
 
-        board.getCards().remove(card);
+        List<List<String>> listsOfCardsIds = boardListsDTO.stream()
+                .map(v -> v.getIdCards()
+                        .stream()
+                        .filter(s -> !s.equals(cardId.toString()))
+                        .collect(Collectors.toList()))
+                .collect(Collectors.toList());
 
-        cardService.deleteCard(card.getId());
+        cardService.removeCard(listsOfCardsIds,userPrincipal.getId(), boardId, cardId);
 
-        return new ApiResponse(true, "Card deleted. ");
+        BoardDTO result = boardMapper.mapToBoardDTO(board);
+
+        return result.getLists();
     }
 
     @PostMapping(value = "/card/update",

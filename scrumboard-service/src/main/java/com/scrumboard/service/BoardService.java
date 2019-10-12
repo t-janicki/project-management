@@ -20,4 +20,6 @@ public interface BoardService {
     void deleteAllBoards();
 
     void addCardToBoard(Long boardId, Long userId, Card card);
+
+    Board removeCard(Long boardId, Long userId, Card card);
 }

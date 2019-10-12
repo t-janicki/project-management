@@ -46,6 +46,7 @@ public class CardServiceImpl implements CardService {
         card.setMembersIds("");
         card.setLabelsIds("");
         card.setSubscribed(true);
+        card.setDeleted(Boolean.FALSE);
         card.setAttachments(new ArrayList<>());
         card.setCheckLists(new ArrayList<>());
         card.setActivities(new ArrayList<>());
@@ -95,8 +96,27 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public void deleteCard(Long cardId) {
-        cardRepository.deleteById(cardId);
+    public Card removeCard(List<List<String>> listsOfCardsIds, Long userId, Long boardId, Long cardId) {
+        Board board = boardService.getBoardById(boardId, userId);
+
+        int i = 0;
+
+        for (List<String> strings : listsOfCardsIds) {
+
+            String cardsIds = String.join(", ", strings);
+
+            board.getLists().get(i).setCardsIds(cardsIds);
+            i++;
+        }
+
+        Card card = getCardById(cardId);
+
+        boardService.removeCard(boardId, userId, card);
+
+        card.setDeleted(Boolean.TRUE);
+
+        return cardRepository.save(card);
     }
+
 }
 

@@ -31,6 +31,9 @@ public class Card {
     @Column
     private Boolean isSubscribed;
 
+    @Column
+    private Boolean isDeleted;
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Attachment> attachments;
 
@@ -118,6 +121,14 @@ public class Card {
 
     public void setSubscribed(Boolean subscribed) {
         isSubscribed = subscribed;
+    }
+
+    public Boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 
     public List<Attachment> getAttachments() {

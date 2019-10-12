@@ -2,6 +2,8 @@ package com.scrumboard.service;
 
 import com.scrumboard.domain.Card;
 
+import java.util.List;
+
 public interface CardService {
 
     Card getCardById(Long cardId);
@@ -10,5 +12,5 @@ public interface CardService {
 
     Card updateCard(Card Card);
 
-    void deleteCard(Long cardId);
+    Card removeCard(List<List<String>> cardsLists, Long userId, Long boardId, Long cardId);
 }

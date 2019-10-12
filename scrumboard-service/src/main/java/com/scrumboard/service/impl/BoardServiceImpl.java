@@ -88,4 +88,11 @@ public class BoardServiceImpl implements BoardService {
 
         boardRepository.save(board);
     }
+
+    public Board removeCard(Long boardId, Long userId, Card card) {
+        Board board = getBoardById(boardId, userId);
+        board.getCards().remove(card);
+
+        return boardRepository.save(board);
+    }
 }
