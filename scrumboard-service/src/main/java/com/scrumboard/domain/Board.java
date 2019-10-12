@@ -19,6 +19,9 @@ public class Board {
     @Column
     private Boolean isDeleted;
 
+    @Column
+    private Long userId;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private BoardSettings boardSettings;
 
@@ -74,8 +77,16 @@ public class Board {
         return isDeleted;
     }
 
-    public void setDeleted(Boolean deleted) {
+    public void isDeleted(Boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public BoardSettings getBoardSettings() {

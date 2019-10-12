@@ -7,15 +7,17 @@ import java.util.List;
 
 public interface BoardService {
 
-    Board createNewEmptyBoard();
+    Board createNewEmptyBoard(Long userId);
 
-    List<Board> getBoards();
+    List<Board> getBoards(Long userId);
 
-    Board getBoardById(Long id);
+    Board getBoardById(Long boardId, Long userId);
 
-    Board renameBoard(Long boardId, String name);
+    Board renameBoard(Long boardId, Long userId, String name);
+
+    void deleteBoardById(Long boardId, Long userId);
 
     void deleteAllBoards();
 
-    void addCardToBoard(Long boardId, Card card);
+    void addCardToBoard(Long boardId, Long userId, Card card);
 }

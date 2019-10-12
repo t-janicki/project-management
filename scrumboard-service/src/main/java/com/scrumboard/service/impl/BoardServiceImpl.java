@@ -1,9 +1,6 @@
 package com.scrumboard.service.impl;
 
-import com.scrumboard.domain.Board;
-import com.scrumboard.domain.BoardSettings;
-import com.scrumboard.domain.Card;
-import com.scrumboard.domain.Label;
+import com.scrumboard.domain.*;
 import com.scrumboard.repository.BoardRepository;
 import com.scrumboard.service.BoardService;
 import com.utility.exception.NotFoundException;
@@ -12,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -23,10 +21,8 @@ public class BoardServiceImpl implements BoardService {
         this.boardRepository = boardRepository;
     }
 
-    public Board createNewEmptyBoard() {
+    public Board createNewEmptyBoard(Long userId) {
         Board board = new Board();
-
-
 
         Label sampleLabel1 = new Label("High Priority", "bg-red text-white");
         Label sampleLabel2 = new Label("Design", "bg-orange text-white");
@@ -35,6 +31,8 @@ public class BoardServiceImpl implements BoardService {
 
         board.setName("Untitled Board");
         board.setUri("untitled-board");
+        board.isDeleted(Boolean.FALSE);
+        board.setUserId(userId);
         board.setBoardSettings(new BoardSettings("", true, true));
         board.setLists(new ArrayList<>());
         board.setCards(new ArrayList<>());
@@ -47,17 +45,21 @@ public class BoardServiceImpl implements BoardService {
     }
 
 
-    public List<Board> getBoards() {
-        return boardRepository.findAll();
+    public List<Board> getBoards(Long userId) {
+        return boardRepository.findAllByIsDeletedIsFalseAndUserId(userId);
     }
 
-    public Board getBoardById(Long id) {
-        return boardRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Board not found with id: " + id));
+    public Board getBoardById(Long boardId, Long userId) {
+        Board board = boardRepository.findByIdAndIsDeletedIsFalseAndUserId(boardId, userId)
+                .orElseThrow(() -> new NotFoundException("Board not found with id: " + boardId));
+
+        board.getLists().sort(Comparator.comparing(BoardList::getPosition));
+
+        return board;
     }
 
-    public Board renameBoard(Long boardId, String name) {
-        Board board = getBoardById(boardId);
+    public Board renameBoard(Long boardId, Long userId, String name) {
+        Board board = getBoardById(boardId, userId);
 
         String uri = name.replaceAll(" ","-");
 
@@ -67,12 +69,20 @@ public class BoardServiceImpl implements BoardService {
         return boardRepository.save(board);
     }
 
+    public void deleteBoardById(Long boardId, Long userId) {
+        Board board = getBoardById(boardId, userId);
+
+        board.isDeleted(Boolean.TRUE);
+
+        boardRepository.save(board);
+    }
+
     public void deleteAllBoards() {
         boardRepository.deleteAll();
     }
 
-    public void addCardToBoard(Long boardId, Card card) {
-        Board board = getBoardById(boardId);
+    public void addCardToBoard(Long boardId, Long userId, Card card) {
+        Board board = getBoardById(boardId, userId);
 
         board.getCards().add(card);
 

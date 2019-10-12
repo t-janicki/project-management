@@ -36,7 +36,7 @@ public class CardServiceImpl implements CardService {
                 .orElseThrow(() -> new NotFoundException("Card not found"));
     }
 
-    public Card createNewCard(Long boardId, String cardTitle, Long listId) {
+    public Card createNewCard(Long boardId, Long userId, String cardTitle, Long listId) {
         Card card = new Card();
 
         card.setName(cardTitle);
@@ -52,7 +52,7 @@ public class CardServiceImpl implements CardService {
 
         cardRepository.save(card);
 
-        boardService.addCardToBoard(boardId, card);
+        boardService.addCardToBoard(boardId, userId, card);
         addCardIdToBoardList(card.getId(), listId);
 
         return card;

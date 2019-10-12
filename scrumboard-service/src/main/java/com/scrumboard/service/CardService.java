@@ -6,7 +6,7 @@ public interface CardService {
 
     Card getCardById(Long cardId);
 
-    Card createNewCard(Long boardId, String cardTitle, Long listId);
+    Card createNewCard(Long boardId, Long userId, String cardTitle, Long listId);
 
     Card updateCard(Card Card);
 

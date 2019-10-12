@@ -1,6 +1,8 @@
 package com.application.web;
 
 import com.application.mapper.scrumboard.*;
+import com.auth.security.CurrentUser;
+import com.auth.security.UserPrincipal;
 import com.scrumboard.domain.*;
 import com.scrumboard.service.*;
 import com.utility.dto.scrumboard.*;
@@ -60,47 +62,53 @@ public class BoardController {
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE)
-    public BoardDTO createNewEmptyBoard() {
-        Board board = boardService.createNewEmptyBoard();
+    public BoardDTO createNewEmptyBoard(@CurrentUser UserPrincipal userPrincipal) {
+        Board board = boardService.createNewEmptyBoard(userPrincipal.getId());
 
         return boardMapper.mapToBoardDTO(board);
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public List<BoardDTO> getBoards() {
-        List<Board> boards = boardService.getBoards();
-
-        boards.forEach(v -> v.getLists()
-                .sort(Comparator.comparing(BoardList::getPosition)));
+    public List<BoardDTO> getBoards(@CurrentUser UserPrincipal userPrincipal) {
+        List<Board> boards = boardService.getBoards(userPrincipal.getId());
 
         return boardMapper.mapToBoardDTOList(boards);
     }
 
     @GetMapping(value = "/{boardId}", produces = APPLICATION_JSON_VALUE)
-    public BoardDTO getBoardById(@PathVariable Long boardId) {
-        Board board = boardService.getBoardById(boardId);
-
-        board.getLists().sort(Comparator.comparing(BoardList::getPosition));
+    public BoardDTO getBoardById(@CurrentUser  UserPrincipal userPrincipal,
+                                 @PathVariable Long boardId) {
+        Board board = boardService.getBoardById(boardId, userPrincipal.getId());
 
         return boardMapper.mapToBoardDTO(board);
     }
 
     @PutMapping(value = "/{boardId}/name={name}",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public ApiResponse renameBoard(@PathVariable Long boardId,
+    public ApiResponse renameBoard(@CurrentUser  UserPrincipal userPrincipal,
+                                   @PathVariable Long boardId,
                                    @PathVariable String name) {
 
-        boardService.renameBoard(boardId, name);
+        boardService.renameBoard(boardId, userPrincipal.getId(), name);
 
         return new ApiResponse(true, "Board renamed. ");
     }
 
-    @PostMapping(value = "/{boardId}/list/{name}", produces = APPLICATION_JSON_VALUE)
-    public List<BoardListDTO> newBoardList(@PathVariable Long boardId,
-                                           @PathVariable String name) {
-        boardListService.newBoardList(boardId, name);
+    @DeleteMapping(value = "/{boardId}")
+    public ApiResponse deleteBoard(@CurrentUser UserPrincipal userPrincipal,
+                                   @PathVariable Long boardId) {
+        boardService.deleteBoardById(boardId, userPrincipal.getId());
 
-        Board board = boardService.getBoardById(boardId);
+        return new ApiResponse(true, "Board deleted. ");
+    }
+
+    @PostMapping(value = "/{boardId}/list/{name}", produces = APPLICATION_JSON_VALUE)
+    public List<BoardListDTO> newBoardList(@CurrentUser UserPrincipal userPrincipal,
+                                           @PathVariable Long boardId,
+                                           @PathVariable String name) {
+        boardListService.newBoardList(boardId, userPrincipal.getId(), name);
+
+        Board board = boardService.getBoardById(boardId, userPrincipal.getId());
 
         return boardMapper.mapToBoardDTO(board).getLists();
     }
@@ -113,19 +121,21 @@ public class BoardController {
     @PostMapping(value = "/{boardId}/list/{listId}/cardTitle={cardTitle}",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public @ResponseBody
-    BoardDTO createNewCard(@PathVariable Long boardId,
+    BoardDTO createNewCard(@CurrentUser UserPrincipal userPrincipal,
+                           @PathVariable Long boardId,
                            @PathVariable Long listId,
                            @PathVariable String cardTitle) {
-        cardService.createNewCard(boardId, cardTitle, listId);
+        cardService.createNewCard(boardId, userPrincipal.getId(), cardTitle, listId);
 
-        return boardMapper.mapToBoardDTO(boardService.getBoardById(boardId));
+        return boardMapper.mapToBoardDTO(boardService.getBoardById(boardId, userPrincipal.getId()));
     }
 
     @DeleteMapping(value = "/{boardId}/card/{cardId}")
-    public ApiResponse deleteCard(@PathVariable Long boardId,
+    public ApiResponse deleteCard(@CurrentUser UserPrincipal userPrincipal,
+                                  @PathVariable Long boardId,
                                   @PathVariable Long cardId) {
 
-        Board board = boardService.getBoardById(boardId);
+        Board board = boardService.getBoardById(boardId, userPrincipal.getId());
 
         Card card = cardService.getCardById(cardId);
 
@@ -210,11 +220,12 @@ public class BoardController {
 
     @PutMapping(value = "/{boardId}/list/{listId}/listTitle={listTitle}",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public ApiResponse renameBoardList(@PathVariable Long boardId,
+    public ApiResponse renameBoardList(@CurrentUser UserPrincipal userPrincipal,
+                                       @PathVariable Long boardId,
                                        @PathVariable Long listId,
                                        @PathVariable String listTitle) {
 
-        boardListService.renameBoardList(boardId, listId, listTitle);
+        boardListService.renameBoardList(boardId, userPrincipal.getId(), listId, listTitle);
 
         return new ApiResponse(true, "List renamed. ");
     }

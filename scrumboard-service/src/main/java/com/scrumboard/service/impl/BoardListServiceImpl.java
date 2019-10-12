@@ -27,8 +27,8 @@ public class BoardListServiceImpl implements BoardListService {
         this.boardListRepository = boardListRepository;
     }
 
-    public BoardList newBoardList(Long boardId, String name) {
-        Board board = boardService.getBoardById(boardId);
+    public BoardList newBoardList(Long boardId, Long userId, String name) {
+        Board board = boardService.getBoardById(boardId, userId);
 
         BoardList boardList = new BoardList();
 
@@ -57,8 +57,8 @@ public class BoardListServiceImpl implements BoardListService {
 
     }
 
-    public BoardList renameBoardList(Long boardId, Long listId, String listTitle) {
-        Board board = boardService.getBoardById(boardId);
+    public BoardList renameBoardList(Long boardId, Long userId, Long listId, String listTitle) {
+        Board board = boardService.getBoardById(boardId, userId);
 
         BoardList boardList = board.getLists().stream().filter(bl -> bl.getId().equals(listId)).findFirst()
                 .orElseThrow(() -> new NotFoundException("Board List not found"));
