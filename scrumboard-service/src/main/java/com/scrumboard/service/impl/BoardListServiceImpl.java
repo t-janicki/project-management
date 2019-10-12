@@ -67,4 +67,24 @@ public class BoardListServiceImpl implements BoardListService {
 
         return boardListRepository.save(boardList);
     }
+
+    @Override
+    public BoardList deleteBoardList(Long boardId, Long userId, Long listId) {
+        Board board = boardService.getBoardById(boardId, userId);
+
+        BoardList boardList = getBoardListById(listId);
+        boardList.setDeleted(Boolean.TRUE);
+
+        board.getLists().remove(boardList);
+
+        boardRepository.save(board);
+
+        return boardListRepository.save(boardList);
+    }
+
+    @Override
+    public BoardList getBoardListById(Long boardListId) {
+        return boardListRepository.findById(boardListId)
+                .orElseThrow(() -> new NotFoundException("Board List not found"));
+    }
 }

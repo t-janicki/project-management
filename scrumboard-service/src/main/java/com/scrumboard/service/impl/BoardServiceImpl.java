@@ -33,7 +33,7 @@ public class BoardServiceImpl implements BoardService {
         board.setUri("untitled-board");
         board.isDeleted(Boolean.FALSE);
         board.setUserId(userId);
-        board.setBoardSettings(new BoardSettings("", true, true));
+        board.setBoardSettings(new BoardSettings("", false, true));
         board.setLists(new ArrayList<>());
         board.setCards(new ArrayList<>());
         board.setMembers(new ArrayList<>());
@@ -67,6 +67,19 @@ public class BoardServiceImpl implements BoardService {
         board.setUri(uri.toLowerCase());
 
         return boardRepository.save(board);
+    }
+
+    @Override
+    public BoardSettings updateSettings(Long boardId, Long userId, BoardSettings settings) {
+        Board board = getBoardById(boardId, userId);
+
+        board.getBoardSettings().setCardCoverImages(settings.getCardCoverImages());
+        board.getBoardSettings().setColor(settings.getColor());
+        board.getBoardSettings().setSubscribed(settings.getSubscribed());
+
+        boardRepository.save(board);
+
+        return board.getBoardSettings();
     }
 
     public void deleteBoardById(Long boardId, Long userId) {

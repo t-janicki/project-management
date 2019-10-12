@@ -11,4 +11,8 @@ public interface BoardListService {
     List<BoardList> reorderBoardList(List<BoardList> boardList);
 
     BoardList renameBoardList(Long boardId, Long userId, Long listId, String listTitle);
+
+    BoardList deleteBoardList(Long boardId, Long userId, Long listId);
+
+    BoardList getBoardListById(Long boardListId);
 }

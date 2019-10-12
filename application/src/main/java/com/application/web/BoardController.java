@@ -4,8 +4,6 @@ import com.application.mapper.scrumboard.*;
 import com.auth.security.CurrentUser;
 import com.auth.security.UserPrincipal;
 import com.scrumboard.domain.*;
-import com.scrumboard.repository.BoardRepository;
-import com.scrumboard.repository.CardRepository;
 import com.scrumboard.service.*;
 import com.utility.dto.scrumboard.*;
 import com.utility.web.response.ApiResponse;
@@ -13,11 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.http.MediaType.sortByQualityValue;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -35,8 +31,7 @@ public class BoardController {
     private LabelMapper labelMapper;
     private ActivityService activityService;
     private ActivityMapper activityMapper;
-    private CardRepository cardRepository;
-    private BoardRepository boardRepository;
+    private BoardSettingsMapper boardSettingsMapper;
 
     @Autowired
     public BoardController(BoardService boardService,
@@ -51,8 +46,7 @@ public class BoardController {
                            LabelMapper labelMapper,
                            ActivityService activityService,
                            ActivityMapper activityMapper,
-                           CardRepository cardRepository,
-                           BoardRepository boardRepository) {
+                           BoardSettingsMapper boardSettingsMapper) {
         this.boardService = boardService;
         this.boardMapper = boardMapper;
         this.boardListService = boardListService;
@@ -65,8 +59,7 @@ public class BoardController {
         this.labelMapper = labelMapper;
         this.activityService = activityService;
         this.activityMapper = activityMapper;
-        this.cardRepository = cardRepository;
-        this.boardRepository = boardRepository;
+        this.boardSettingsMapper = boardSettingsMapper;
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE)
@@ -100,6 +93,17 @@ public class BoardController {
         boardService.renameBoard(boardId, userPrincipal.getId(), name);
 
         return new ApiResponse(true, "Board renamed. ");
+    }
+
+    @PutMapping(value = "/{boardId}/settings",
+            produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    public BoardSettings updateBoardSettings(@CurrentUser UserPrincipal userPrincipal,
+                                             @RequestBody BoardDTO boardDTO,
+                                             @PathVariable Long boardId) {
+
+        BoardSettings boardSettings = boardSettingsMapper.mapToBoardSettings(boardDTO.getSettings());
+
+        return boardService.updateSettings(boardId, userPrincipal.getId(), boardSettings);
     }
 
     @DeleteMapping(value = "/{boardId}")
@@ -154,7 +158,7 @@ public class BoardController {
                         .collect(Collectors.toList()))
                 .collect(Collectors.toList());
 
-        cardService.removeCard(listsOfCardsIds,userPrincipal.getId(), boardId, cardId);
+        cardService.removeCard(listsOfCardsIds, userPrincipal.getId(), boardId, cardId);
 
         BoardDTO result = boardMapper.mapToBoardDTO(board);
 
@@ -247,11 +251,11 @@ public class BoardController {
 
     @PutMapping(value = "/{boardId}/list/{listId}/delete",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public ApiResponse deleteList(@PathVariable Long boardId,
-                                  @PathVariable Long listId) {
+    public ApiResponse deleteBoardList(@CurrentUser UserPrincipal userPrincipal,
+                                       @PathVariable Long boardId,
+                                       @PathVariable Long listId) {
 
-        System.out.println(boardId);
-        System.out.println(listId);
+        boardListService.deleteBoardList(boardId, userPrincipal.getId(), listId);
 
         return new ApiResponse(true, "List deleted. ");
     }

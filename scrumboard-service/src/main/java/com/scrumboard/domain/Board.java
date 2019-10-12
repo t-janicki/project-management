@@ -22,7 +22,7 @@ public class Board {
     @Column
     private Long userId;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private BoardSettings boardSettings;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
