@@ -142,15 +142,12 @@ public class BoardController {
     CardDTO updateCard(@RequestBody CardDTO cardDTO) {
         Card card = cardMapper.mapToCard(cardDTO);
 
-
         Card result = cardService.updateCard(card);
-
-        Card test = result;
 
         return cardMapper.mapToCardDTO(result);
     }
 
-    @PostMapping(value = "/card/newCheckList/{name}",
+    @PostMapping(value = "/card/newCheckList/name={name}",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public @ResponseBody
     CheckListDTO newCheckList(@PathVariable String name) {

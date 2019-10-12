@@ -16,6 +16,9 @@ public class Board {
     @Column
     private String uri;
 
+    @Column
+    private Boolean isDeleted;
+
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private BoardSettings boardSettings;
 
@@ -65,6 +68,14 @@ public class Board {
 
     public void setUri(String uri) {
         this.uri = uri;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 
     public BoardSettings getBoardSettings() {

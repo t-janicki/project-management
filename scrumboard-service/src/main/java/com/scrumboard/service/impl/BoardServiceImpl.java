@@ -59,7 +59,10 @@ public class BoardServiceImpl implements BoardService {
     public Board renameBoard(Long boardId, String name) {
         Board board = getBoardById(boardId);
 
+        String uri = name.replaceAll(" ","-");
+
         board.setName(name);
+        board.setUri(uri.toLowerCase());
 
         return boardRepository.save(board);
     }
