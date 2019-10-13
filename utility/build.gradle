@@ -18,3 +18,11 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-security'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}
