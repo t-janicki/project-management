@@ -63,7 +63,7 @@ public final class UserAuthFacade {
                 user.getId(),
                 roleToString(user),
                 user.getName(),
-                user.getImageUrl(),
+                user.getAvatarUrl(),
                 user.getEmail(),
                 user.getPhone(),
                 user.getActive(),

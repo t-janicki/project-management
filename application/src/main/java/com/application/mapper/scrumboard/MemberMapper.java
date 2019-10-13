@@ -11,7 +11,8 @@ public final class MemberMapper {
         return new Member(
                 memberDTO.getId(),
                 memberDTO.getName(),
-                memberDTO.getAvatar()
+                memberDTO.getAvatarUrl(),
+                memberDTO.getUserId()
         );
     }
 
@@ -19,7 +20,8 @@ public final class MemberMapper {
         return new MemberDTO(
                 member.getId(),
                 member.getName(),
-                member.getAvatar()
+                member.getAvatarUrl(),
+                member.getUserId()
         );
     }
 }

@@ -3,14 +3,10 @@ package com.scrumboard.service.impl;
 import com.scrumboard.domain.*;
 import com.scrumboard.repository.BoardRepository;
 import com.scrumboard.service.BoardService;
-import com.utility.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -21,13 +17,19 @@ public class BoardServiceImpl implements BoardService {
         this.boardRepository = boardRepository;
     }
 
-    public Board createNewEmptyBoard(Long userId) {
+    public Board createNewEmptyBoard(Long userId, String avatarUrl, String name) {
         Board board = new Board();
 
         Label sampleLabel1 = new Label("High Priority", "bg-red text-white");
         Label sampleLabel2 = new Label("Design", "bg-orange text-white");
         Label sampleLabel3 = new Label("App", "bg-blue text-white");
         Label sampleLabel4 = new Label("Feature", "bg-green text-white");
+
+        Member member = new Member(
+                name,
+                avatarUrl,
+                userId
+        );
 
         board.setName("Untitled Board");
         board.setUri("untitled-board");
@@ -36,7 +38,7 @@ public class BoardServiceImpl implements BoardService {
         board.setBoardSettings(new BoardSettings("", false, true));
         board.setLists(new ArrayList<>());
         board.setCards(new ArrayList<>());
-        board.setMembers(new ArrayList<>());
+        board.setMembers(Collections.singletonList(member));
         board.setLabels(Arrays.asList(sampleLabel1, sampleLabel2, sampleLabel3, sampleLabel4));
 
         boardRepository.save(board);
@@ -46,12 +48,15 @@ public class BoardServiceImpl implements BoardService {
 
 
     public List<Board> getBoards(Long userId) {
-        return boardRepository.findAllByIsDeletedIsFalseAndUserId(userId);
+//        return boardRepository.findAllByIsDeletedIsFalseAndUserId(userId);
+        return boardRepository.findAll();
     }
 
     public Board getBoardByIdAndUserId(Long boardId, Long userId) {
-        Board board = boardRepository.findByIdAndIsDeletedIsFalseAndUserId(boardId, userId)
-                .orElseThrow(() -> new NotFoundException("Board not found with id: " + boardId));
+//        Board board = boardRepository.findByIdAndIsDeletedIsFalseAndUserId(boardId, userId)
+//                .orElseThrow(() -> new NotFoundException("Board not found with id: " + boardId));
+
+        Board board = boardRepository.findById(boardId).get();
 
         board.getLists().sort(Comparator.comparing(BoardList::getPosition));
 

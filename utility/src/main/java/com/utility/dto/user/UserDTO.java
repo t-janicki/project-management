@@ -10,7 +10,7 @@ public final class UserDTO {
     private String email;
     private String phone;
     private String jobTitle;
-    private String imageUrl;
+    private String avatarUrl;
     private Boolean isActive;
     private Boolean emailVerified;
     private String role;
@@ -19,14 +19,14 @@ public final class UserDTO {
     }
 
     public UserDTO(Long id, String name, String email,
-                   String phone, String jobTitle, String imageUrl,
+                   String phone, String jobTitle, String avatarUrl,
                    Boolean isActive, Boolean emailVerified, String role) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.phone = phone;
         this.jobTitle = jobTitle;
-        this.imageUrl = imageUrl;
+        this.avatarUrl = avatarUrl;
         this.isActive = isActive;
         this.emailVerified = emailVerified;
         this.role = role;
@@ -52,8 +52,8 @@ public final class UserDTO {
         return jobTitle;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
     public Boolean getActive() {

@@ -13,7 +13,7 @@ public class Activity {
     private String type;
 
     @Column
-    private String memberId;
+    private Long userId;
 
     @Column
     private String message;
@@ -24,10 +24,10 @@ public class Activity {
     public Activity() {
     }
 
-    public Activity(Long id, String type, String memberId, String message) {
+    public Activity(Long id, String type, Long userId, String message) {
         this.id = id;
         this.type = type;
-        this.memberId = memberId;
+        this.userId = userId;
         this.message = message;
     }
 
@@ -43,12 +43,12 @@ public class Activity {
         this.type = type;
     }
 
-    public String getMemberId() {
-        return memberId;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getMessage() {

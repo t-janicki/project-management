@@ -3,17 +3,17 @@ package com.utility.dto.scrumboard;
 public class ActivityDTO {
     private Long id;
     private String type;
-    private String idMember;
+    private Long userId;
     private String message;
     private String time;
 
     public ActivityDTO() {
     }
 
-    public ActivityDTO(Long id, String type, String idMember, String message, String time) {
+    public ActivityDTO(Long id, String type, Long userId, String message, String time) {
         this.id = id;
         this.type = type;
-        this.idMember = idMember;
+        this.userId = userId;
         this.message = message;
         this.time = time;
     }
@@ -26,8 +26,8 @@ public class ActivityDTO {
         return type;
     }
 
-    public String getIdMember() {
-        return idMember;
+    public Long getUserId() {
+        return userId;
     }
 
     public String getMessage() {

@@ -31,7 +31,7 @@ public class Board {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Card> cards;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Member> members;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

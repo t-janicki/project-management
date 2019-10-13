@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
         user.setDeleted(Boolean.FALSE);
         user.setEmailVerificationToken(null);
         user.setRoles(Collections.singleton(role));
-        user.setImageUrl("assets/images/avatars/profile.jpg");
+        user.setAvatarUrl("assets/images/avatars/profile.jpg");
         user.setSettings(settingsService.createDefaultLayoutSettings());
 
         return userRepository.save(user);
@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
         user.setEmail(request.getEmail());
         user.setPhone(request.getPhone());
         user.setJobTitle(request.getJobTitle());
-        user.setImageUrl(request.getImageUrl());
+        user.setAvatarUrl(request.getAvatarUrl());
 
         userRepository.save(user);
 

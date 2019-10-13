@@ -22,12 +22,12 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    public Activity newActivity(Long cardId, String message) {
+    public Activity newActivity(Long userId, Long cardId, String message) {
+
         Activity activity = new Activity();
         activity.setMessage(message);
         activity.setType("comment");
-        //IMPLEMENT ADD CURRENT USER ID
-        activity.setMemberId("");
+        activity.setUserId(userId);
         activity.setTime(System.currentTimeMillis());
 
         activityRepository.save(activity);

@@ -8,7 +8,7 @@ public class UserInfoResponse {
     private Long id;
     private String role;
     private String name;
-    private String imageUrl;
+    private String avatarUrl;
     private String email;
     private String phone;
     private Boolean isActive;
@@ -19,14 +19,14 @@ public class UserInfoResponse {
     }
 
     public UserInfoResponse(Long id, String role,
-                            String name, String imageUrl,
+                            String name, String avatarUrl,
                             String email, String phone,
                             Boolean isActive, Boolean emailVerified,
                             String jobTitle) {
         this.id = id;
         this.role = role;
         this.name = name;
-        this.imageUrl = imageUrl;
+        this.avatarUrl = avatarUrl;
         this.email = email;
         this.phone = phone;
         this.isActive = isActive;
@@ -46,8 +46,8 @@ public class UserInfoResponse {
         return name;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
     public String getEmail() {

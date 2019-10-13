@@ -27,7 +27,7 @@ public class User {
     private String email;
 
     @Column
-    private String imageUrl;
+    private String avatarUrl;
 
     @Column(nullable = false)
     private Boolean emailVerified = false;
@@ -90,12 +90,12 @@ public class User {
         this.email = email;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
     }
 
     public Boolean getEmailVerified() {

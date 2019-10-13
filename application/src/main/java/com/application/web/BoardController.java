@@ -1,5 +1,7 @@
 package com.application.web;
 
+import com.account.domain.User;
+import com.account.service.UserService;
 import com.application.mapper.scrumboard.*;
 import com.auth.security.CurrentUser;
 import com.auth.security.UserPrincipal;
@@ -19,6 +21,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping("/api/boards")
 public class BoardController {
+    private UserService userService;
     private BoardService boardService;
     private BoardMapper boardMapper;
     private BoardListService boardListService;
@@ -34,7 +37,8 @@ public class BoardController {
     private BoardSettingsMapper boardSettingsMapper;
 
     @Autowired
-    public BoardController(BoardService boardService,
+    public BoardController(UserService userService,
+                           BoardService boardService,
                            BoardMapper boardMapper,
                            BoardListService boardListService,
                            CardService cardService,
@@ -47,6 +51,7 @@ public class BoardController {
                            ActivityService activityService,
                            ActivityMapper activityMapper,
                            BoardSettingsMapper boardSettingsMapper) {
+        this.userService = userService;
         this.boardService = boardService;
         this.boardMapper = boardMapper;
         this.boardListService = boardListService;
@@ -64,7 +69,9 @@ public class BoardController {
 
     @PostMapping(produces = APPLICATION_JSON_VALUE)
     public BoardDTO createNewEmptyBoard(@CurrentUser UserPrincipal userPrincipal) {
-        Board board = boardService.createNewEmptyBoard(userPrincipal.getId());
+        User user = userService.getUserById(userPrincipal.getId());
+
+        Board board = boardService.createNewEmptyBoard(userPrincipal.getId(), user.getAvatarUrl(), user.getName());
 
         return boardMapper.mapToBoardDTO(board);
     }
@@ -207,9 +214,10 @@ public class BoardController {
     @PostMapping(value = "/card/{cardId}/newActivity/message={message}",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public @ResponseBody
-    ActivityDTO newActivity(@PathVariable Long cardId,
+    ActivityDTO newActivity(@CurrentUser UserPrincipal userPrincipal,
+                            @PathVariable Long cardId,
                             @PathVariable String message) {
-        Activity activity = activityService.newActivity(cardId, message);
+        Activity activity = activityService.newActivity(userPrincipal.getId(), cardId, message);
 
         return activityMapper.mapToActivityDTO(activity);
     }
