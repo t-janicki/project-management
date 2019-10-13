@@ -12,7 +12,7 @@ public interface BoardService {
 
     List<Board> getBoards(Long userId);
 
-    Board getBoardById(Long boardId, Long userId);
+    Board getBoardByIdAndUserId(Long boardId, Long userId);
 
     Board renameBoard(Long boardId, Long userId, String name);
 
@@ -25,4 +25,7 @@ public interface BoardService {
     void addCardToBoard(Long boardId, Long userId, Card card);
 
     Board removeCard(Long boardId, Long userId, Card card);
+
+    Board reorderCards(List<List<String>> cardsLists, Long userId, Long boardId);
+
 }

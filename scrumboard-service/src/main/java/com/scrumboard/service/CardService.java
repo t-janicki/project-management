@@ -13,4 +13,5 @@ public interface CardService {
     Card updateCard(Card Card);
 
     Card removeCard(List<List<String>> cardsLists, Long userId, Long boardId, Long cardId);
+
 }

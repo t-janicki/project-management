@@ -28,7 +28,7 @@ public class BoardListServiceImpl implements BoardListService {
     }
 
     public BoardList newBoardList(Long boardId, Long userId, String name) {
-        Board board = boardService.getBoardById(boardId, userId);
+        Board board = boardService.getBoardByIdAndUserId(boardId, userId);
 
         BoardList boardList = new BoardList();
 
@@ -58,7 +58,7 @@ public class BoardListServiceImpl implements BoardListService {
     }
 
     public BoardList renameBoardList(Long boardId, Long userId, Long listId, String listTitle) {
-        Board board = boardService.getBoardById(boardId, userId);
+        Board board = boardService.getBoardByIdAndUserId(boardId, userId);
 
         BoardList boardList = board.getLists().stream().filter(bl -> bl.getId().equals(listId)).findFirst()
                 .orElseThrow(() -> new NotFoundException("Board List not found"));
@@ -70,7 +70,7 @@ public class BoardListServiceImpl implements BoardListService {
 
     @Override
     public BoardList deleteBoardList(Long boardId, Long userId, Long listId) {
-        Board board = boardService.getBoardById(boardId, userId);
+        Board board = boardService.getBoardByIdAndUserId(boardId, userId);
 
         BoardList boardList = getBoardListById(listId);
         boardList.setDeleted(Boolean.TRUE);

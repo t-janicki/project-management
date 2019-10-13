@@ -79,7 +79,7 @@ public class BoardController {
     @GetMapping(value = "/{boardId}", produces = APPLICATION_JSON_VALUE)
     public BoardDTO getBoardById(@CurrentUser UserPrincipal userPrincipal,
                                  @PathVariable Long boardId) {
-        Board board = boardService.getBoardById(boardId, userPrincipal.getId());
+        Board board = boardService.getBoardByIdAndUserId(boardId, userPrincipal.getId());
 
         return boardMapper.mapToBoardDTO(board);
     }
@@ -120,7 +120,7 @@ public class BoardController {
                                            @PathVariable String name) {
         boardListService.newBoardList(boardId, userPrincipal.getId(), name);
 
-        Board board = boardService.getBoardById(boardId, userPrincipal.getId());
+        Board board = boardService.getBoardByIdAndUserId(boardId, userPrincipal.getId());
 
         return boardMapper.mapToBoardDTO(board).getLists();
     }
@@ -139,7 +139,7 @@ public class BoardController {
                            @PathVariable String cardTitle) {
         cardService.createNewCard(boardId, userPrincipal.getId(), cardTitle, listId);
 
-        return boardMapper.mapToBoardDTO(boardService.getBoardById(boardId, userPrincipal.getId()));
+        return boardMapper.mapToBoardDTO(boardService.getBoardByIdAndUserId(boardId, userPrincipal.getId()));
     }
 
     @DeleteMapping(value = "/{boardId}/card/{cardId}")
@@ -147,7 +147,7 @@ public class BoardController {
                                          @PathVariable Long boardId,
                                          @PathVariable Long cardId) {
 
-        Board board = boardService.getBoardById(boardId, userPrincipal.getId());
+        Board board = boardService.getBoardByIdAndUserId(boardId, userPrincipal.getId());
 
         List<BoardListDTO> boardListsDTO = boardMapper.mapToBoardDTO(board).getLists();
 
@@ -235,6 +235,20 @@ public class BoardController {
         boardListService.reorderBoardList(boardLists);
 
         return new ApiResponse(true, "List order saved. ");
+    }
+
+    @PutMapping(value = "/cards/reorder",
+            produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    public ApiResponse reorderCards(@CurrentUser UserPrincipal userPrincipal,
+                                    @RequestBody BoardDTO boardDTO) {
+
+        List<List<String>> listsOfCardsIds = boardDTO.getLists().stream()
+                .map(v -> new ArrayList<>(v.getIdCards()))
+                .collect(Collectors.toList());
+
+       boardService.reorderCards(listsOfCardsIds, userPrincipal.getId(), boardDTO.getId());
+
+        return new ApiResponse(true, "Cards reordered");
     }
 
     @PutMapping(value = "/{boardId}/list/{listId}/listTitle={listTitle}",

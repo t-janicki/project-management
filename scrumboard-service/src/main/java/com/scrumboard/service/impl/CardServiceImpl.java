@@ -95,17 +95,17 @@ public class CardServiceImpl implements CardService {
         return card;
     }
 
-    @Override
     public Card removeCard(List<List<String>> listsOfCardsIds, Long userId, Long boardId, Long cardId) {
-        Board board = boardService.getBoardById(boardId, userId);
+        Board board = boardService.getBoardByIdAndUserId(boardId, userId);
 
         int i = 0;
 
-        for (List<String> strings : listsOfCardsIds) {
+        for (List<String> ids : listsOfCardsIds) {
 
-            String cardsIds = String.join(", ", strings);
+            String cardsIds = String.join(", ", ids);
 
             board.getLists().get(i).setCardsIds(cardsIds);
+
             i++;
         }
 
