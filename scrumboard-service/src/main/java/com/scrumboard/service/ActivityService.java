@@ -4,5 +4,5 @@ import com.scrumboard.domain.Activity;
 
 public interface ActivityService {
 
-    Activity newActivity(Long userId, Long cardId, String message);
+    Activity newActivity(String userName, String avatarUrl, Long cardId, String message);
 }

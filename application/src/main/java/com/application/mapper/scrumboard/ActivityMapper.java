@@ -13,7 +13,8 @@ public final class ActivityMapper {
         return new Activity(
                 activityDTO.getId(),
                 activityDTO.getType(),
-                activityDTO.getUserId(),
+                activityDTO.getUserName(),
+                activityDTO.getAvatarUrl(),
                 activityDTO.getMessage()
         );
     }
@@ -24,7 +25,8 @@ public final class ActivityMapper {
         return new ActivityDTO(
                 activity.getId(),
                 activity.getType(),
-                activity.getUserId(),
+                activity.getUserName(),
+                activity.getAvatarUrl(),
                 activity.getMessage(),
                 formatter.format(activity.getTime())
         );

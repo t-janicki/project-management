@@ -217,7 +217,9 @@ public class BoardController {
     ActivityDTO newActivity(@CurrentUser UserPrincipal userPrincipal,
                             @PathVariable Long cardId,
                             @PathVariable String message) {
-        Activity activity = activityService.newActivity(userPrincipal.getId(), cardId, message);
+        User user = userService.getUserById(userPrincipal.getId());
+
+        Activity activity = activityService.newActivity(user.getName(), user.getAvatarUrl(), cardId, message);
 
         return activityMapper.mapToActivityDTO(activity);
     }

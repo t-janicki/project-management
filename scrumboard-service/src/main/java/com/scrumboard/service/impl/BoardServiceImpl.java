@@ -3,6 +3,7 @@ package com.scrumboard.service.impl;
 import com.scrumboard.domain.*;
 import com.scrumboard.repository.BoardRepository;
 import com.scrumboard.service.BoardService;
+import com.utility.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,15 +49,15 @@ public class BoardServiceImpl implements BoardService {
 
 
     public List<Board> getBoards(Long userId) {
-//        return boardRepository.findAllByIsDeletedIsFalseAndUserId(userId);
-        return boardRepository.findAll();
+        return boardRepository.findAllByIsDeletedIsFalseAndUserId(userId);
+//        return boardRepository.findAll();
     }
 
     public Board getBoardByIdAndUserId(Long boardId, Long userId) {
-//        Board board = boardRepository.findByIdAndIsDeletedIsFalseAndUserId(boardId, userId)
-//                .orElseThrow(() -> new NotFoundException("Board not found with id: " + boardId));
+        Board board = boardRepository.findByIdAndIsDeletedIsFalseAndUserId(boardId, userId)
+                .orElseThrow(() -> new NotFoundException("Board not found with id: " + boardId));
 
-        Board board = boardRepository.findById(boardId).get();
+//        Board board = boardRepository.findById(boardId).get();
 
         board.getLists().sort(Comparator.comparing(BoardList::getPosition));
 
