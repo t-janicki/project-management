@@ -9,7 +9,6 @@ public class BoardDTO {
     private BoardSettingsDTO settings;
     private List<BoardListDTO> lists;
     private List<CardDTO> cards;
-    private List<MemberDTO> members;
     private List<LabelDTO> labels;
 
     public BoardDTO() {
@@ -17,7 +16,7 @@ public class BoardDTO {
 
     public BoardDTO(Long id, String name, String uri,
                     BoardSettingsDTO settings, List<BoardListDTO> lists,
-                    List<CardDTO> cards, List<MemberDTO> members,
+                    List<CardDTO> cards,
                     List<LabelDTO> labels) {
         this.id = id;
         this.name = name;
@@ -25,7 +24,6 @@ public class BoardDTO {
         this.settings = settings;
         this.lists = lists;
         this.cards = cards;
-        this.members = members;
         this.labels = labels;
     }
 
@@ -51,10 +49,6 @@ public class BoardDTO {
 
     public List<CardDTO> getCards() {
         return cards;
-    }
-
-    public List<MemberDTO> getMembers() {
-        return members;
     }
 
     public List<LabelDTO> getLabels() {

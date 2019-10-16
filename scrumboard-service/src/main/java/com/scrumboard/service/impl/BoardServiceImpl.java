@@ -39,7 +39,8 @@ public class BoardServiceImpl implements BoardService {
         board.setBoardSettings(new BoardSettings("", false, true));
         board.setLists(new ArrayList<>());
         board.setCards(new ArrayList<>());
-        board.setMembers(Collections.singletonList(member));
+        board.setBoardType(BoardType.PERSONAL);
+//        board.setMembers(Collections.singletonList(member));
         board.setLabels(Arrays.asList(sampleLabel1, sampleLabel2, sampleLabel3, sampleLabel4));
 
         boardRepository.save(board);
@@ -49,15 +50,15 @@ public class BoardServiceImpl implements BoardService {
 
 
     public List<Board> getBoards(Long userId) {
-        return boardRepository.findAllByIsDeletedIsFalseAndUserId(userId);
-//        return boardRepository.findAll();
+//        return boardRepository.findAllByIsDeletedIsFalseAndUserId(userId);
+        return boardRepository.findAllByUserIdAndBoardTypeAndIsDeletedIsFalse(userId, BoardType.PERSONAL);
     }
 
     public Board getBoardByIdAndUserId(Long boardId, Long userId) {
-        Board board = boardRepository.findByIdAndIsDeletedIsFalseAndUserId(boardId, userId)
-                .orElseThrow(() -> new NotFoundException("Board not found with id: " + boardId));
+//        Board board = boardRepository.findByIdAndIsDeletedIsFalseAndUserId(boardId, userId)
+//                .orElseThrow(() -> new NotFoundException("Board not found with id: " + boardId));
 
-//        Board board = boardRepository.findById(boardId).get();
+        Board board = boardRepository.findById(boardId).get();
 
         board.getLists().sort(Comparator.comparing(BoardList::getPosition));
 

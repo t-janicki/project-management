@@ -14,20 +14,20 @@ public final class BoardMapper {
     private BoardSettingsMapper boardSettingsMapper;
     private BoardListMapper boardListMapper;
     private CardMapper cardMapper;
-    private MemberMapper memberMapper;
     private LabelMapper labelMapper;
+    private TeamMapper teamMapper;
 
     @Autowired
     public BoardMapper(BoardSettingsMapper boardSettingsMapper,
                        BoardListMapper boardListMapper,
                        CardMapper cardMapper,
-                       MemberMapper memberMapper,
-                       LabelMapper labelMapper) {
+                       LabelMapper labelMapper,
+                       TeamMapper teamMapper) {
         this.boardSettingsMapper = boardSettingsMapper;
         this.boardListMapper = boardListMapper;
         this.cardMapper = cardMapper;
-        this.memberMapper = memberMapper;
         this.labelMapper = labelMapper;
+        this.teamMapper = teamMapper;
     }
 
     public BoardDTO mapToBoardDTO(Board board) {
@@ -42,9 +42,7 @@ public final class BoardMapper {
                 board.getCards().stream()
                         .map(v -> cardMapper.mapToCardDTO(v))
                         .collect(Collectors.toList()),
-                board.getMembers().stream()
-                        .map(v -> memberMapper.mapToMemberDTO(v))
-                        .collect(Collectors.toList()),
+//                teamMapper.mapToTeamDTO(board.getTeam()),
                 board.getLabels().stream()
                         .map(v -> labelMapper.mapToLabelDTO(v))
                         .collect(Collectors.toList())

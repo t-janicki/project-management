@@ -1,6 +1,7 @@
 package com.scrumboard.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -22,6 +23,10 @@ public class Board {
     @Column
     private Long userId;
 
+    @Enumerated(EnumType.STRING)
+    @Column(length = 60)
+    private BoardType boardType;
+
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private BoardSettings boardSettings;
 
@@ -31,8 +36,8 @@ public class Board {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Card> cards;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Member> members;
+//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private List<Member> members;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Label> labels;
@@ -41,15 +46,14 @@ public class Board {
     }
 
     public Board(Long id, String name, String uri, BoardSettings boardSettings,
-                 List<BoardList> lists, List<Card> cards,
-                 List<Member> members, List<Label> labels) {
+                 List<BoardList> lists, List<Card> cards, List<Label> labels) {
         this.id = id;
         this.name = name;
         this.uri = uri;
         this.boardSettings = boardSettings;
         this.lists = lists;
         this.cards = cards;
-        this.members = members;
+//        this.members = members;
         this.labels = labels;
     }
 
@@ -89,6 +93,14 @@ public class Board {
         this.userId = userId;
     }
 
+    public BoardType getBoardType() {
+        return boardType;
+    }
+
+    public void setBoardType(BoardType boardType) {
+        this.boardType = boardType;
+    }
+
     public BoardSettings getBoardSettings() {
         return boardSettings;
     }
@@ -113,13 +125,13 @@ public class Board {
         this.cards = cards;
     }
 
-    public List<Member> getMembers() {
-        return members;
-    }
+//    public List<Member> getMembers() {
+//        return members;
+//    }
 
-    public void setMembers(List<Member> members) {
-        this.members = members;
-    }
+//    public void setMembers(List<Member> members) {
+//        this.members = members;
+//    }
 
     public List<Label> getLabels() {
         return labels;
@@ -128,4 +140,5 @@ public class Board {
     public void setLabels(List<Label> labels) {
         this.labels = labels;
     }
+
 }
