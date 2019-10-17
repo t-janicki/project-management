@@ -71,7 +71,7 @@ public class BoardController {
     public BoardDTO createNewEmptyBoard(@CurrentUser UserPrincipal userPrincipal) {
         User user = userService.getUserById(userPrincipal.getId());
 
-        Board board = boardService.createNewEmptyBoard(userPrincipal.getId(), user.getAvatarUrl(), user.getName());
+        Board board = boardService.createNewEmptyPersonalBoard(userPrincipal.getId(), user.getAvatarUrl(), user.getName());
 
         return boardMapper.mapToBoardDTO(board);
     }

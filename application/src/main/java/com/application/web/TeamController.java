@@ -28,8 +28,6 @@ public class TeamController {
     @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public TeamDTO createNewTeam(@RequestBody TeamDTO teamDTO) {
 
-//        System.out.println(teamDTO.getDescription().toString());
-//        System.out.println(teamDTO.getDisplayName().toString());
         Team team = teamService.createNewTeam(teamDTO.getDisplayName(), teamDTO.getDescription());
 
         return teamMapper.mapToTeamDTO(team);
