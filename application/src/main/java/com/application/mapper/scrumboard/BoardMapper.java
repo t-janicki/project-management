@@ -1,9 +1,9 @@
 package com.application.mapper.scrumboard;
 
 import com.scrumboard.domain.Board;
+import com.scrumboard.domain.BoardType;
 import com.utility.dto.scrumboard.BoardDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,19 +15,16 @@ public final class BoardMapper {
     private BoardListMapper boardListMapper;
     private CardMapper cardMapper;
     private LabelMapper labelMapper;
-    private TeamMapper teamMapper;
 
     @Autowired
     public BoardMapper(BoardSettingsMapper boardSettingsMapper,
                        BoardListMapper boardListMapper,
                        CardMapper cardMapper,
-                       LabelMapper labelMapper,
-                       TeamMapper teamMapper) {
+                       LabelMapper labelMapper) {
         this.boardSettingsMapper = boardSettingsMapper;
         this.boardListMapper = boardListMapper;
         this.cardMapper = cardMapper;
         this.labelMapper = labelMapper;
-        this.teamMapper = teamMapper;
     }
 
     public BoardDTO mapToBoardDTO(Board board) {
@@ -35,6 +32,7 @@ public final class BoardMapper {
                 board.getId(),
                 board.getName(),
                 board.getUri(),
+                mapBoardTypeToString(board.getBoardType()),
                 boardSettingsMapper.mapToBoardSettingsDTO(board.getBoardSettings()),
                 board.getLists().stream()
                         .map(v -> boardListMapper.mapToBoardListDTO(v))
@@ -42,11 +40,20 @@ public final class BoardMapper {
                 board.getCards().stream()
                         .map(v -> cardMapper.mapToCardDTO(v))
                         .collect(Collectors.toList()),
-//                teamMapper.mapToTeamDTO(board.getTeam()),
                 board.getLabels().stream()
                         .map(v -> labelMapper.mapToLabelDTO(v))
                         .collect(Collectors.toList())
         );
+    }
+
+    public static String mapBoardTypeToString(BoardType boardType) {
+        switch (boardType) {
+            case PERSONAL:
+                return "PERSONAL";
+            case TEAM:
+                return "TEAM";
+        }
+        return "Incorrect board type";
     }
 
     public List<BoardDTO> mapToBoardDTOList(List<Board> boards) {
