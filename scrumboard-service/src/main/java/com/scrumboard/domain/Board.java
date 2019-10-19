@@ -36,9 +36,6 @@ public class Board {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Card> cards;
 
-//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    private List<Member> members;
-
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Label> labels;
 
@@ -53,7 +50,6 @@ public class Board {
         this.boardSettings = boardSettings;
         this.lists = lists;
         this.cards = cards;
-//        this.members = members;
         this.labels = labels;
     }
 
@@ -124,14 +120,6 @@ public class Board {
     public void setCards(List<Card> cards) {
         this.cards = cards;
     }
-
-//    public List<Member> getMembers() {
-//        return members;
-//    }
-
-//    public void setMembers(List<Member> members) {
-//        this.members = members;
-//    }
 
     public List<Label> getLabels() {
         return labels;

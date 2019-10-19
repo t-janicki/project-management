@@ -91,26 +91,23 @@ public class BoardController {
         return boardMapper.mapToBoardDTO(board);
     }
 
-    @PutMapping(value = "/{boardId}/name={name}",
-            produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    @PutMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ApiResponse renameBoard(@CurrentUser UserPrincipal userPrincipal,
-                                   @PathVariable Long boardId,
-                                   @PathVariable String name) {
+                                   @RequestBody BoardDTO boardDTO) {
 
-        boardService.renameBoard(boardId, userPrincipal.getId(), name);
+        boardService.renameBoard(boardDTO.getId(), userPrincipal.getId(), boardDTO.getName());
 
         return new ApiResponse(true, "Board renamed. ");
     }
 
-    @PutMapping(value = "/{boardId}/settings",
+    @PutMapping(value = "/settings",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public BoardSettings updateBoardSettings(@CurrentUser UserPrincipal userPrincipal,
-                                             @RequestBody BoardDTO boardDTO,
-                                             @PathVariable Long boardId) {
+                                             @RequestBody BoardDTO boardDTO) {
 
-        BoardSettings boardSettings = boardSettingsMapper.mapToBoardSettings(boardDTO.getSettings());
+            BoardSettings boardSettings = boardSettingsMapper.mapToBoardSettings(boardDTO.getSettings());
 
-        return boardService.updateSettings(boardId, userPrincipal.getId(), boardSettings);
+        return boardService.updateSettings(boardDTO.getId(), userPrincipal.getId(), boardSettings);
     }
 
     @DeleteMapping(value = "/{boardId}")
@@ -121,11 +118,12 @@ public class BoardController {
         return new ApiResponse(true, "Board deleted. ");
     }
 
-    @PostMapping(value = "/{boardId}/list/{name}", produces = APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/{boardId}/newList", produces = APPLICATION_JSON_VALUE)
     public List<BoardListDTO> newBoardList(@CurrentUser UserPrincipal userPrincipal,
                                            @PathVariable Long boardId,
-                                           @PathVariable String name) {
-        boardListService.newBoardList(boardId, userPrincipal.getId(), name);
+                                           @RequestBody BoardListDTO boardListDTO) {
+
+        boardListService.newBoardList(boardId, userPrincipal.getId(), boardListDTO.getName());
 
         Board board = boardService.getBoardByIdAndUserId(boardId, userPrincipal.getId());
 
@@ -137,14 +135,15 @@ public class BoardController {
         boardService.deleteAllBoards();
     }
 
-    @PostMapping(value = "/{boardId}/list/{listId}/cardTitle={cardTitle}",
+    @PostMapping(value = "/{boardId}/list/{listId}",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public @ResponseBody
     BoardDTO createNewCard(@CurrentUser UserPrincipal userPrincipal,
                            @PathVariable Long boardId,
                            @PathVariable Long listId,
-                           @PathVariable String cardTitle) {
-        cardService.createNewCard(boardId, userPrincipal.getId(), cardTitle, listId);
+                           @RequestBody CardDTO cardDTO) {
+
+        cardService.createNewCard(boardId, userPrincipal.getId(), cardDTO.getName(), listId);
 
         return boardMapper.mapToBoardDTO(boardService.getBoardByIdAndUserId(boardId, userPrincipal.getId()));
     }
@@ -172,7 +171,7 @@ public class BoardController {
         return result.getLists();
     }
 
-    @PostMapping(value = "/card/update",
+    @PutMapping(value = "/card",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public @ResponseBody
     CardDTO updateCard(@RequestBody CardDTO cardDTO) {
@@ -183,11 +182,11 @@ public class BoardController {
         return cardMapper.mapToCardDTO(result);
     }
 
-    @PostMapping(value = "/card/newCheckList/name={name}",
+    @PostMapping(value = "/card/newCheckList",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public @ResponseBody
-    CheckListDTO newCheckList(@PathVariable String name) {
-        CheckList checkList = checkListService.newCheckList(name);
+    CheckListDTO newCheckList(@RequestBody CheckListDTO checkListDTO) {
+        CheckList checkList = checkListService.newCheckList(checkListDTO.getName());
 
         return new CheckListDTO(
                 checkList.getId(),
@@ -197,11 +196,11 @@ public class BoardController {
         );
     }
 
-    @PostMapping(value = "/card/newCheckItem/name={name}",
+    @PostMapping(value = "/card/newCheckItem",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public @ResponseBody
-    CheckItemDTO newCheckItem(@PathVariable String name) {
-        CheckItem checkItem = checkItemService.newCheckItem(name);
+    CheckItemDTO newCheckItem(@RequestBody CheckItemDTO checkItemDTO) {
+        CheckItem checkItem = checkItemService.newCheckItem(checkItemDTO.getName());
 
         return new CheckItemDTO(
                 checkItem.getId(),
@@ -211,25 +210,25 @@ public class BoardController {
         );
     }
 
-    @PostMapping(value = "/card/{cardId}/newActivity/message={message}",
+    @PostMapping(value = "/card/{cardId}/newActivity",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public @ResponseBody
     ActivityDTO newActivity(@CurrentUser UserPrincipal userPrincipal,
                             @PathVariable Long cardId,
-                            @PathVariable String message) {
+                            @RequestBody ActivityDTO activityDTO) {
         User user = userService.getUserById(userPrincipal.getId());
 
-        Activity activity = activityService.newActivity(user.getName(), user.getAvatarUrl(), cardId, message);
+        Activity activity = activityService.newActivity(user.getName(), user.getAvatarUrl(), cardId, activityDTO.getMessage());
 
         return activityMapper.mapToActivityDTO(activity);
     }
 
-    @PostMapping(value = "/{boardId}/card/newLabel/name={name}",
+    @PostMapping(value = "/{boardId}/card/newLabel",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public @ResponseBody
     LabelDTO newLabel(@PathVariable Long boardId,
-                      @PathVariable String name) {
-        Label label = labelService.newLabel(boardId, name);
+                      @RequestBody LabelDTO labelDTO) {
+        Label label = labelService.newLabel(boardId, labelDTO.getName());
 
         return labelMapper.mapToLabelDTO(label);
     }
@@ -261,20 +260,18 @@ public class BoardController {
         return new ApiResponse(true, "Cards reordered");
     }
 
-    @PutMapping(value = "/{boardId}/list/{listId}/listTitle={listTitle}",
+    @PutMapping(value = "/{boardId}/list",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ApiResponse renameBoardList(@CurrentUser UserPrincipal userPrincipal,
                                        @PathVariable Long boardId,
-                                       @PathVariable Long listId,
-                                       @PathVariable String listTitle) {
+                                       @RequestBody BoardListDTO boardListDTO) {
 
-        boardListService.renameBoardList(boardId, userPrincipal.getId(), listId, listTitle);
+        boardListService.renameBoardList(boardId, userPrincipal.getId(), boardListDTO.getId(), boardListDTO.getName());
 
         return new ApiResponse(true, "List renamed. ");
     }
 
-    @PutMapping(value = "/{boardId}/list/{listId}/delete",
-            produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/{boardId}/list/{listId}")
     public ApiResponse deleteBoardList(@CurrentUser UserPrincipal userPrincipal,
                                        @PathVariable Long boardId,
                                        @PathVariable Long listId) {

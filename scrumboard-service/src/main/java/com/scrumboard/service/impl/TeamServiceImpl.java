@@ -31,15 +31,15 @@ public class TeamServiceImpl implements TeamService {
     }
 
     public Team createNewTeam(String displayName, String description,
-                              String name, String avatarUrl, Long userId) {
+                              String userName, String avatarUrl, Long userId) {
 
-        Member member = getMemberByUserId(name, avatarUrl, userId);
+        Member member = getMemberByUserId(userName, avatarUrl, userId);
 
         Team team = new Team();
 
         team.setDisplayName(displayName);
         team.setDescription(description);
-        team.setOwnerId(1L);
+        team.setOwnerId(userId);
         team.setMembers(Collections.singletonList(member));
         team.setBoard(new ArrayList<>());
 
@@ -47,34 +47,33 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Team getTeamByIdAndMembersIn(Long teamId, String name, String avatarUrl, Long userId) {
-        Member member = getMemberByUserId(name, avatarUrl, userId);
+    public Team getTeamByIdAndMembersIn(Long teamId, String userName, String avatarUrl, Long userId) {
+        Member member = getMemberByUserId(userName, avatarUrl, userId);
 
         return teamRepository.findByIdAndMembersIn(teamId, Collections.singletonList(member))
                 .orElseThrow(() -> new NotFoundException("Team not found"));
     }
 
-    public List<Team> getTeamsByMembersIn(String name, String avatarUrl, Long userId) {
-        Member member = getMemberByUserId(name, avatarUrl, userId);
+    public List<Team> getTeamsByMembersIn(String userName, String avatarUrl, Long userId) {
+        Member member = getMemberByUserId(userName, avatarUrl, userId);
 
         return teamRepository.findAllByMembersIn(Collections.singletonList(member));
     }
 
-    private Member getMemberByUserId(String name, String avatarUrl, Long userId) {
+    private Member getMemberByUserId(String userName, String avatarUrl, Long userId) {
         Optional<Member> optionalMember = memberRepository.findByUserId(userId);
 
         Member member;
         if (optionalMember.isPresent()) {
 
-            member = memberService.updateMember(name, avatarUrl, userId);
+            member = memberService.updateMember(userName, avatarUrl, userId);
 
         } else {
 
-            member = memberService.registerMember(name, avatarUrl, userId);
+            member = memberService.registerMember(userName, avatarUrl, userId);
         }
 
         return member;
     }
-
 
 }
