@@ -1,6 +1,10 @@
 package com.application.web;
 
+import com.account.domain.User;
+import com.account.service.UserService;
 import com.application.mapper.scrumboard.TeamMapper;
+import com.auth.security.CurrentUser;
+import com.auth.security.UserPrincipal;
 import com.scrumboard.domain.Team;
 import com.scrumboard.service.TeamService;
 import com.utility.dto.scrumboard.TeamDTO;
@@ -17,29 +21,58 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class TeamController {
     private TeamService teamService;
     private TeamMapper teamMapper;
+    private UserService userService;
 
     @Autowired
     public TeamController(TeamService teamService,
-                          TeamMapper teamMapper) {
+                          TeamMapper teamMapper,
+                          UserService userService) {
         this.teamService = teamService;
         this.teamMapper = teamMapper;
+        this.userService = userService;
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public TeamDTO createNewTeam(@RequestBody TeamDTO teamDTO) {
+    public TeamDTO createNewTeam(@CurrentUser UserPrincipal userPrincipal,
+                                 @RequestBody TeamDTO teamDTO) {
+        User user = userService.getUserById(userPrincipal.getId());
 
-        Team team = teamService.createNewTeam(teamDTO.getDisplayName(), teamDTO.getDescription());
+        Team team = teamService.createNewTeam(
+                teamDTO.getDisplayName(),
+                teamDTO.getDescription(),
+                user.getName(),
+                user.getAvatarUrl(),
+                user.getId()
+        );
 
         return teamMapper.mapToTeamDTO(team);
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public List<TeamDTO> getTeams() {
-        return teamMapper.mapToTeamDTOList(teamService.getTeams());
+    public List<TeamDTO> getTeams(@CurrentUser UserPrincipal userPrincipal) {
+        User user = userService.getUserById(userPrincipal.getId());
+
+        List<Team> teams = teamService.getTeamsByMembersIn(
+                user.getName(),
+                user.getAvatarUrl(),
+                user.getId()
+        );
+
+        return teamMapper.mapToTeamDTOList(teams);
     }
 
     @GetMapping(value = "/{teamId}", produces = APPLICATION_JSON_VALUE)
-    public TeamDTO getTeamById(@PathVariable Long teamId) {
-        return teamMapper.mapToTeamDTO(teamService.getTeamById(teamId));
+    public TeamDTO getTeamById(@CurrentUser UserPrincipal userPrincipal,
+                               @PathVariable Long teamId) {
+        User user = userService.getUserById(userPrincipal.getId());
+
+        Team team = teamService.getTeamByIdAndMembersIn(
+                teamId,
+                user.getName(),
+                user.getAvatarUrl(),
+                user.getId()
+        );
+
+        return teamMapper.mapToTeamDTO(team);
     }
 }

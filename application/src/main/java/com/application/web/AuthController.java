@@ -3,6 +3,8 @@ package com.application.web;
 import com.account.domain.User;
 import com.account.service.UserService;
 import com.application.facade.UserAuthFacade;
+import com.scrumboard.domain.Member;
+import com.scrumboard.service.MemberService;
 import com.utility.web.request.user.LoginRequest;
 import com.utility.web.request.user.SignUpRequest;
 import com.utility.web.response.ApiResponse;

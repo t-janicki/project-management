@@ -17,15 +17,12 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
     private TokenProvider tokenProvider;
     private AuthenticationManager authenticationManager;
-    private UserService userService;
 
     @Autowired
     public AuthServiceImpl(TokenProvider tokenProvider,
-                           AuthenticationManager authenticationManager,
-                           UserService userService) {
+                           AuthenticationManager authenticationManager) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
-        this.userService = userService;
     }
 
     public AuthResponse authenticateUser(LoginRequest loginRequest) {

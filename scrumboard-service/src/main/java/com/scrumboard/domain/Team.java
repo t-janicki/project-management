@@ -20,7 +20,7 @@ public class Team {
     @Column
     private Long ownerId;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Member> members;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface TeamService {
 
-    Team createNewTeam(String displayName, String description);
+    Team createNewTeam(String displayName, String description, String name, String avatarUrl, Long userId);
 
-    Team getTeamById(Long teamId);
+    Team getTeamByIdAndMembersIn(Long teamId, String name, String avatarUrl, Long userId);
 
-    List<Team> getTeams();
+    List<Team> getTeamsByMembersIn(String name, String avatarUrl, Long userId);
 }
