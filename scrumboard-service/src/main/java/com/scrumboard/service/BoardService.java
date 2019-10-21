@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface BoardService {
 
-    Board createNewEmptyPersonalBoard(Long userId, String avatarUrl, String name);
+    Board createNewEmptyPersonalBoard(Long userId, String name, String description);
 
     List<Board> getBoards(Long userId);
 

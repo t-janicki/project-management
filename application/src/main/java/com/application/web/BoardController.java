@@ -67,11 +67,11 @@ public class BoardController {
         this.boardSettingsMapper = boardSettingsMapper;
     }
 
-    @PostMapping(produces = APPLICATION_JSON_VALUE)
-    public BoardDTO createNewEmptyBoard(@CurrentUser UserPrincipal userPrincipal) {
-        User user = userService.getUserById(userPrincipal.getId());
+    @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    public BoardDTO createNewEmptyBoard(@CurrentUser UserPrincipal userPrincipal,
+                                        @RequestBody BoardDTO boardDTO) {
 
-        Board board = boardService.createNewEmptyPersonalBoard(userPrincipal.getId(), user.getAvatarUrl(), user.getName());
+        Board board = boardService.createNewEmptyPersonalBoard(userPrincipal.getId(), boardDTO.getName(), boardDTO.getDescription());
 
         return boardMapper.mapToBoardDTO(board);
     }

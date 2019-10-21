@@ -31,6 +31,7 @@ public final class BoardMapper {
         return new BoardDTO(
                 board.getId(),
                 board.getName(),
+                board.getDescription(),
                 board.getUri(),
                 mapBoardTypeToString(board.getBoardType()),
                 boardSettingsMapper.mapToBoardSettingsDTO(board.getBoardSettings()),

@@ -1,7 +1,6 @@
 package com.scrumboard.domain;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -13,6 +12,9 @@ public class Board {
 
     @Column
     private String name;
+
+    @Column
+    private String description;
 
     @Column
     private String uri;
@@ -42,10 +44,11 @@ public class Board {
     public Board() {
     }
 
-    public Board(Long id, String name, String uri, BoardSettings boardSettings,
+    public Board(Long id, String name, String description, String uri, BoardSettings boardSettings,
                  List<BoardList> lists, List<Card> cards, List<Label> labels) {
         this.id = id;
         this.name = name;
+        this.description = description;
         this.uri = uri;
         this.boardSettings = boardSettings;
         this.lists = lists;
@@ -63,6 +66,14 @@ public class Board {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getUri() {

@@ -18,11 +18,14 @@ public class BoardServiceImpl implements BoardService {
         this.boardRepository = boardRepository;
     }
 
-    public Board createNewEmptyPersonalBoard(Long userId, String avatarUrl, String name) {
+    public Board createNewEmptyPersonalBoard(Long userId, String name, String description) {
         Board board = new Board();
 
-        board.setName("Untitled Board");
-        board.setUri("untitled-board");
+        String uri = name.replaceAll(" ","-").toLowerCase();
+
+        board.setName(name);
+        board.setDescription(description);
+        board.setUri(uri);
         board.isDeleted(Boolean.FALSE);
         board.setUserId(userId);
         board.setBoardSettings(new BoardSettings("", false, true));

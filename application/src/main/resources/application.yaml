@@ -61,4 +61,6 @@ app:
       - myiosapp://oauth2/redirect
 #HEROKU CONFIG
 #server:
+server:
+  port: 8080
 #  port: ${PORT:8080}

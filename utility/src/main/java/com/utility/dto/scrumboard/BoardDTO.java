@@ -5,6 +5,7 @@ import java.util.List;
 public class BoardDTO {
     private Long id;
     private String name;
+    private String description;
     private String uri;
     private String boardType;
     private BoardSettingsDTO settings;
@@ -15,12 +16,13 @@ public class BoardDTO {
     public BoardDTO() {
     }
 
-    public BoardDTO(Long id, String name, String uri, String boardType,
+    public BoardDTO(Long id, String name, String description, String uri, String boardType,
                     BoardSettingsDTO settings, List<BoardListDTO> lists,
                     List<CardDTO> cards,
                     List<LabelDTO> labels) {
         this.id = id;
         this.name = name;
+        this.description = description;
         this.uri = uri;
         this.boardType = boardType;
         this.settings = settings;
@@ -35,6 +37,10 @@ public class BoardDTO {
 
     public String getName() {
         return name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public String getUri() {
