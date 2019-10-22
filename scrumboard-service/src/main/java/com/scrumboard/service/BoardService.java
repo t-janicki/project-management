@@ -2,13 +2,14 @@ package com.scrumboard.service;
 
 import com.scrumboard.domain.Board;
 import com.scrumboard.domain.BoardSettings;
+import com.scrumboard.domain.BoardType;
 import com.scrumboard.domain.Card;
 
 import java.util.List;
 
 public interface BoardService {
 
-    Board createNewEmptyPersonalBoard(Long userId, String name, String description);
+    Board createNewEmptyPersonalBoard(Long userId, String name, BoardType boardType, String description);
 
     List<Board> getBoards(Long userId);
 

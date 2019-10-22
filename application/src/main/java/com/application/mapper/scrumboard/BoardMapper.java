@@ -3,6 +3,7 @@ package com.application.mapper.scrumboard;
 import com.scrumboard.domain.Board;
 import com.scrumboard.domain.BoardType;
 import com.utility.dto.scrumboard.BoardDTO;
+import com.utility.exception.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -55,6 +56,16 @@ public final class BoardMapper {
                 return "TEAM";
         }
         return "Incorrect board type";
+    }
+
+    public static BoardType mapBoardTypeToEnum(String boardType) {
+        switch (boardType) {
+            case "PERSONAL":
+                return BoardType.PERSONAL;
+            case "TEAM":
+                return BoardType.TEAM;
+        }
+        throw new BadRequestException("Incorrect board type");
     }
 
     public List<BoardDTO> mapToBoardDTOList(List<Board> boards) {

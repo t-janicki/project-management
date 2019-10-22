@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.application.mapper.scrumboard.BoardMapper.mapBoardTypeToEnum;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -71,7 +72,12 @@ public class BoardController {
     public BoardDTO createNewEmptyBoard(@CurrentUser UserPrincipal userPrincipal,
                                         @RequestBody BoardDTO boardDTO) {
 
-        Board board = boardService.createNewEmptyPersonalBoard(userPrincipal.getId(), boardDTO.getName(), boardDTO.getDescription());
+        Board board = boardService.createNewEmptyPersonalBoard(
+                userPrincipal.getId(),
+                boardDTO.getName(),
+                mapBoardTypeToEnum(boardDTO.getBoardType()),
+                boardDTO.getDescription()
+        );
 
         return boardMapper.mapToBoardDTO(board);
     }

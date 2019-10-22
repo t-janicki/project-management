@@ -18,7 +18,7 @@ public class BoardServiceImpl implements BoardService {
         this.boardRepository = boardRepository;
     }
 
-    public Board createNewEmptyPersonalBoard(Long userId, String name, String description) {
+    public Board createNewEmptyPersonalBoard(Long userId, String name, BoardType boardType, String description) {
         Board board = new Board();
 
         String uri = name.replaceAll(" ","-").toLowerCase();
@@ -31,7 +31,7 @@ public class BoardServiceImpl implements BoardService {
         board.setBoardSettings(new BoardSettings("", false, true));
         board.setLists(new ArrayList<>());
         board.setCards(new ArrayList<>());
-        board.setBoardType(BoardType.PERSONAL);
+        board.setBoardType(boardType);
         board.setLabels(defaultLabels());
 
         boardRepository.save(board);
