@@ -54,10 +54,10 @@ public class BoardServiceImpl implements BoardService {
     }
 
     public Board getBoardByIdAndUserId(Long boardId, Long userId) {
-//        Board board = boardRepository.findByIdAndIsDeletedIsFalseAndUserId(boardId, userId)
-//                .orElseThrow(() -> new NotFoundException("Board not found with id: " + boardId));
+        Board board = boardRepository.findByIdAndIsDeletedIsFalseAndUserId(boardId, userId)
+                .orElseThrow(() -> new NotFoundException("Board not found with id: " + boardId));
 
-        Board board = boardRepository.findById(boardId).get();
+//        Board board = boardRepository.findById(boardId).get();
 
         board.getLists().sort(Comparator.comparing(BoardList::getPosition));
 

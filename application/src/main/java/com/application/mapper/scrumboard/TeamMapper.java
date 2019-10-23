@@ -11,10 +11,13 @@ import java.util.stream.Collectors;
 @Component
 public final class TeamMapper {
     private MemberMapper memberMapper;
+    private BoardMapper boardMapper;
 
     @Autowired
-    public TeamMapper(MemberMapper memberMapper) {
+    public TeamMapper(MemberMapper memberMapper,
+                      BoardMapper boardMapper) {
         this.memberMapper = memberMapper;
+        this.boardMapper = boardMapper;
     }
 
     public TeamDTO mapToTeamDTO(Team team) {
@@ -24,7 +27,10 @@ public final class TeamMapper {
                 team.getDescription(),
                 team.getOwnerId(),
                 team.getMembers().stream()
-                        .map(v -> memberMapper.mapToMemberDTO(v))
+                        .map(member -> memberMapper.mapToMemberDTO(member))
+                        .collect(Collectors.toList()),
+                team.getBoard().stream()
+                        .map(board -> boardMapper.mapToBoardDTO(board))
                         .collect(Collectors.toList())
         );
     }
