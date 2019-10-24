@@ -83,55 +83,63 @@ public class BoardController {
     }
 
     @GetMapping(produces = APPLICATION_JSON_VALUE)
-    public List<BoardDTO> getBoards(@CurrentUser UserPrincipal userPrincipal) {
-        List<Board> boards = boardService.getBoards(userPrincipal.getId());
+    public List<BoardDTO> getBoards(@RequestParam BoardType boardType,
+                                    @CurrentUser UserPrincipal userPrincipal) {
+
+        List<Board> boards = boardService.getBoards(userPrincipal.getId(), boardType);
 
         return boardMapper.mapToBoardDTOList(boards);
     }
 
     @GetMapping(value = "/{boardId}", produces = APPLICATION_JSON_VALUE)
-    public BoardDTO getBoardById(@CurrentUser UserPrincipal userPrincipal,
+    public BoardDTO getBoardById(@RequestParam BoardType boardType,
+                                 @CurrentUser UserPrincipal userPrincipal,
                                  @PathVariable Long boardId) {
-        Board board = boardService.getBoardByIdAndUserId(boardId, userPrincipal.getId());
+
+        Board board = boardService.getBoardByIdAndUserId(boardId, userPrincipal.getId(), boardType);
 
         return boardMapper.mapToBoardDTO(board);
     }
 
     @PutMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public ApiResponse renameBoard(@CurrentUser UserPrincipal userPrincipal,
+    public ApiResponse renameBoard(@RequestParam BoardType boardType,
+                                   @CurrentUser UserPrincipal userPrincipal,
                                    @RequestBody BoardDTO boardDTO) {
 
-        boardService.renameBoard(boardDTO.getId(), userPrincipal.getId(), boardDTO.getName());
+        boardService.renameBoard(boardDTO.getId(), userPrincipal.getId(), boardDTO.getName(), boardType);
 
         return new ApiResponse(true, "Board renamed. ");
     }
 
     @PutMapping(value = "/settings",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public BoardSettings updateBoardSettings(@CurrentUser UserPrincipal userPrincipal,
+    public BoardSettings updateBoardSettings(@RequestParam BoardType boardType,
+                                             @CurrentUser UserPrincipal userPrincipal,
                                              @RequestBody BoardDTO boardDTO) {
 
             BoardSettings boardSettings = boardSettingsMapper.mapToBoardSettings(boardDTO.getSettings());
 
-        return boardService.updateSettings(boardDTO.getId(), userPrincipal.getId(), boardSettings);
+        return boardService.updateSettings(boardDTO.getId(), userPrincipal.getId(), boardSettings, boardType);
     }
 
     @DeleteMapping(value = "/{boardId}")
-    public ApiResponse deleteBoard(@CurrentUser UserPrincipal userPrincipal,
+    public ApiResponse deleteBoard(@RequestParam BoardType boardType,
+                                   @CurrentUser UserPrincipal userPrincipal,
                                    @PathVariable Long boardId) {
-        boardService.deleteBoardById(boardId, userPrincipal.getId());
+        boardService.deleteBoardById(boardId, userPrincipal.getId(), boardType);
 
         return new ApiResponse(true, "Board deleted. ");
     }
 
     @PostMapping(value = "/{boardId}/newList", produces = APPLICATION_JSON_VALUE)
-    public List<BoardListDTO> newBoardList(@CurrentUser UserPrincipal userPrincipal,
+    public List<BoardListDTO> newBoardList(@RequestParam BoardType boardType,
+                                           @CurrentUser UserPrincipal userPrincipal,
                                            @PathVariable Long boardId,
                                            @RequestBody BoardListDTO boardListDTO) {
 
-        boardListService.newBoardList(boardId, userPrincipal.getId(), boardListDTO.getName());
+        boardListService.newBoardList(boardId, userPrincipal.getId(), boardListDTO.getName(), boardType);
 
-        Board board = boardService.getBoardByIdAndUserId(boardId, userPrincipal.getId());
+        Board board = boardService.getBoardByIdAndUserId(boardId, userPrincipal.getId(), boardType);
 
         return boardMapper.mapToBoardDTO(board).getLists();
     }
@@ -144,22 +152,24 @@ public class BoardController {
     @PostMapping(value = "/{boardId}/list/{listId}",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public @ResponseBody
-    BoardDTO createNewCard(@CurrentUser UserPrincipal userPrincipal,
+    BoardDTO createNewCard(@RequestParam BoardType boardType,
+                           @CurrentUser UserPrincipal userPrincipal,
                            @PathVariable Long boardId,
                            @PathVariable Long listId,
                            @RequestBody CardDTO cardDTO) {
 
-        cardService.createNewCard(boardId, userPrincipal.getId(), cardDTO.getName(), listId);
+        cardService.createNewCard(boardId, userPrincipal.getId(), cardDTO.getName(), listId, boardType);
 
-        return boardMapper.mapToBoardDTO(boardService.getBoardByIdAndUserId(boardId, userPrincipal.getId()));
+        return boardMapper.mapToBoardDTO(boardService.getBoardByIdAndUserId(boardId, userPrincipal.getId(), boardType));
     }
 
     @DeleteMapping(value = "/{boardId}/card/{cardId}")
-    public List<BoardListDTO> deleteCard(@CurrentUser UserPrincipal userPrincipal,
+    public List<BoardListDTO> deleteCard(@RequestParam BoardType boardType,
+                                         @CurrentUser UserPrincipal userPrincipal,
                                          @PathVariable Long boardId,
                                          @PathVariable Long cardId) {
 
-        Board board = boardService.getBoardByIdAndUserId(boardId, userPrincipal.getId());
+        Board board = boardService.getBoardByIdAndUserId(boardId, userPrincipal.getId(), boardType);
 
         List<BoardListDTO> boardListsDTO = boardMapper.mapToBoardDTO(board).getLists();
 
@@ -170,7 +180,7 @@ public class BoardController {
                         .collect(Collectors.toList()))
                 .collect(Collectors.toList());
 
-        cardService.removeCard(listsOfCardsIds, userPrincipal.getId(), boardId, cardId);
+        cardService.removeCard(listsOfCardsIds, userPrincipal.getId(), boardId, cardId, boardType);
 
         BoardDTO result = boardMapper.mapToBoardDTO(board);
 
@@ -254,35 +264,38 @@ public class BoardController {
 
     @PutMapping(value = "/cards/reorder",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public ApiResponse reorderCards(@CurrentUser UserPrincipal userPrincipal,
+    public ApiResponse reorderCards(@RequestParam BoardType boardType,
+                                    @CurrentUser UserPrincipal userPrincipal,
                                     @RequestBody BoardDTO boardDTO) {
 
         List<List<String>> listsOfCardsIds = boardDTO.getLists().stream()
                 .map(v -> new ArrayList<>(v.getIdCards()))
                 .collect(Collectors.toList());
 
-       boardService.reorderCards(listsOfCardsIds, userPrincipal.getId(), boardDTO.getId());
+       boardService.reorderCards(listsOfCardsIds, userPrincipal.getId(), boardDTO.getId(), boardType);
 
         return new ApiResponse(true, "Cards reordered");
     }
 
     @PutMapping(value = "/{boardId}/list",
             produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public ApiResponse renameBoardList(@CurrentUser UserPrincipal userPrincipal,
+    public ApiResponse renameBoardList(@RequestParam BoardType boardType,
+                                       @CurrentUser UserPrincipal userPrincipal,
                                        @PathVariable Long boardId,
                                        @RequestBody BoardListDTO boardListDTO) {
 
-        boardListService.renameBoardList(boardId, userPrincipal.getId(), boardListDTO.getId(), boardListDTO.getName());
+        boardListService.renameBoardList(boardId, userPrincipal.getId(), boardListDTO.getId(), boardListDTO.getName(), boardType);
 
         return new ApiResponse(true, "List renamed. ");
     }
 
     @DeleteMapping(value = "/{boardId}/list/{listId}")
-    public ApiResponse deleteBoardList(@CurrentUser UserPrincipal userPrincipal,
+    public ApiResponse deleteBoardList(@RequestParam BoardType boardType,
+                                       @CurrentUser UserPrincipal userPrincipal,
                                        @PathVariable Long boardId,
                                        @PathVariable Long listId) {
 
-        boardListService.deleteBoardList(boardId, userPrincipal.getId(), listId);
+        boardListService.deleteBoardList(boardId, userPrincipal.getId(), listId, boardType);
 
         return new ApiResponse(true, "List deleted. ");
     }

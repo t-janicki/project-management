@@ -48,13 +48,13 @@ public class BoardServiceImpl implements BoardService {
         return new ArrayList<>(Arrays.asList(sampleLabel1, sampleLabel2, sampleLabel3, sampleLabel4));
     }
 
-    public List<Board> getBoards(Long userId) {
+    public List<Board> getBoards(Long userId, BoardType boardType) {
 //        return boardRepository.findAllByIsDeletedIsFalseAndUserId(userId);
-        return boardRepository.findAllByUserIdAndBoardTypeAndIsDeletedIsFalse(userId, BoardType.PERSONAL);
+        return boardRepository.findAllByUserIdAndBoardTypeAndIsDeletedIsFalse(userId, boardType);
     }
 
-    public Board getBoardByIdAndUserId(Long boardId, Long userId) {
-        Board board = boardRepository.findByIdAndIsDeletedIsFalseAndUserId(boardId, userId)
+    public Board getBoardByIdAndUserId(Long boardId, Long userId, BoardType boardType) {
+        Board board = boardRepository.findByIdAndIsDeletedIsFalseAndUserIdAndBoardType(boardId, userId, boardType)
                 .orElseThrow(() -> new NotFoundException("Board not found with id: " + boardId));
 
 //        Board board = boardRepository.findById(boardId).get();
@@ -64,8 +64,8 @@ public class BoardServiceImpl implements BoardService {
         return board;
     }
 
-    public Board renameBoard(Long boardId, Long userId, String name) {
-        Board board = getBoardByIdAndUserId(boardId, userId);
+    public Board renameBoard(Long boardId, Long userId, String name, BoardType boardType) {
+        Board board = getBoardByIdAndUserId(boardId, userId, boardType);
 
         String uri = name.replaceAll(" ","-");
 
@@ -76,8 +76,8 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public BoardSettings updateSettings(Long boardId, Long userId, BoardSettings settings) {
-        Board board = getBoardByIdAndUserId(boardId, userId);
+    public BoardSettings updateSettings(Long boardId, Long userId, BoardSettings settings, BoardType boardType) {
+        Board board = getBoardByIdAndUserId(boardId, userId, boardType);
 
         board.getBoardSettings().setCardCoverImages(settings.getCardCoverImages());
         board.getBoardSettings().setColor(settings.getColor());
@@ -88,8 +88,8 @@ public class BoardServiceImpl implements BoardService {
         return board.getBoardSettings();
     }
 
-    public void deleteBoardById(Long boardId, Long userId) {
-        Board board = getBoardByIdAndUserId(boardId, userId);
+    public void deleteBoardById(Long boardId, Long userId, BoardType boardType) {
+        Board board = getBoardByIdAndUserId(boardId, userId, boardType);
 
         board.isDeleted(Boolean.TRUE);
 
@@ -100,23 +100,23 @@ public class BoardServiceImpl implements BoardService {
         boardRepository.deleteAll();
     }
 
-    public void addCardToBoard(Long boardId, Long userId, Card card) {
-        Board board = getBoardByIdAndUserId(boardId, userId);
+    public void addCardToBoard(Long boardId, Long userId, Card card, BoardType boardType) {
+        Board board = getBoardByIdAndUserId(boardId, userId, boardType);
 
         board.getCards().add(card);
 
         boardRepository.save(board);
     }
 
-    public Board removeCard(Long boardId, Long userId, Card card) {
-        Board board = getBoardByIdAndUserId(boardId, userId);
+    public Board removeCard(Long boardId, Long userId, Card card, BoardType boardType) {
+        Board board = getBoardByIdAndUserId(boardId, userId, boardType);
         board.getCards().remove(card);
 
         return boardRepository.save(board);
     }
 
-    public Board reorderCards(List<List<String>> cardsLists, Long userId, Long boardId) {
-        Board board = getBoardByIdAndUserId(boardId, userId);
+    public Board reorderCards(List<List<String>> cardsLists, Long userId, Long boardId, BoardType boardType) {
+        Board board = getBoardByIdAndUserId(boardId, userId, boardType);
 
         int i = 0;
         for (List<String> ids : cardsLists) {

@@ -2,6 +2,7 @@ package com.scrumboard.service.impl;
 
 import com.scrumboard.domain.Board;
 import com.scrumboard.domain.BoardList;
+import com.scrumboard.domain.BoardType;
 import com.scrumboard.repository.BoardListRepository;
 import com.scrumboard.repository.BoardRepository;
 import com.scrumboard.service.BoardListService;
@@ -27,8 +28,8 @@ public class BoardListServiceImpl implements BoardListService {
         this.boardListRepository = boardListRepository;
     }
 
-    public BoardList newBoardList(Long boardId, Long userId, String name) {
-        Board board = boardService.getBoardByIdAndUserId(boardId, userId);
+    public BoardList newBoardList(Long boardId, Long userId, String name, BoardType boardType) {
+        Board board = boardService.getBoardByIdAndUserId(boardId, userId, boardType);
 
         BoardList boardList = new BoardList();
 
@@ -57,8 +58,9 @@ public class BoardListServiceImpl implements BoardListService {
 
     }
 
-    public BoardList renameBoardList(Long boardId, Long userId, Long listId, String listTitle) {
-        Board board = boardService.getBoardByIdAndUserId(boardId, userId);
+    public BoardList renameBoardList(Long boardId, Long userId, Long listId,
+                                     String listTitle, BoardType boardType) {
+        Board board = boardService.getBoardByIdAndUserId(boardId, userId, boardType);
 
         BoardList boardList = board.getLists().stream().filter(bl -> bl.getId().equals(listId)).findFirst()
                 .orElseThrow(() -> new NotFoundException("Board List not found"));
@@ -69,8 +71,9 @@ public class BoardListServiceImpl implements BoardListService {
     }
 
     @Override
-    public BoardList deleteBoardList(Long boardId, Long userId, Long listId) {
-        Board board = boardService.getBoardByIdAndUserId(boardId, userId);
+    public BoardList deleteBoardList(Long boardId, Long userId,
+                                     Long listId, BoardType boardType) {
+        Board board = boardService.getBoardByIdAndUserId(boardId, userId, boardType);
 
         BoardList boardList = getBoardListById(listId);
         boardList.setDeleted(Boolean.TRUE);

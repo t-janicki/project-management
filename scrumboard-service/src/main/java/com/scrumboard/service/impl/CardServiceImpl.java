@@ -36,7 +36,8 @@ public class CardServiceImpl implements CardService {
                 .orElseThrow(() -> new NotFoundException("Card not found"));
     }
 
-    public Card createNewCard(Long boardId, Long userId, String cardTitle, Long listId) {
+    public Card createNewCard(Long boardId, Long userId, String cardTitle,
+                              Long listId, BoardType boardType) {
         Card card = new Card();
 
         card.setName(cardTitle);
@@ -53,7 +54,7 @@ public class CardServiceImpl implements CardService {
 
         cardRepository.save(card);
 
-        boardService.addCardToBoard(boardId, userId, card);
+        boardService.addCardToBoard(boardId, userId, card, boardType);
         addCardIdToBoardList(card.getId(), listId);
 
         return card;
@@ -95,8 +96,9 @@ public class CardServiceImpl implements CardService {
         return card;
     }
 
-    public Card removeCard(List<List<String>> listsOfCardsIds, Long userId, Long boardId, Long cardId) {
-        Board board = boardService.getBoardByIdAndUserId(boardId, userId);
+    public Card removeCard(List<List<String>> listsOfCardsIds, Long userId,
+                           Long boardId, Long cardId, BoardType boardType) {
+        Board board = boardService.getBoardByIdAndUserId(boardId, userId, boardType);
 
         int i = 0;
 
@@ -111,7 +113,7 @@ public class CardServiceImpl implements CardService {
 
         Card card = getCardById(cardId);
 
-        boardService.removeCard(boardId, userId, card);
+        boardService.removeCard(boardId, userId, card, boardType);
 
         card.setDeleted(Boolean.TRUE);
 
