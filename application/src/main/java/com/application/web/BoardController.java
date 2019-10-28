@@ -69,14 +69,16 @@ public class BoardController {
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public BoardDTO createNewEmptyBoard(@CurrentUser UserPrincipal userPrincipal,
+    public BoardDTO createNewEmptyBoard(@RequestParam(required = false) Long teamId,
+                                        @CurrentUser UserPrincipal userPrincipal,
                                         @RequestBody BoardDTO boardDTO) {
 
-        Board board = boardService.createNewEmptyPersonalBoard(
+        Board board = boardService.createNewEmptyBoard(
                 userPrincipal.getId(),
                 boardDTO.getName(),
                 mapBoardTypeToEnum(boardDTO.getBoardType()),
-                boardDTO.getDescription()
+                boardDTO.getDescription(),
+                teamId
         );
 
         return boardMapper.mapToBoardDTO(board);

@@ -30,6 +30,12 @@ public class TeamServiceImpl implements TeamService {
         this.memberService = memberService;
     }
 
+    @Override
+    public Team getTeamById(Long teamId) {
+        return teamRepository.findById(teamId)
+                .orElseThrow(() -> new NotFoundException("Team not found"));
+    }
+
     public Team createNewTeam(String displayName, String description,
                               String userName, String avatarUrl, Long userId) {
 

@@ -29,14 +29,6 @@ public class Team {
     public Team() {
     }
 
-    public Team(String displayName, String description,
-                Long ownerId, List<Member> members) {
-        this.displayName = displayName;
-        this.description = description;
-        this.ownerId = ownerId;
-        this.members = members;
-    }
-
     public Long getId() {
         return id;
     }

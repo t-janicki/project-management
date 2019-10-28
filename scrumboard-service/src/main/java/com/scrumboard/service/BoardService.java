@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface BoardService {
 
-    Board createNewEmptyPersonalBoard(Long userId, String name, BoardType boardType, String description);
+    Board createNewEmptyBoard(Long userId, String name, BoardType boardType, String description, Long teamId);
 
     List<Board> getBoards(Long userId, BoardType boardType);
 

@@ -62,7 +62,13 @@ public class UserServiceImpl implements UserService {
         user.setAvatarUrl("assets/images/avatars/profile.jpg");
         user.setSettings(settingsService.createDefaultLayoutSettings());
 
-        return userRepository.save(user);
+        try {
+            user = userRepository.save(user);
+        } catch (RuntimeException ex) {
+           throw new BadRequestException("Something went wrong, try again later. ");
+        }
+
+        return user;
     }
 
     public User getUserById(Long id) {

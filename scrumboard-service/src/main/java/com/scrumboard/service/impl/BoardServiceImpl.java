@@ -2,7 +2,9 @@ package com.scrumboard.service.impl;
 
 import com.scrumboard.domain.*;
 import com.scrumboard.repository.BoardRepository;
+import com.scrumboard.repository.TeamRepository;
 import com.scrumboard.service.BoardService;
+import com.scrumboard.service.TeamService;
 import com.utility.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,13 +14,20 @@ import java.util.*;
 @Service
 public class BoardServiceImpl implements BoardService {
     private BoardRepository boardRepository;
+    private TeamService teamService;
+    private TeamRepository teamRepository;
 
     @Autowired
-    public BoardServiceImpl(BoardRepository boardRepository) {
+    public BoardServiceImpl(BoardRepository boardRepository,
+                            TeamService teamService,
+                            TeamRepository teamRepository) {
         this.boardRepository = boardRepository;
+        this.teamService = teamService;
+        this.teamRepository = teamRepository;
     }
 
-    public Board createNewEmptyPersonalBoard(Long userId, String name, BoardType boardType, String description) {
+    public Board createNewEmptyBoard(Long userId, String name, BoardType boardType,
+                                     String description, Long teamId) {
         Board board = new Board();
 
         String uri = name.replaceAll(" ","-").toLowerCase();
@@ -35,6 +44,12 @@ public class BoardServiceImpl implements BoardService {
         board.setLabels(defaultLabels());
 
         boardRepository.save(board);
+
+        if (teamId != null) {
+            Team team = teamService.getTeamById(teamId);
+            team.getBoard().add(board);
+            teamRepository.save(team);
+        }
 
         return board;
     }
