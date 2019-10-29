@@ -2,6 +2,7 @@ package com.application.mapper.scrumboard;
 
 import com.scrumboard.domain.Team;
 import com.utility.dto.scrumboard.TeamDTO;
+import com.utility.dto.scrumboard.TeamInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,11 +22,15 @@ public final class TeamMapper {
     }
 
     public TeamDTO mapToTeamDTO(Team team) {
-        return new TeamDTO(
+        TeamInfoDTO teamInfoDTO = new TeamInfoDTO(
                 team.getId(),
                 team.getDisplayName(),
                 team.getDescription(),
-                team.getOwnerId(),
+                team.getOwnerId()
+        );
+
+        return new TeamDTO(
+                teamInfoDTO,
                 team.getMembers().stream()
                         .map(member -> memberMapper.mapToMemberDTO(member))
                         .collect(Collectors.toList()),

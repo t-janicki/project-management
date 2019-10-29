@@ -38,8 +38,8 @@ public class TeamController {
         User user = userService.getUserById(userPrincipal.getId());
 
         Team team = teamService.createNewTeam(
-                teamDTO.getDisplayName(),
-                teamDTO.getDescription(),
+                teamDTO.getTeamInfo().getDisplayName(),
+                teamDTO.getTeamInfo().getDescription(),
                 user.getName(),
                 user.getAvatarUrl(),
                 user.getId()
