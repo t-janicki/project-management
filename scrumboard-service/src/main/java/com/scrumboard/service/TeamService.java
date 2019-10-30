@@ -13,4 +13,6 @@ public interface TeamService {
     Team getTeamByIdAndMembersIn(Long teamId, String name, String avatarUrl, Long userId);
 
     List<Team> getTeamsByMembersIn(String name, String avatarUrl, Long userId);
+
+    Team updateTeamInfo(Long id, String displayName, String description, Long ownerId);
 }

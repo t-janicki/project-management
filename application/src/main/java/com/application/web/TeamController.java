@@ -8,6 +8,7 @@ import com.auth.security.UserPrincipal;
 import com.scrumboard.domain.Team;
 import com.scrumboard.service.TeamService;
 import com.utility.dto.scrumboard.TeamDTO;
+import com.utility.dto.scrumboard.TeamInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -74,5 +75,20 @@ public class TeamController {
         );
 
         return teamMapper.mapToTeamDTO(team);
+    }
+
+    @PutMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    public TeamDTO updateTeamInfo(@CurrentUser UserPrincipal userPrincipal,
+                                      @RequestBody TeamInfoDTO teamInfoDTO) {
+
+        Team team = teamService.updateTeamInfo(
+                teamInfoDTO.getId(),
+                teamInfoDTO.getDisplayName(),
+                teamInfoDTO.getDescription(),
+                teamInfoDTO.getOwnerId()
+        );
+
+        return teamMapper.mapToTeamDTO(team);
+
     }
 }

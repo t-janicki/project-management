@@ -66,6 +66,19 @@ public class TeamServiceImpl implements TeamService {
         return teamRepository.findAllByMembersIn(Collections.singletonList(member));
     }
 
+    @Override
+    public Team updateTeamInfo(Long id, String displayName, String description, Long ownerId) {
+        Team team = getTeamById(id);
+
+        team.setDisplayName(displayName);
+        team.setDescription(description);
+        team.setOwnerId(ownerId);
+
+        teamRepository.save(team);
+
+        return team;
+    }
+
     private Member getMemberByUserId(String userName, String avatarUrl, Long userId) {
         Optional<Member> optionalMember = memberRepository.findByUserId(userId);
 
