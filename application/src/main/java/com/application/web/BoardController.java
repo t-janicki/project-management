@@ -119,7 +119,7 @@ public class BoardController {
                                              @CurrentUser UserPrincipal userPrincipal,
                                              @RequestBody BoardDTO boardDTO) {
 
-            BoardSettings boardSettings = boardSettingsMapper.mapToBoardSettings(boardDTO.getSettings());
+        BoardSettings boardSettings = boardSettingsMapper.mapToBoardSettings(boardDTO.getSettings());
 
         return boardService.updateSettings(boardDTO.getId(), userPrincipal.getId(), boardSettings, boardType);
     }
@@ -274,7 +274,7 @@ public class BoardController {
                 .map(v -> new ArrayList<>(v.getIdCards()))
                 .collect(Collectors.toList());
 
-       boardService.reorderCards(listsOfCardsIds, userPrincipal.getId(), boardDTO.getId(), boardType);
+        boardService.reorderCards(listsOfCardsIds, userPrincipal.getId(), boardDTO.getId(), boardType);
 
         return new ApiResponse(true, "Cards reordered");
     }

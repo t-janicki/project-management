@@ -12,7 +12,7 @@ public final class ShortcutDTO {
     /**
      * Constructor necessary for Jackson deserialize
      * ShortcutDTO(String shortcut)
-     * */
+     */
     public ShortcutDTO(String shortcut) {
         this.shortcut = shortcut;
     }

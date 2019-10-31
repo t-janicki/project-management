@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
         try {
             user = userRepository.save(user);
         } catch (RuntimeException ex) {
-           throw new BadRequestException("Something went wrong, try again later. ");
+            throw new BadRequestException("Something went wrong, try again later. ");
         }
 
         return user;
@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void checkEmailAvailability(String email) {
-        if(userRepository.existsByEmailAndIsDeletedIsFalse(email)) {
+        if (userRepository.existsByEmailAndIsDeletedIsFalse(email)) {
             throw new BadRequestException("Email address already in use.");
         }
     }

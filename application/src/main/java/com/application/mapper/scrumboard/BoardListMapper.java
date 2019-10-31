@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public final class BoardListMapper {
 
     public BoardListDTO mapToBoardListDTO(BoardList boardList) {
-        String[] cardsIds =  boardList.getCardsIds().split(", ");
+        String[] cardsIds = boardList.getCardsIds().split(", ");
 
         List<String> result = Arrays.asList(cardsIds);
 

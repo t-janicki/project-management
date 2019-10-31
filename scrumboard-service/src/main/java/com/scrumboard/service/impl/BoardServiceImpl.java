@@ -30,7 +30,7 @@ public class BoardServiceImpl implements BoardService {
                                      String description, Long teamId) {
         Board board = new Board();
 
-        String uri = name.replaceAll(" ","-").toLowerCase();
+        String uri = name.replaceAll(" ", "-").toLowerCase();
 
         board.setName(name);
         board.setDescription(description);
@@ -82,7 +82,7 @@ public class BoardServiceImpl implements BoardService {
     public Board renameBoard(Long boardId, Long userId, String name, BoardType boardType) {
         Board board = getBoardByIdAndUserId(boardId, userId, boardType);
 
-        String uri = name.replaceAll(" ","-");
+        String uri = name.replaceAll(" ", "-");
 
         board.setName(name);
         board.setUri(uri.toLowerCase());

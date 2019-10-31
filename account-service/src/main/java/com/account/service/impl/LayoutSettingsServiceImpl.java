@@ -23,7 +23,7 @@ public class LayoutSettingsServiceImpl implements LayoutSettingsService {
 
     @Autowired
     public LayoutSettingsServiceImpl(LayoutSettingsRepository settingsRepository) {
-        this.settingsRepository =settingsRepository;
+        this.settingsRepository = settingsRepository;
     }
 
     public Settings createDefaultLayoutSettings() {

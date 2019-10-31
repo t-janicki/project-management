@@ -79,7 +79,7 @@ public class TeamController {
 
     @PutMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public TeamDTO updateTeamInfo(@CurrentUser UserPrincipal userPrincipal,
-                                      @RequestBody TeamInfoDTO teamInfoDTO) {
+                                  @RequestBody TeamInfoDTO teamInfoDTO) {
 
         Team team = teamService.updateTeamInfo(
                 teamInfoDTO.getId(),
@@ -89,6 +89,5 @@ public class TeamController {
         );
 
         return teamMapper.mapToTeamDTO(team);
-
     }
 }

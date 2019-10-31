@@ -20,7 +20,7 @@ public final class ActivityMapper {
     }
 
     public ActivityDTO mapToActivityDTO(Activity activity) {
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss");
 
         return new ActivityDTO(
                 activity.getId(),

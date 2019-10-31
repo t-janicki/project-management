@@ -1,7 +1,7 @@
 package com.utility.dto.user;
 
 public final class UserDTO {
-//    private String createdAt;
+    //    private String createdAt;
 //    private String updatedAt;
 //    private String createdByUserId;
 //    private String updatedByUserId;
