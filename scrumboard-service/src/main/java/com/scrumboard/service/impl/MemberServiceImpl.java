@@ -7,6 +7,8 @@ import com.utility.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class MemberServiceImpl implements MemberService {
     private MemberRepository memberRepository;
@@ -16,8 +18,7 @@ public class MemberServiceImpl implements MemberService {
         this.memberRepository = memberRepository;
     }
 
-    @Override
-    public Member registerMember(String name, String avatarUrl, String email) {
+    private Member registerMember(String name, String avatarUrl, String email) {
         Member member = new Member();
         member.setName(name);
         member.setAvatarUrl(avatarUrl);
@@ -26,8 +27,7 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.save(member);
     }
 
-    @Override
-    public Member updateMember(String name, String avatarUrl, String email) {
+    private Member updateMember(String name, String avatarUrl, String email) {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("Member not found"));
 
@@ -35,5 +35,21 @@ public class MemberServiceImpl implements MemberService {
         member.setAvatarUrl(avatarUrl);
 
         return memberRepository.save(member);
+    }
+
+    public Member getMemberByEmail(String userName, String avatarUrl, String email) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+
+        Member member;
+        if (optionalMember.isPresent()) {
+
+            member = updateMember(userName, avatarUrl, email);
+
+        } else {
+
+            member = registerMember(userName, avatarUrl, email);
+        }
+
+        return member;
     }
 }

@@ -18,15 +18,12 @@ import java.util.Optional;
 @Service
 public class TeamServiceImpl implements TeamService {
     private TeamRepository teamRepository;
-    private MemberRepository memberRepository;
     private MemberService memberService;
 
     @Autowired
     public TeamServiceImpl(TeamRepository teamRepository,
-                           MemberRepository memberRepository,
                            MemberService memberService) {
         this.teamRepository = teamRepository;
-        this.memberRepository = memberRepository;
         this.memberService = memberService;
     }
 
@@ -39,7 +36,7 @@ public class TeamServiceImpl implements TeamService {
     public Team createNewTeam(String displayName, String description,
                               String userName, String avatarUrl, String email) {
 
-        Member member = getMemberByUserId(userName, avatarUrl, email);
+        Member member = memberService.getMemberByEmail(userName, avatarUrl, email);
 
         Team team = new Team();
 
@@ -54,14 +51,14 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public Team getTeamByIdAndMembersIn(Long teamId, String userName, String avatarUrl, String email) {
-        Member member = getMemberByUserId(userName, avatarUrl, email);
+        Member member = memberService.getMemberByEmail(userName, avatarUrl, email);
 
         return teamRepository.findByIdAndMembersIn(teamId, Collections.singletonList(member))
                 .orElseThrow(() -> new NotFoundException("Team not found"));
     }
 
     public List<Team> getTeamsByMembersIn(String userName, String avatarUrl, String email) {
-        Member member = getMemberByUserId(userName, avatarUrl, email);
+        Member member = memberService.getMemberByEmail(userName, avatarUrl, email);
 
         return teamRepository.findAllByMembersIn(Collections.singletonList(member));
     }
@@ -79,20 +76,8 @@ public class TeamServiceImpl implements TeamService {
         return team;
     }
 
-    private Member getMemberByUserId(String userName, String avatarUrl, String email) {
-        Optional<Member> optionalMember = memberRepository.findByEmail(email);
 
-        Member member;
-        if (optionalMember.isPresent()) {
 
-            member = memberService.updateMember(userName, avatarUrl, email);
 
-        } else {
-
-            member = memberService.registerMember(userName, avatarUrl, email);
-        }
-
-        return member;
-    }
 
 }
