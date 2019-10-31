@@ -26,6 +26,7 @@ dependencies {
     compile project(':account-service')
     compile project(':auth-service')
     compile project(':scrumboard-service')
+    compile project(':email-service')
 
     compile('org.postgresql:postgresql')
     compile 'org.springframework.boot:spring-boot-starter-actuator'
