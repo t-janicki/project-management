@@ -1,0 +1,51 @@
+package com.email.service;
+
+import com.email.Mail;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.stereotype.Service;
+
+@Service
+public class SimpleEmailService {
+    private JavaMailSender javaMailSender;
+    private MailCreatorService mailCreatorService;
+
+    @Autowired
+    public SimpleEmailService(JavaMailSender javaMailSender,
+                              MailCreatorService mailCreatorService) {
+        this.javaMailSender = javaMailSender;
+        this.mailCreatorService = mailCreatorService;
+    }
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleMailMessage.class);
+
+    public void sendInvitationMessage(final Mail mail, String teamInfo) {
+
+        LOGGER.info("Starting email preparation...");
+        try {
+
+            javaMailSender.send(createInvitationMessage(mail, teamInfo));
+            LOGGER.info("Email has been sent.");
+        } catch (MailException e) {
+
+            LOGGER.error("Failed to process email sending: ", e.getMessage(), e);
+        }
+    }
+
+    private MimeMessagePreparator createInvitationMessage(final Mail mail, String teamInfo) {
+        return mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+            messageHelper.setTo(mail.getMailTo());
+            messageHelper.setSubject(mail.getSubject());
+            messageHelper.setText(mailCreatorService.buildInvitationEmail(mail.getMessage(), teamInfo), true);
+        };
+    }
+}

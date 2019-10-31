@@ -3,6 +3,8 @@ package com.application.web;
 import com.account.domain.User;
 import com.account.service.UserService;
 import com.application.facade.UserAuthFacade;
+import com.email.Mail;
+import com.email.service.SimpleEmailService;
 import com.scrumboard.domain.Member;
 import com.scrumboard.service.MemberService;
 import com.utility.web.request.user.LoginRequest;
@@ -24,12 +26,15 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class AuthController {
     private UserService userService;
     private UserAuthFacade userAuthFacade;
+    private SimpleEmailService simpleEmailService;
 
     @Autowired
     public AuthController(UserService userService,
-                          UserAuthFacade userAuthFacade) {
+                          UserAuthFacade userAuthFacade,
+                          SimpleEmailService simpleEmailService) {
         this.userService = userService;
         this.userAuthFacade = userAuthFacade;
+        this.simpleEmailService = simpleEmailService;
     }
 
     @PostMapping("/login")
@@ -46,5 +51,17 @@ public class AuthController {
 
         return ResponseEntity.created(location)
                 .body(new ApiResponse(true, "User registered successfully@"));
+    }
+
+    @GetMapping
+    public boolean testEmail() {
+
+        simpleEmailService.sendInvitationMessage(new Mail(
+                "tjaygallery@gmail.com",
+                "SUBJECT",
+                "Message"),
+                "Team Information");
+
+        return true;
     }
 }
