@@ -43,7 +43,7 @@ public class TeamController {
                 teamDTO.getTeamInfo().getDescription(),
                 user.getName(),
                 user.getAvatarUrl(),
-                user.getId()
+                user.getEmail()
         );
 
         return teamMapper.mapToTeamDTO(team);
@@ -56,7 +56,7 @@ public class TeamController {
         List<Team> teams = teamService.getTeamsByMembersIn(
                 user.getName(),
                 user.getAvatarUrl(),
-                user.getId()
+                user.getEmail()
         );
 
         return teamMapper.mapToTeamDTOList(teams);
@@ -71,7 +71,7 @@ public class TeamController {
                 teamId,
                 user.getName(),
                 user.getAvatarUrl(),
-                user.getId()
+                user.getEmail()
         );
 
         return teamMapper.mapToTeamDTO(team);
@@ -85,7 +85,7 @@ public class TeamController {
                 teamInfoDTO.getId(),
                 teamInfoDTO.getDisplayName(),
                 teamInfoDTO.getDescription(),
-                teamInfoDTO.getOwnerId()
+                teamInfoDTO.getOwnerEmail()
         );
 
         return teamMapper.mapToTeamDTO(team);

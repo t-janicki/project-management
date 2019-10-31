@@ -16,22 +16,22 @@ public class Member {
     private String avatarUrl;
 
     @Column
-    private Long userId;
+    private String email;
 
     public Member() {
     }
 
-    public Member(String name, String avatarUrl, Long userId) {
+    public Member(String name, String avatarUrl, String email) {
         this.name = name;
         this.avatarUrl = avatarUrl;
-        this.userId = userId;
+        this.email = email;
     }
 
-    public Member(Long id, String name, String avatarUrl, Long userId) {
+    public Member(Long id, String name, String avatarUrl, String email) {
         this.id = id;
         this.name = name;
         this.avatarUrl = avatarUrl;
-        this.userId = userId;
+        this.email = email;
     }
 
     public Long getId() {
@@ -54,11 +54,11 @@ public class Member {
         this.avatarUrl = avatarUrl;
     }
 
-    public Long getUserId() {
-        return userId;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public String getEmail() {
+        return email;
     }
 }

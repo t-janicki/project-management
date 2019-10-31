@@ -6,7 +6,6 @@ public class TeamDTO {
     //    private Long id;
 //    private String displayName;
 //    private String description;
-//    private Long ownerId;
     private TeamInfoDTO teamInfo;
     private List<MemberDTO> members;
     private List<BoardDTO> boards;

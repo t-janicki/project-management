@@ -17,18 +17,18 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member registerMember(String name, String avatarUrl, Long userId) {
+    public Member registerMember(String name, String avatarUrl, String email) {
         Member member = new Member();
         member.setName(name);
         member.setAvatarUrl(avatarUrl);
-        member.setUserId(userId);
+        member.setEmail(email);
 
         return memberRepository.save(member);
     }
 
     @Override
-    public Member updateMember(String name, String avatarUrl, Long userId) {
-        Member member = memberRepository.findByUserId(userId)
+    public Member updateMember(String name, String avatarUrl, String email) {
+        Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("Member not found"));
 
         member.setName(name);

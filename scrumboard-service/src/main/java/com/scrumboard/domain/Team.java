@@ -18,7 +18,7 @@ public class Team {
     private String description;
 
     @Column
-    private Long ownerId;
+    private String ownerEmail;
 
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Member> members;
@@ -49,12 +49,12 @@ public class Team {
         this.description = description;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
+    public String getOwnerEmail() {
+        return ownerEmail;
     }
 
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
     }
 
     public List<Member> getMembers() {

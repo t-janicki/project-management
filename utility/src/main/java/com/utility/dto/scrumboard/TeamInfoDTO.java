@@ -4,16 +4,16 @@ public class TeamInfoDTO {
     private Long id;
     private String displayName;
     private String description;
-    private Long ownerId;
+    private String ownerEmail;
 
     public TeamInfoDTO() {
     }
 
-    public TeamInfoDTO(Long id, String displayName, String description, Long ownerId) {
+    public TeamInfoDTO(Long id, String displayName, String description, String ownerEmail) {
         this.id = id;
         this.displayName = displayName;
         this.description = description;
-        this.ownerId = ownerId;
+        this.ownerEmail = ownerEmail;
     }
 
     public Long getId() {
@@ -28,7 +28,7 @@ public class TeamInfoDTO {
         return description;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
+    public String getOwnerEmail() {
+        return ownerEmail;
     }
 }

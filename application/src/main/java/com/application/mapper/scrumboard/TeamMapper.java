@@ -26,7 +26,7 @@ public final class TeamMapper {
                 team.getId(),
                 team.getDisplayName(),
                 team.getDescription(),
-                team.getOwnerId()
+                team.getOwnerEmail()
         );
 
         return new TeamDTO(

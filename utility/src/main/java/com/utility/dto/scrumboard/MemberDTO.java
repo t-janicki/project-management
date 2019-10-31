@@ -4,16 +4,16 @@ public class MemberDTO {
     private Long id;
     private String name;
     private String avatarUrl;
-    private Long userId;
+    private String email;
 
     public MemberDTO() {
     }
 
-    public MemberDTO(Long id, String name, String avatarUrl, Long userId) {
+    public MemberDTO(Long id, String name, String avatarUrl, String email) {
         this.id = id;
         this.name = name;
         this.avatarUrl = avatarUrl;
-        this.userId = userId;
+        this.email = email;
     }
 
     public Long getId() {
@@ -28,7 +28,7 @@ public class MemberDTO {
         return avatarUrl;
     }
 
-    public Long getUserId() {
-        return userId;
+    public String getEmail() {
+        return email;
     }
 }

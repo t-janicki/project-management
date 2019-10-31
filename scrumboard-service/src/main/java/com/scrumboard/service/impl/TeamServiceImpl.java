@@ -37,15 +37,15 @@ public class TeamServiceImpl implements TeamService {
     }
 
     public Team createNewTeam(String displayName, String description,
-                              String userName, String avatarUrl, Long userId) {
+                              String userName, String avatarUrl, String email) {
 
-        Member member = getMemberByUserId(userName, avatarUrl, userId);
+        Member member = getMemberByUserId(userName, avatarUrl, email);
 
         Team team = new Team();
 
         team.setDisplayName(displayName);
         team.setDescription(description);
-        team.setOwnerId(userId);
+        team.setOwnerEmail(email);
         team.setMembers(Collections.singletonList(member));
         team.setBoard(new ArrayList<>());
 
@@ -53,43 +53,43 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Team getTeamByIdAndMembersIn(Long teamId, String userName, String avatarUrl, Long userId) {
-        Member member = getMemberByUserId(userName, avatarUrl, userId);
+    public Team getTeamByIdAndMembersIn(Long teamId, String userName, String avatarUrl, String email) {
+        Member member = getMemberByUserId(userName, avatarUrl, email);
 
         return teamRepository.findByIdAndMembersIn(teamId, Collections.singletonList(member))
                 .orElseThrow(() -> new NotFoundException("Team not found"));
     }
 
-    public List<Team> getTeamsByMembersIn(String userName, String avatarUrl, Long userId) {
-        Member member = getMemberByUserId(userName, avatarUrl, userId);
+    public List<Team> getTeamsByMembersIn(String userName, String avatarUrl, String email) {
+        Member member = getMemberByUserId(userName, avatarUrl, email);
 
         return teamRepository.findAllByMembersIn(Collections.singletonList(member));
     }
 
     @Override
-    public Team updateTeamInfo(Long id, String displayName, String description, Long ownerId) {
+    public Team updateTeamInfo(Long id, String displayName, String description, String email) {
         Team team = getTeamById(id);
 
         team.setDisplayName(displayName);
         team.setDescription(description);
-        team.setOwnerId(ownerId);
+        team.setOwnerEmail(email);
 
         teamRepository.save(team);
 
         return team;
     }
 
-    private Member getMemberByUserId(String userName, String avatarUrl, Long userId) {
-        Optional<Member> optionalMember = memberRepository.findByUserId(userId);
+    private Member getMemberByUserId(String userName, String avatarUrl, String email) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
 
         Member member;
         if (optionalMember.isPresent()) {
 
-            member = memberService.updateMember(userName, avatarUrl, userId);
+            member = memberService.updateMember(userName, avatarUrl, email);
 
         } else {
 
-            member = memberService.registerMember(userName, avatarUrl, userId);
+            member = memberService.registerMember(userName, avatarUrl, email);
         }
 
         return member;

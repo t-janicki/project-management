@@ -12,7 +12,7 @@ public final class MemberMapper {
                 memberDTO.getId(),
                 memberDTO.getName(),
                 memberDTO.getAvatarUrl(),
-                memberDTO.getUserId()
+                memberDTO.getEmail()
         );
     }
 
@@ -21,7 +21,7 @@ public final class MemberMapper {
                 member.getId(),
                 member.getName(),
                 member.getAvatarUrl(),
-                member.getUserId()
+                member.getEmail()
         );
     }
 }
