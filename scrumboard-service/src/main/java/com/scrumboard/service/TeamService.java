@@ -15,4 +15,6 @@ public interface TeamService {
     List<Team> getTeamsByMembersIn(String name, String avatarUrl, String email);
 
     Team updateTeamInfo(Long id, String displayName, String description, String email);
+
+    Team inviteMemberToTeam(Long teamId, String email);
 }

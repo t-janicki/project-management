@@ -76,8 +76,15 @@ public class TeamServiceImpl implements TeamService {
         return team;
     }
 
+    @Override
+    public Team inviteMemberToTeam(Long teamId, String email) {
+        Member member = memberService.getMemberByEmail("", "assets/images/avatars/profile.jpg", email);
 
+        Team team = getTeamById(teamId);
+        team.getMembers().add(member);
 
+        return teamRepository.save(team);
+    }
 
 
 }

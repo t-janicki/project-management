@@ -7,6 +7,7 @@ import com.auth.security.CurrentUser;
 import com.auth.security.UserPrincipal;
 import com.scrumboard.domain.Team;
 import com.scrumboard.service.TeamService;
+import com.scrumboard.web.InviteRequest;
 import com.utility.dto.scrumboard.TeamDTO;
 import com.utility.dto.scrumboard.TeamInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +88,13 @@ public class TeamController {
                 teamInfoDTO.getDescription(),
                 teamInfoDTO.getOwnerEmail()
         );
+
+        return teamMapper.mapToTeamDTO(team);
+    }
+
+    @PutMapping(value = "/invite", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    public TeamDTO inviteMemberToTeam(@RequestBody InviteRequest request) {
+        Team team = teamService.inviteMemberToTeam(request.getTeamId(), request.getEmail());
 
         return teamMapper.mapToTeamDTO(team);
     }

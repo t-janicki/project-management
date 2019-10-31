@@ -4,5 +4,5 @@ import com.scrumboard.domain.Member;
 
 public interface MemberService {
 
-    Member getMemberByEmail(String userName, String avatarUrl, String email);
+    Member getMemberByEmail(String name, String avatarUrl, String email);
 }
