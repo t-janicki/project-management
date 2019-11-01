@@ -17,9 +17,11 @@ import com.utility.web.request.user.NewPasswordRequest;
 import com.utility.web.request.user.SignUpRequest;
 import com.utility.web.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.PersistenceException;
 import java.util.Collections;
 
 import static com.utility.validation.PhoneValidation.validatePhoneNumberFormat;
@@ -64,11 +66,11 @@ public class UserServiceImpl implements UserService {
 
         try {
             user = userRepository.save(user);
-        } catch (RuntimeException ex) {
-            throw new BadRequestException("Something went wrong, try again later. ");
-        }
+            return user;
 
-        return user;
+        } catch (DataIntegrityViolationException ex) {
+            throw new BadRequestException("Email already in use. ");
+        }
     }
 
     public User getUserById(Long id) {
@@ -124,7 +126,7 @@ public class UserServiceImpl implements UserService {
 
     private void checkEmailAvailability(String email) {
         if (userRepository.existsByEmailAndIsDeletedIsFalse(email)) {
-            throw new BadRequestException("Email address already in use.");
+            throw new BadRequestException("Email already in use.");
         }
     }
 }
