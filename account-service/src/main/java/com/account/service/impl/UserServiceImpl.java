@@ -21,7 +21,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.PersistenceException;
 import java.util.Collections;
 
 import static com.utility.validation.PhoneValidation.validatePhoneNumberFormat;
