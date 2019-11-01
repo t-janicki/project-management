@@ -98,4 +98,11 @@ public class TeamController {
 
         return teamMapper.mapToTeamDTO(team);
     }
+
+    @PatchMapping(value = "/remove", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    public TeamDTO removeMemberFromTeam(@RequestBody InviteRequest request) {
+        Team team = teamService.removeMemberFromTeam(request.getTeamId(), request.getEmail());
+
+        return teamMapper.mapToTeamDTO(team);
+    }
 }

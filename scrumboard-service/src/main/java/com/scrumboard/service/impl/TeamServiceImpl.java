@@ -6,6 +6,7 @@ import com.scrumboard.repository.MemberRepository;
 import com.scrumboard.repository.TeamRepository;
 import com.scrumboard.service.MemberService;
 import com.scrumboard.service.TeamService;
+import com.utility.exception.ExistsException;
 import com.utility.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -78,13 +79,38 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public Team inviteMemberToTeam(Long teamId, String email) {
+        Team team = getTeamById(teamId);
+
+        Optional<Member> memberOptional = team.getMembers().stream()
+                .filter(m -> m.getEmail().equalsIgnoreCase(email))
+                .findFirst();
+
+        if (memberOptional.isPresent()) {
+            throw new ExistsException("Member already added. ");
+        }
+
         Member member = memberService.getMemberByEmail("", "assets/images/avatars/profile.jpg", email);
 
-        Team team = getTeamById(teamId);
         team.getMembers().add(member);
 
         return teamRepository.save(team);
     }
 
+    @Override
+    public Team removeMemberFromTeam(Long teamId, String email) {
+        Team team = getTeamById(teamId);
+
+        Optional<Member> memberOptional = team.getMembers().stream()
+                .filter(m -> m.getEmail().equalsIgnoreCase(email))
+                .findFirst();
+
+        if (!memberOptional.isPresent()) {
+            throw new ExistsException("Member not found. ");
+        }
+
+        team.getMembers().remove(memberOptional.get());
+
+        return teamRepository.save(team);
+    }
 
 }

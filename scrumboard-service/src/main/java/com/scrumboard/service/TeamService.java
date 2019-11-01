@@ -17,4 +17,7 @@ public interface TeamService {
     Team updateTeamInfo(Long id, String displayName, String description, String email);
 
     Team inviteMemberToTeam(Long teamId, String email);
+
+    Team removeMemberFromTeam(Long teamId, String email);
+
 }
