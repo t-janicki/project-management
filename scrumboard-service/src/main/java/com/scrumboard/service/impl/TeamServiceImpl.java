@@ -6,9 +6,12 @@ import com.scrumboard.repository.MemberRepository;
 import com.scrumboard.repository.TeamRepository;
 import com.scrumboard.service.MemberService;
 import com.scrumboard.service.TeamService;
+import com.utility.exception.AccessForbiddenException;
+import com.utility.exception.BadRequestException;
 import com.utility.exception.ExistsException;
 import com.utility.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -97,7 +100,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Team removeMemberFromTeam(Long teamId, String email) {
+    public Team removeMemberFromTeam(Long teamId, String email, String currentUserEmail) {
         Team team = getTeamById(teamId);
 
         Optional<Member> memberOptional = team.getMembers().stream()
@@ -106,11 +109,18 @@ public class TeamServiceImpl implements TeamService {
 
         if (!memberOptional.isPresent()) {
             throw new ExistsException("Member not found. ");
+
+        } else if(email.equalsIgnoreCase(team.getOwnerEmail())) {
+            throw new BadRequestException("Cannot remove leader. ");
+
+        } else if (email.equalsIgnoreCase(currentUserEmail) || currentUserEmail.equalsIgnoreCase(team.getOwnerEmail())) {
+            team.getMembers().remove(memberOptional.get());
+
+            return teamRepository.save(team);
+
+        } else {
+            throw new AccessForbiddenException("Forbidden. ");
         }
-
-        team.getMembers().remove(memberOptional.get());
-
-        return teamRepository.save(team);
     }
 
 }

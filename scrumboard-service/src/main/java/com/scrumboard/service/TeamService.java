@@ -18,6 +18,6 @@ public interface TeamService {
 
     Team inviteMemberToTeam(Long teamId, String email);
 
-    Team removeMemberFromTeam(Long teamId, String email);
+    Team removeMemberFromTeam(Long teamId, String email, String currentUserEmail);
 
 }

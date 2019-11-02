@@ -100,8 +100,11 @@ public class TeamController {
     }
 
     @PatchMapping(value = "/remove", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public TeamDTO removeMemberFromTeam(@RequestBody InviteRequest request) {
-        Team team = teamService.removeMemberFromTeam(request.getTeamId(), request.getEmail());
+    public TeamDTO removeMemberFromTeam(@CurrentUser UserPrincipal userPrincipal,
+                                        @RequestBody InviteRequest request) {
+        String currentUserEmail = userService.getUserById(userPrincipal.getId()).getEmail();
+
+        Team team = teamService.removeMemberFromTeam(request.getTeamId(), request.getEmail(), currentUserEmail);
 
         return teamMapper.mapToTeamDTO(team);
     }
