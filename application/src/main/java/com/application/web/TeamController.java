@@ -10,6 +10,7 @@ import com.scrumboard.service.TeamService;
 import com.scrumboard.web.InviteRequest;
 import com.utility.dto.scrumboard.TeamDTO;
 import com.utility.dto.scrumboard.TeamInfoDTO;
+import com.utility.web.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,7 +55,7 @@ public class TeamController {
     public List<TeamDTO> getTeams(@CurrentUser UserPrincipal userPrincipal) {
         User user = userService.getUserById(userPrincipal.getId());
 
-        List<Team> teams = teamService.getTeamsByMembersIn(
+        List<Team> teams = teamService.getTeamsByMembersInAndIsDeletedIsFalse(
                 user.getName(),
                 user.getAvatarUrl(),
                 user.getEmail()
@@ -68,7 +69,7 @@ public class TeamController {
                                @PathVariable Long teamId) {
         User user = userService.getUserById(userPrincipal.getId());
 
-        Team team = teamService.getTeamByIdAndMembersIn(
+        Team team = teamService.getTeamByIdAndMembersInAndIsDeletedIsFalse(
                 teamId,
                 user.getName(),
                 user.getAvatarUrl(),
@@ -107,5 +108,14 @@ public class TeamController {
         Team team = teamService.removeMemberFromTeam(request.getTeamId(), request.getEmail(), currentUserEmail);
 
         return teamMapper.mapToTeamDTO(team);
+    }
+
+    @DeleteMapping(value = "/{teamId}")
+    public ApiResponse deleteTeam(@CurrentUser UserPrincipal userPrincipal,
+                                  @PathVariable Long teamId) {
+
+        teamService.deleteTeam(teamId, userPrincipal.getEmail());
+
+        return new ApiResponse(true, "Team deleted. ");
     }
 }

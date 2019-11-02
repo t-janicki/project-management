@@ -20,6 +20,9 @@ public class Team {
     @Column
     private String ownerEmail;
 
+    @Column
+    private Boolean isDeleted;
+
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Member> members;
 
@@ -55,6 +58,14 @@ public class Team {
 
     public void setOwnerEmail(String ownerEmail) {
         this.ownerEmail = ownerEmail;
+    }
+
+    public Boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
     }
 
     public List<Member> getMembers() {

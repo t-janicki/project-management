@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface TeamRepository extends JpaRepository<Team, Long> {
 
-    List<Team> findAllByMembersIn(List<Member> members);
+    List<Team> findAllByMembersInAndIsDeletedIsFalse(List<Member> members);
 
-    Optional<Team> findByIdAndMembersIn(Long teamId, List<Member> members);
+    Optional<Team> findByIdAndMembersInAndIsDeletedIsFalse(Long teamId, List<Member> members);
 }

@@ -10,9 +10,9 @@ public interface TeamService {
 
     Team createNewTeam(String displayName, String description, String userName, String avatarUrl, String email);
 
-    Team getTeamByIdAndMembersIn(Long teamId, String name, String avatarUrl, String email);
+    Team getTeamByIdAndMembersInAndIsDeletedIsFalse(Long teamId, String name, String avatarUrl, String email);
 
-    List<Team> getTeamsByMembersIn(String name, String avatarUrl, String email);
+    List<Team> getTeamsByMembersInAndIsDeletedIsFalse(String name, String avatarUrl, String email);
 
     Team updateTeamInfo(Long id, String displayName, String description, String email);
 
@@ -20,4 +20,5 @@ public interface TeamService {
 
     Team removeMemberFromTeam(Long teamId, String email, String currentUserEmail);
 
+    Team deleteTeam(Long teamId, String currentUserEmail);
 }

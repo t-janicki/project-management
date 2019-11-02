@@ -2,7 +2,6 @@ package com.scrumboard.service.impl;
 
 import com.scrumboard.domain.Member;
 import com.scrumboard.domain.Team;
-import com.scrumboard.repository.MemberRepository;
 import com.scrumboard.repository.TeamRepository;
 import com.scrumboard.service.MemberService;
 import com.scrumboard.service.TeamService;
@@ -11,7 +10,6 @@ import com.utility.exception.BadRequestException;
 import com.utility.exception.ExistsException;
 import com.utility.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -47,6 +45,7 @@ public class TeamServiceImpl implements TeamService {
         team.setDisplayName(displayName);
         team.setDescription(description);
         team.setOwnerEmail(email);
+        team.setDeleted(Boolean.FALSE);
         team.setMembers(Collections.singletonList(member));
         team.setBoard(new ArrayList<>());
 
@@ -54,17 +53,17 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Team getTeamByIdAndMembersIn(Long teamId, String userName, String avatarUrl, String email) {
+    public Team getTeamByIdAndMembersInAndIsDeletedIsFalse(Long teamId, String userName, String avatarUrl, String email) {
         Member member = memberService.getMemberByEmail(userName, avatarUrl, email);
 
-        return teamRepository.findByIdAndMembersIn(teamId, Collections.singletonList(member))
+        return teamRepository.findByIdAndMembersInAndIsDeletedIsFalse(teamId, Collections.singletonList(member))
                 .orElseThrow(() -> new NotFoundException("Team not found"));
     }
 
-    public List<Team> getTeamsByMembersIn(String userName, String avatarUrl, String email) {
+    public List<Team> getTeamsByMembersInAndIsDeletedIsFalse(String userName, String avatarUrl, String email) {
         Member member = memberService.getMemberByEmail(userName, avatarUrl, email);
 
-        return teamRepository.findAllByMembersIn(Collections.singletonList(member));
+        return teamRepository.findAllByMembersInAndIsDeletedIsFalse(Collections.singletonList(member));
     }
 
     @Override
@@ -108,7 +107,7 @@ public class TeamServiceImpl implements TeamService {
                 .findFirst();
 
         if (!memberOptional.isPresent()) {
-            throw new ExistsException("Member not found. ");
+            throw new NotFoundException("Member not found. ");
 
         } else if(email.equalsIgnoreCase(team.getOwnerEmail())) {
             throw new BadRequestException("Cannot remove leader. ");
@@ -118,6 +117,21 @@ public class TeamServiceImpl implements TeamService {
 
             return teamRepository.save(team);
 
+        } else {
+            throw new AccessForbiddenException("Forbidden. ");
+        }
+    }
+
+    @Override
+    public Team deleteTeam(Long teamId, String currentUserEmail) {
+        Team team = getTeamById(teamId);
+
+        if (team.getOwnerEmail().equalsIgnoreCase(currentUserEmail)) {
+
+            team.setDeleted(Boolean.TRUE);
+            teamRepository.save(team);
+
+            return team;
         } else {
             throw new AccessForbiddenException("Forbidden. ");
         }
