@@ -12,6 +12,8 @@ public interface UserService {
 
     User getUserById(Long id);
 
+    User getDummyUserByEmail(String email);
+
     ApiResponse newPasswordRequest(Long id, NewPasswordRequest request);
 
     User updateUser(Long id, UserDTO userDTO);

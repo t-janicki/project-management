@@ -70,6 +70,11 @@ public class User {
     public User() {
     }
 
+    public User(String name, String avatarUrl) {
+        this.name = name;
+        this.avatarUrl = avatarUrl;
+    }
+
     public Long getId() {
         return id;
     }

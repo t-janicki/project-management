@@ -80,7 +80,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Team inviteMemberToTeam(Long teamId, String email) {
+    public Team inviteMemberToTeam(Long teamId, String email, String userName, String avatarUrl) {
         Team team = getTeamById(teamId);
 
         Optional<Member> memberOptional = team.getMembers().stream()
@@ -91,7 +91,7 @@ public class TeamServiceImpl implements TeamService {
             throw new ExistsException("Member already added. ");
         }
 
-        Member member = memberService.getMemberByEmail("", "assets/images/avatars/profile.jpg", email);
+        Member member = memberService.getMemberByEmail(userName, avatarUrl, email);
 
         team.getMembers().add(member);
 

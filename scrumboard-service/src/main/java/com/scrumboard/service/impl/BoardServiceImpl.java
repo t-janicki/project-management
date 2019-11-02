@@ -64,15 +64,12 @@ public class BoardServiceImpl implements BoardService {
     }
 
     public List<Board> getBoards(Long userId, BoardType boardType) {
-//        return boardRepository.findAllByIsDeletedIsFalseAndUserId(userId);
         return boardRepository.findAllByUserIdAndBoardTypeAndIsDeletedIsFalse(userId, boardType);
     }
 
     public Board getBoardByIdAndUserId(Long boardId, Long userId, BoardType boardType) {
         Board board = boardRepository.findByIdAndIsDeletedIsFalseAndUserIdAndBoardType(boardId, userId, boardType)
                 .orElseThrow(() -> new NotFoundException("Board not found with id: " + boardId));
-
-//        Board board = boardRepository.findById(boardId).get();
 
         board.getLists().sort(Comparator.comparing(BoardList::getPosition));
 

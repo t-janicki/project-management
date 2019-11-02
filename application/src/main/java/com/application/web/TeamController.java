@@ -80,8 +80,7 @@ public class TeamController {
     }
 
     @PutMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public TeamDTO updateTeamInfo(@CurrentUser UserPrincipal userPrincipal,
-                                  @RequestBody TeamInfoDTO teamInfoDTO) {
+    public TeamDTO updateTeamInfo(@RequestBody TeamInfoDTO teamInfoDTO) {
 
         Team team = teamService.updateTeamInfo(
                 teamInfoDTO.getId(),
@@ -95,7 +94,9 @@ public class TeamController {
 
     @PutMapping(value = "/invite", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public TeamDTO inviteMemberToTeam(@RequestBody InviteRequest request) {
-        Team team = teamService.inviteMemberToTeam(request.getTeamId(), request.getEmail());
+        User user = userService.getDummyUserByEmail(request.getEmail());
+
+        Team team = teamService.inviteMemberToTeam(request.getTeamId(), request.getEmail(), user.getName(), user.getAvatarUrl());
 
         return teamMapper.mapToTeamDTO(team);
     }

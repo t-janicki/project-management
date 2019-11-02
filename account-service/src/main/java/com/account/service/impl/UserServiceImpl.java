@@ -77,6 +77,12 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
     }
 
+    @Override
+    public User getDummyUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElse(new User("", "assets/images/avatars/unknown.jpg"));
+    }
+
     public ApiResponse newPasswordRequest(Long id, NewPasswordRequest request) {
         User user = getUserById(id);
 
