@@ -8,6 +8,7 @@ import com.auth.security.UserPrincipal;
 import com.scrumboard.domain.Team;
 import com.scrumboard.service.TeamService;
 import com.scrumboard.web.InviteRequest;
+import com.utility.dto.scrumboard.MemberDTO;
 import com.utility.dto.scrumboard.TeamDTO;
 import com.utility.dto.scrumboard.TeamInfoDTO;
 import com.utility.web.response.ApiResponse;
@@ -93,12 +94,12 @@ public class TeamController {
     }
 
     @PutMapping(value = "/invite", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public TeamDTO inviteMemberToTeam(@RequestBody InviteRequest request) {
+    public List<MemberDTO> inviteMemberToTeam(@RequestBody InviteRequest request) {
         User user = userService.getDummyUserByEmail(request.getEmail());
 
         Team team = teamService.inviteMemberToTeam(request.getTeamId(), request.getEmail(), user.getName(), user.getAvatarUrl());
 
-        return teamMapper.mapToTeamDTO(team);
+        return teamMapper.mapToTeamDTO(team).getMembers();
     }
 
     @PatchMapping(value = "/remove", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
