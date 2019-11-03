@@ -62,13 +62,13 @@ public final class UserAuthFacade {
         UserInfoResponse userDetailsResponse = new UserInfoResponse(
                 user.getId(),
                 roleToString(user),
-                user.getName(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getDisplayName(),
                 user.getAvatarUrl(),
                 user.getEmail(),
                 user.getPhone(),
-                user.getActive(),
-                user.getEmailVerified(),
-                user.getJobTitle()
+                user.getEmailVerified()
         );
 
         return new AuthResponse(

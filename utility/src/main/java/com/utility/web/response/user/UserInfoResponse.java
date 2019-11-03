@@ -1,37 +1,31 @@
 package com.utility.web.response.user;
 
 public class UserInfoResponse {
-    //    private Long createdAt;
-//    private Long updatedAt;
-//    private String createdByUserId;
-//    private String updatedByUserId;
     private Long id;
     private String role;
-    private String name;
+    private String firstName;
+    private String lastName;
+    private String displayName;
     private String avatarUrl;
     private String email;
     private String phone;
-    private Boolean isActive;
     private Boolean emailVerified;
-    private String jobTitle;
 
     public UserInfoResponse() {
     }
 
-    public UserInfoResponse(Long id, String role,
-                            String name, String avatarUrl,
-                            String email, String phone,
-                            Boolean isActive, Boolean emailVerified,
-                            String jobTitle) {
+    public UserInfoResponse(Long id, String role, String firstName, String lastName,
+                            String displayName, String avatarUrl,
+                            String email, String phone, Boolean emailVerified) {
         this.id = id;
         this.role = role;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.displayName = displayName;
         this.avatarUrl = avatarUrl;
         this.email = email;
         this.phone = phone;
-        this.isActive = isActive;
         this.emailVerified = emailVerified;
-        this.jobTitle = jobTitle;
     }
 
     public Long getId() {
@@ -42,8 +36,16 @@ public class UserInfoResponse {
         return role;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 
     public String getAvatarUrl() {
@@ -58,15 +60,8 @@ public class UserInfoResponse {
         return phone;
     }
 
-    public Boolean getActive() {
-        return isActive;
-    }
-
     public Boolean getEmailVerified() {
         return emailVerified;
     }
 
-    public String getJobTitle() {
-        return jobTitle;
-    }
 }

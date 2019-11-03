@@ -92,11 +92,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         user.setProvider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()));
         user.setProviderId(oAuth2UserInfo.getId());
-        user.setName(oAuth2UserInfo.getName());
+        user.setFirstName(oAuth2UserInfo.getFirstName());
+        user.setLastName(oAuth2UserInfo.getLastName());
+        user.setDisplayName(oAuth2UserInfo.getDisplayName());
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setAvatarUrl(oAuth2UserInfo.getAvatarUrl());
-        user.setActive(Boolean.TRUE);
         user.setDeleted(Boolean.FALSE);
+        user.setEmailVerified(Boolean.TRUE);
         user.setEmailVerificationToken(null);
         user.setRoles(Collections.singleton(role));
         user.setSettings(settingsService.createDefaultLayoutSettings());
@@ -105,8 +107,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
-        existingUser.setName(oAuth2UserInfo.getName());
+
+        existingUser.setFirstName(oAuth2UserInfo.getFirstName());
+        existingUser.setLastName(oAuth2UserInfo.getLastName());
+        existingUser.setDisplayName(oAuth2UserInfo.getDisplayName());
         existingUser.setAvatarUrl(oAuth2UserInfo.getAvatarUrl());
+
         return userRepository.save(existingUser);
     }
 

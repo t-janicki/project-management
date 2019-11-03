@@ -52,12 +52,12 @@ public class UserServiceImpl implements UserService {
 
         User user = new User();
 
-        user.setName(request.getName());
+        user.setDisplayName(request.getName());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setProvider(AuthProvider.local);
-        user.setActive(Boolean.TRUE);
         user.setDeleted(Boolean.FALSE);
+        user.setEmailVerified(Boolean.FALSE);
         user.setEmailVerificationToken(null);
         user.setRoles(Collections.singleton(role));
         user.setAvatarUrl("assets/images/avatars/profile.jpg");
@@ -118,10 +118,11 @@ public class UserServiceImpl implements UserService {
             validatePhoneNumberFormat(request.getPhone());
         }
 
-        user.setName(request.getName());
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setDisplayName(request.getDisplayName());
         user.setEmail(request.getEmail());
         user.setPhone(request.getPhone());
-        user.setJobTitle(request.getJobTitle());
         user.setAvatarUrl(request.getAvatarUrl());
 
         userRepository.save(user);

@@ -19,8 +19,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    private String firstName;
+
+    @Column
+    private String lastName;
+
     @Column(nullable = false)
-    private String name;
+    private String displayName;
 
     @Email
     @Column(nullable = false)
@@ -36,9 +42,6 @@ public class User {
     @Size(max = 25)
     private String phone;
 
-    @Column
-    private String jobTitle;
-
     @JsonIgnore
     private String password;
 
@@ -47,9 +50,6 @@ public class User {
 
     @Column
     private String emailVerificationToken;
-
-    @Column
-    private Boolean isActive;
 
     @Column
     private Boolean isDeleted;
@@ -70,8 +70,8 @@ public class User {
     public User() {
     }
 
-    public User(String name, String avatarUrl) {
-        this.name = name;
+    public User(String displayName, String avatarUrl) {
+        this.displayName = displayName;
         this.avatarUrl = avatarUrl;
     }
 
@@ -79,12 +79,28 @@ public class User {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getEmail() {
@@ -119,14 +135,6 @@ public class User {
         this.phone = phone;
     }
 
-    public String getJobTitle() {
-        return jobTitle;
-    }
-
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -149,14 +157,6 @@ public class User {
 
     public void setEmailVerificationToken(String emailVerificationToken) {
         this.emailVerificationToken = emailVerificationToken;
-    }
-
-    public Boolean getActive() {
-        return isActive;
-    }
-
-    public void setActive(Boolean isActive) {
-        this.isActive = isActive;
     }
 
     public Boolean getDeleted() {

@@ -6,7 +6,9 @@ public final class UserDTO {
 //    private String createdByUserId;
 //    private String updatedByUserId;
     private Long id;
-    private String name;
+    private String firstName;
+    private String lastName;
+    private String displayName;
     private String email;
     private String phone;
     private String jobTitle;
@@ -18,26 +20,34 @@ public final class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(Long id, String name, String email,
-                   String phone, String jobTitle, String avatarUrl,
-                   Boolean isActive, Boolean emailVerified, String role) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.jobTitle = jobTitle;
-        this.avatarUrl = avatarUrl;
-        this.isActive = isActive;
-        this.emailVerified = emailVerified;
-        this.role = role;
-    }
+//    public UserDTO(Long id, String name, String email,
+//                   String phone, String jobTitle, String avatarUrl,
+//                   Boolean isActive, Boolean emailVerified, String role) {
+//        this.id = id;
+//        this.name = name;
+//        this.email = email;
+//        this.phone = phone;
+//        this.jobTitle = jobTitle;
+//        this.avatarUrl = avatarUrl;
+//        this.isActive = isActive;
+//        this.emailVerified = emailVerified;
+//        this.role = role;
+//    }
 
     public Long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getDisplayName() {
+        return displayName;
     }
 
     public String getEmail() {

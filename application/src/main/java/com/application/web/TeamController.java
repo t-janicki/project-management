@@ -44,7 +44,7 @@ public class TeamController {
         Team team = teamService.createNewTeam(
                 teamDTO.getTeamInfo().getDisplayName(),
                 teamDTO.getTeamInfo().getDescription(),
-                user.getName(),
+                user.getDisplayName(),
                 user.getAvatarUrl(),
                 user.getEmail()
         );
@@ -57,7 +57,7 @@ public class TeamController {
         User user = userService.getUserById(userPrincipal.getId());
 
         List<Team> teams = teamService.getTeamsByMembersInAndIsDeletedIsFalse(
-                user.getName(),
+                user.getDisplayName(),
                 user.getAvatarUrl(),
                 user.getEmail()
         );
@@ -72,7 +72,7 @@ public class TeamController {
 
         Team team = teamService.getTeamByIdAndMembersInAndIsDeletedIsFalse(
                 teamId,
-                user.getName(),
+                user.getDisplayName(),
                 user.getAvatarUrl(),
                 user.getEmail()
         );
@@ -97,7 +97,7 @@ public class TeamController {
     public List<MemberDTO> inviteMemberToTeam(@RequestBody InviteRequest request) {
         User user = userService.getDummyUserByEmail(request.getEmail());
 
-        Team team = teamService.inviteMemberToTeam(request.getTeamId(), request.getEmail(), user.getName(), user.getAvatarUrl());
+        Team team = teamService.inviteMemberToTeam(request.getTeamId(), request.getEmail(), user.getDisplayName(), user.getAvatarUrl());
 
         return teamMapper.mapToTeamDTO(team).getMembers();
     }

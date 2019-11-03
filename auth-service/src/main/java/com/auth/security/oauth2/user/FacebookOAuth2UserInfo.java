@@ -13,14 +13,25 @@ public class FacebookOAuth2UserInfo extends OAuth2UserInfo {
     }
 
     @Override
-    public String getName() {
+    public String getDisplayName() {
         return (String) attributes.get("name");
+    }
+
+    @Override
+    public String getFirstName() {
+        return (String) attributes.get("first_name");
+    }
+
+    @Override
+    public String getLastName() {
+        return (String) attributes.get("last_name");
     }
 
     @Override
     public String getEmail() {
         return (String) attributes.get("email");
     }
+
 
     @Override
     public String getAvatarUrl() {

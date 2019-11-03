@@ -236,7 +236,7 @@ public class BoardController {
                             @RequestBody ActivityDTO activityDTO) {
         User user = userService.getUserById(userPrincipal.getId());
 
-        Activity activity = activityService.newActivity(user.getName(), user.getAvatarUrl(), cardId, activityDTO.getMessage());
+        Activity activity = activityService.newActivity(user.getDisplayName(), user.getAvatarUrl(), cardId, activityDTO.getMessage());
 
         return activityMapper.mapToActivityDTO(activity);
     }
