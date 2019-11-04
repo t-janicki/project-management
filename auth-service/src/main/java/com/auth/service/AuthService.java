@@ -8,4 +8,8 @@ public interface AuthService {
     AuthResponse authenticateUser(LoginRequest loginRequest);
 
     Long getUserIdFromToken(String token);
+
+    String createPasswordResetToken(String email);
+
+    Boolean validateToken(String token);
 }

@@ -13,6 +13,7 @@ public class AuthProperties {
     public static class Auth {
         private String tokenSecret;
         private long tokenExpirationMsec;
+        private long passwordTokenExpirationMsec;
 
         public String getTokenSecret() {
             return tokenSecret;
@@ -28,6 +29,14 @@ public class AuthProperties {
 
         public void setTokenExpirationMsec(long tokenExpirationMsec) {
             this.tokenExpirationMsec = tokenExpirationMsec;
+        }
+
+        public long getPasswordTokenExpirationMsec() {
+            return passwordTokenExpirationMsec;
+        }
+
+        public void setPasswordTokenExpirationMsec(long passwordTokenExpirationMsec) {
+            this.passwordTokenExpirationMsec = passwordTokenExpirationMsec;
         }
     }
 

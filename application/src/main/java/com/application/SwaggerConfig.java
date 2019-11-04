@@ -29,23 +29,23 @@ public class SwaggerConfig {
     public static final String AUTHORIZATION_HEADER = "Authorization";
     public static final String DEFAULT_INCLUDE_PATTERN = "/api/.*";
     private static final String JWT = "JWT";
-    private final Logger log = LoggerFactory.getLogger(SwaggerConfig.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(SwaggerConfig.class);
 
     @Bean
     public Docket swaggerSpringfoxDocket() {
-        log.debug("Starting Swagger");
+        LOGGER.debug("Starting Swagger");
         Contact contact = new Contact(
                 "Tomasz Janicki",
                 "https://shielded-brook-69228.herokuapp.com",
-                "tjaygallery@gmail.com");
+                "projects.management.app@gmail.com");
 
         List<VendorExtension> text = new ArrayList<>();
 
         ApiInfo apiInfo = new ApiInfo(
-                "Restaurant API",
-                "Restaurant API. Production version.",
+                "Project Management BETA",
+                "Project Management BETA. Production version.",
                 "1.0.0",
-                "https://shielded-brook-69228.herokuapp.com",
+                "https://www.termsfeed.com/privacy-policy/750f0425b5f5e3501fc45706c6c48fc4",
                 contact,
                 "MIT",
                 "https://",

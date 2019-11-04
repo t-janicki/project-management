@@ -9,11 +9,13 @@ import com.account.repository.UserRepository;
 import com.account.service.LayoutSettingsService;
 import com.account.service.UserService;
 import com.utility.dto.user.UserDTO;
+import com.utility.exception.AccessForbiddenException;
 import com.utility.exception.BadRequestException;
 import com.utility.exception.NotFoundException;
 import com.utility.exception.ResourceNotFoundException;
 import com.utility.exception.user.UserMessages;
 import com.utility.web.request.user.NewPasswordRequest;
+import com.utility.web.request.user.PasswordReset;
 import com.utility.web.request.user.SignUpRequest;
 import com.utility.web.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,6 +109,19 @@ public class UserServiceImpl implements UserService {
         return new ApiResponse(true, UserMessages.PASSWORD_CHANGED.getMessage());
     }
 
+    public ApiResponse resetPassword(String token, PasswordReset passwordReset) {
+        User user = userRepository.findByPasswordResetToken(token)
+                .orElseThrow(() -> new NotFoundException("Not found"));
+
+        String encodedPassword = passwordEncoder.encode(passwordReset.getPassword());
+
+        user.setPassword(encodedPassword);
+        user.setPasswordResetToken(null);
+        userRepository.save(user);
+
+        return new ApiResponse(true, UserMessages.PASSWORD_CHANGED.getMessage());
+    }
+
     public User updateUser(UserDTO request) {
         User user = getUserById(request.getId());
 
@@ -124,9 +139,22 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public User savePasswordResetToken(String email, String token) {
+        User user = getUserByEmail(email);
+
+        user.setPasswordResetToken(token);
+        return userRepository.save(user);
+    }
+
     private void checkEmailAvailability(String email) {
         if (userRepository.existsByEmailAndIsDeletedIsFalse(email)) {
             throw new BadRequestException("Email already in use.");
         }
+    }
+
+    private User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new AccessForbiddenException("Access denied"));
     }
 }

@@ -1,7 +1,5 @@
 package com.auth.service.impl;
 
-import com.account.domain.User;
-import com.account.service.UserService;
 import com.auth.security.TokenProvider;
 import com.auth.service.AuthService;
 import com.utility.web.request.user.LoginRequest;
@@ -42,5 +40,13 @@ public class AuthServiceImpl implements AuthService {
 
     public Long getUserIdFromToken(String token) {
         return tokenProvider.getUserIdFromToken(token);
+    }
+
+    public String createPasswordResetToken(String email) {
+        return tokenProvider.createPasswordResetToken(email);
+    }
+
+    public Boolean validateToken(String token) {
+        return tokenProvider.validateToken(token);
     }
 }

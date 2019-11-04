@@ -9,6 +9,7 @@ import com.auth.service.AuthService;
 import com.utility.dto.user.UserDTO;
 import com.utility.web.request.user.LoginRequest;
 import com.utility.web.request.user.NewPasswordRequest;
+import com.utility.web.request.user.PasswordReset;
 import com.utility.web.response.ApiResponse;
 import com.utility.web.response.user.AuthResponse;
 import com.utility.web.response.user.UserInfoResponse;
@@ -83,5 +84,19 @@ public final class UserAuthFacade {
 
     public User updateUser(UserDTO userDTO) {
         return userService.updateUser(userDTO);
+    }
+
+    public String generatePasswordResetToken(String email) {
+        String token = authService.createPasswordResetToken(email);
+
+        userService.savePasswordResetToken(email, token);
+
+        return token;
+    }
+
+    public ApiResponse resetPassword(String token, PasswordReset passwordReset) {
+        authService.validateToken(token);
+
+        return userService.resetPassword(token, passwordReset);
     }
 }

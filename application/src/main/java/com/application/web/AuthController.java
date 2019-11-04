@@ -4,6 +4,7 @@ import com.account.domain.User;
 import com.account.service.UserService;
 import com.application.facade.UserAuthFacade;
 import com.utility.web.request.user.LoginRequest;
+import com.utility.web.request.user.PasswordReset;
 import com.utility.web.request.user.SignUpRequest;
 import com.utility.web.response.ApiResponse;
 import com.utility.web.response.user.AuthResponse;
@@ -44,4 +45,17 @@ public class AuthController {
                 .body(new ApiResponse(true, "User registered successfully@"));
     }
 
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPasswordToken(@RequestParam String email) {
+
+        return ResponseEntity.ok(userAuthFacade.generatePasswordResetToken(email));
+    }
+
+    @PostMapping("/reset-password")
+    public ApiResponse resetPassword(@RequestParam String token,
+                                     @RequestBody PasswordReset passwordReset) {
+
+        return userAuthFacade.resetPassword(token, passwordReset);
+    }
 }
