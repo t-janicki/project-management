@@ -1,9 +1,5 @@
 package com.email;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-//@Pattern(regexp = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
-
 public class Mail {
     private String mailTo;
     private String subject;
@@ -13,10 +9,9 @@ public class Mail {
     public Mail() {
     }
 
-    public Mail(String mailTo, String subject, String message) {
+    public Mail(String mailTo, String subject) {
         this.mailTo = mailTo;
         this.subject = subject;
-        this.message = message;
     }
 
     public String getMailTo() {

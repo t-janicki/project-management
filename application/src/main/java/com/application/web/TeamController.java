@@ -5,6 +5,9 @@ import com.account.service.UserService;
 import com.application.mapper.scrumboard.TeamMapper;
 import com.auth.security.CurrentUser;
 import com.auth.security.UserPrincipal;
+import com.email.InviteInfo;
+import com.email.Mail;
+import com.email.service.SimpleEmailService;
 import com.scrumboard.domain.Team;
 import com.scrumboard.service.TeamService;
 import com.scrumboard.web.InviteRequest;
@@ -16,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -26,14 +30,18 @@ public class TeamController {
     private TeamService teamService;
     private TeamMapper teamMapper;
     private UserService userService;
+    private SimpleEmailService simpleEmailService;
+
 
     @Autowired
     public TeamController(TeamService teamService,
                           TeamMapper teamMapper,
-                          UserService userService) {
+                          UserService userService,
+                          SimpleEmailService simpleEmailService) {
         this.teamService = teamService;
         this.teamMapper = teamMapper;
         this.userService = userService;
+        this.simpleEmailService = simpleEmailService;
     }
 
     @PostMapping(produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
@@ -94,10 +102,25 @@ public class TeamController {
     }
 
     @PutMapping(value = "/invite", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
-    public List<MemberDTO> inviteMemberToTeam(@RequestBody InviteRequest request) {
+    public List<MemberDTO> inviteMemberToTeam(@CurrentUser UserPrincipal userPrincipal,
+                                              @RequestBody InviteRequest request,
+                                              @RequestHeader Map<String, String> headers) {
         User user = userService.getDummyUserByEmail(request.getEmail());
 
         Team team = teamService.inviteMemberToTeam(request.getTeamId(), request.getEmail(), user.getDisplayName(), user.getAvatarUrl());
+
+        String teamUrl = headers.get("referer");
+
+        simpleEmailService.sendInvitationMessage(
+                new Mail(
+                request.getEmail(),
+                "Team Invitation"
+                ),
+                new InviteInfo(
+                        userPrincipal.getEmail(),
+                        team.getDisplayName(),
+                        teamUrl
+                ));
 
         return teamMapper.mapToTeamDTO(team).getMembers();
     }

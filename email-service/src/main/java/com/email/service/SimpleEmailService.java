@@ -1,5 +1,6 @@
 package com.email.service;
 
+import com.email.InviteInfo;
 import com.email.Mail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,12 +28,12 @@ public class SimpleEmailService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleMailMessage.class);
 
-    public void sendInvitationMessage(final Mail mail, String teamInfo) {
+    public void sendInvitationMessage(final Mail mail, InviteInfo inviteInfo) {
 
         LOGGER.info("Starting email preparation...");
         try {
 
-            javaMailSender.send(createInvitationMessage(mail, teamInfo));
+            javaMailSender.send(createInvitationMessage(mail, inviteInfo));
             LOGGER.info("Email has been sent.");
         } catch (MailException e) {
 
@@ -40,12 +41,12 @@ public class SimpleEmailService {
         }
     }
 
-    private MimeMessagePreparator createInvitationMessage(final Mail mail, String teamInfo) {
+    private MimeMessagePreparator createInvitationMessage(final Mail mail, InviteInfo inviteInfo) {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
             messageHelper.setSubject(mail.getSubject());
-            messageHelper.setText(mailCreatorService.buildInvitationEmail(mail.getMessage(), teamInfo), true);
+            messageHelper.setText(mailCreatorService.buildInvitationEmail(inviteInfo), true);
         };
     }
 }
