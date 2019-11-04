@@ -9,14 +9,13 @@ public class UserInfoResponse {
     private String avatarUrl;
     private String email;
     private String phone;
-    private Boolean emailVerified;
 
     public UserInfoResponse() {
     }
 
     public UserInfoResponse(Long id, String role, String firstName, String lastName,
                             String displayName, String avatarUrl,
-                            String email, String phone, Boolean emailVerified) {
+                            String email, String phone) {
         this.id = id;
         this.role = role;
         this.firstName = firstName;
@@ -25,7 +24,6 @@ public class UserInfoResponse {
         this.avatarUrl = avatarUrl;
         this.email = email;
         this.phone = phone;
-        this.emailVerified = emailVerified;
     }
 
     public Long getId() {
@@ -58,10 +56,6 @@ public class UserInfoResponse {
 
     public String getPhone() {
         return phone;
-    }
-
-    public Boolean getEmailVerified() {
-        return emailVerified;
     }
 
 }

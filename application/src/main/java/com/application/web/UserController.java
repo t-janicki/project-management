@@ -1,6 +1,7 @@
 package com.application.web;
 
 import com.account.domain.User;
+import com.application.mapper.user.UserMapper;
 import com.utility.dto.user.UserDTO;
 import com.application.facade.UserAuthFacade;
 import com.application.facade.UserSettingsFacade;
@@ -10,6 +11,7 @@ import com.utility.web.request.user.NewPasswordRequest;
 import com.utility.web.request.user.UserSettingsUpdateRequest;
 import com.utility.web.response.ApiResponse;
 import com.utility.web.response.user.AuthResponse;
+import com.utility.web.response.user.UserInfoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
@@ -24,15 +26,17 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-
     private UserAuthFacade userAuthFacade;
     private UserSettingsFacade settingsFacade;
+    private UserMapper userMapper;
 
     @Autowired
     public UserController(UserAuthFacade userAuthFacade,
-                          UserSettingsFacade settingsFacade) {
+                          UserSettingsFacade settingsFacade,
+                          UserMapper userMapper) {
         this.userAuthFacade = userAuthFacade;
         this.settingsFacade = settingsFacade;
+        this.userMapper = userMapper;
     }
 
     @GetMapping("/me")
@@ -49,14 +53,14 @@ public class UserController {
     @PutMapping(value = "/me", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('USER')")
     public @ResponseBody
-    Resource<ApiResponse> updateAccountInfo(@CurrentUser UserPrincipal userPrincipal,
-                                            @Valid @RequestBody UserDTO userDTO) {
+    Resource<UserInfoResponse> updateUserInfo(@CurrentUser UserPrincipal userPrincipal,
+                                              @Valid @RequestBody UserDTO userDTO) {
 
-        User user = userAuthFacade.updateUser(userPrincipal.getId(), userDTO);
+        User user = userAuthFacade.updateUser(userDTO);
 
         Link link = linkTo(UserController.class).slash(user.getId()).withSelfRel();
 
-        return new Resource<>(new ApiResponse(true, "User updated. "), link);
+        return new Resource<>(userMapper.mapToUserInfo(user), link);
     }
 
     @PutMapping(value = "/me/settings", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)

@@ -16,5 +16,5 @@ public interface UserService {
 
     ApiResponse newPasswordRequest(Long id, NewPasswordRequest request);
 
-    User updateUser(Long id, UserDTO userDTO);
+    User updateUser(UserDTO userDTO);
 }

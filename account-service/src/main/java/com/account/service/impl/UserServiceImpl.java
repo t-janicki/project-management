@@ -107,12 +107,8 @@ public class UserServiceImpl implements UserService {
         return new ApiResponse(true, UserMessages.PASSWORD_CHANGED.getMessage());
     }
 
-    public User updateUser(Long id, UserDTO request) {
-        User user = getUserById(id);
-
-        if (!user.getEmail().equals(request.getEmail())) {
-            this.checkEmailAvailability(request.getEmail());
-        }
+    public User updateUser(UserDTO request) {
+        User user = getUserById(request.getId());
 
         if (!request.getPhone().isEmpty()) {
             validatePhoneNumberFormat(request.getPhone());
@@ -121,9 +117,7 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setDisplayName(request.getDisplayName());
-        user.setEmail(request.getEmail());
         user.setPhone(request.getPhone());
-        user.setAvatarUrl(request.getAvatarUrl());
 
         userRepository.save(user);
 

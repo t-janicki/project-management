@@ -67,8 +67,7 @@ public final class UserAuthFacade {
                 user.getDisplayName(),
                 user.getAvatarUrl(),
                 user.getEmail(),
-                user.getPhone(),
-                user.getEmailVerified()
+                user.getPhone()
         );
 
         return new AuthResponse(
@@ -82,7 +81,7 @@ public final class UserAuthFacade {
         return userService.newPasswordRequest(id, request);
     }
 
-    public User updateUser(Long id, UserDTO userDTO) {
-        return userService.updateUser(id, userDTO);
+    public User updateUser(UserDTO userDTO) {
+        return userService.updateUser(userDTO);
     }
 }
