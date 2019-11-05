@@ -143,8 +143,22 @@ public class UserServiceImpl implements UserService {
     public User savePasswordResetToken(String email, String token) {
         User user = getUserByEmail(email);
 
-        user.setPasswordResetToken(token);
-        return userRepository.save(user);
+        if (AuthProvider.local.equals(user.getProvider())) {
+            user.setPasswordResetToken(token);
+
+            return userRepository.save(user);
+
+        } else if (AuthProvider.facebook.equals(user.getProvider())) {
+
+            throw new BadRequestException("Looks like you're signed up with facebook. Please reset your password there. ");
+
+        } else if (AuthProvider.google.equals(user.getProvider())) {
+
+            throw new BadRequestException("Looks like you're signed up with google. Please reset your password there. ");
+
+        } else {
+            throw new BadRequestException("Something went wrong. Try again later. ");
+        }
     }
 
     private void checkEmailAvailability(String email) {
