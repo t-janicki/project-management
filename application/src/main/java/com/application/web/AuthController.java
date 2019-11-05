@@ -6,6 +6,7 @@ import com.application.facade.UserAuthFacade;
 import com.email.Mail;
 import com.email.PasswordToken;
 import com.email.service.SimpleEmailService;
+import com.utility.exception.UnauthorizedException;
 import com.utility.web.request.user.LoginRequest;
 import com.utility.web.request.user.PasswordReset;
 import com.utility.web.request.user.SignUpRequest;
@@ -68,8 +69,10 @@ public class AuthController {
     @PostMapping(value = "/reset-password", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ApiResponse resetPassword(@RequestParam String token,
                                      @RequestBody PasswordReset passwordReset) {
-
-
-        return userAuthFacade.resetPassword(token, passwordReset);
+        try {
+            return userAuthFacade.resetPassword(token, passwordReset);
+        } catch (UnauthorizedException ex) {
+            throw new UnauthorizedException("Token expired");
+        }
     }
 }

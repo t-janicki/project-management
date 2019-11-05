@@ -31,7 +31,6 @@ public class MailCreatorService {
     }
 
     public String buildPasswordResetEmail(PasswordToken passwordToken) {
-        System.out.println(frontEndUrl);
         PasswordToken link = new PasswordToken(
                 passwordToken.getToken(),
                 frontEndUrl + "/reset-password?token="
