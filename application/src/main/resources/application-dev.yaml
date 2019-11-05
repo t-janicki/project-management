@@ -66,6 +66,6 @@ app:
     authorizedRedirectUris:
       - http://localhost:3000/oauth2/redirect
       - https://stoic-neumann-df94d0.netlify.com/oauth2/redirect
-#server:
+  frontEndUrl: http://localhost:3000
 server:
   port: 8080

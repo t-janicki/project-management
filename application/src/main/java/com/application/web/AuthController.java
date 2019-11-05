@@ -3,6 +3,9 @@ package com.application.web;
 import com.account.domain.User;
 import com.account.service.UserService;
 import com.application.facade.UserAuthFacade;
+import com.email.Mail;
+import com.email.PasswordToken;
+import com.email.service.SimpleEmailService;
 import com.utility.web.request.user.LoginRequest;
 import com.utility.web.request.user.PasswordReset;
 import com.utility.web.request.user.SignUpRequest;
@@ -15,26 +18,32 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Map;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
     private UserService userService;
     private UserAuthFacade userAuthFacade;
+    private SimpleEmailService simpleEmailService;
 
     @Autowired
     public AuthController(UserService userService,
-                          UserAuthFacade userAuthFacade) {
+                          UserAuthFacade userAuthFacade,
+                          SimpleEmailService simpleEmailService) {
         this.userService = userService;
         this.userAuthFacade = userAuthFacade;
+        this.simpleEmailService = simpleEmailService;
     }
 
-    @PostMapping("/login")
+    @PostMapping(value = "/login", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         return ResponseEntity.ok(userAuthFacade.authenticateUser(loginRequest));
     }
 
-    @PostMapping("/signup")
+    @PostMapping(value = "/signup", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         User user = userService.registerUser(signUpRequest);
         URI location = ServletUriComponentsBuilder
@@ -46,15 +55,20 @@ public class AuthController {
     }
 
 
-    @PostMapping("/forgot-password")
-    public ResponseEntity<String> forgotPasswordToken(@RequestParam String email) {
+    @PostMapping(value = "/forgot-password", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    public ApiResponse forgotPasswordToken(@RequestParam String email) {
 
-        return ResponseEntity.ok(userAuthFacade.generatePasswordResetToken(email));
+        String token = userAuthFacade.generatePasswordResetToken(email);
+
+        simpleEmailService.sendPasswordResetMail(new Mail(email, "Password Reset"), new PasswordToken(token));
+
+        return new ApiResponse(true, "Email with token sended. ");
     }
 
-    @PostMapping("/reset-password")
+    @PostMapping(value = "/reset-password", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ApiResponse resetPassword(@RequestParam String token,
                                      @RequestBody PasswordReset passwordReset) {
+
 
         return userAuthFacade.resetPassword(token, passwordReset);
     }

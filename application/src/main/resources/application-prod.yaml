@@ -67,7 +67,6 @@ app:
     authorizedRedirectUris:
       - http://localhost:3000/oauth2/redirect
       - https://stoic-neumann-df94d0.netlify.com/oauth2/redirect
-#HEROKU CONFIG
-#server:
+  frontEndUrl: https://stoic-neumann-df94d0.netlify.com
 server:
   port: ${PORT:8080}
