@@ -169,6 +169,6 @@ public class UserServiceImpl implements UserService {
 
     private User getUserByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new AccessForbiddenException("Access denied"));
+                .orElseThrow(() -> new NotFoundException("Not found"));
     }
 }

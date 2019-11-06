@@ -1,12 +1,10 @@
 spring:
   datasource:
     url: ${DATABASE_URL}
-    username: taskApp
-    password: 12345678
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
       naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
     properties:
       hibernate:
@@ -24,8 +22,8 @@ spring:
               - email
               - profile
           facebook:
-            clientId: 2433073510350081
-            clientSecret: e89405bc6a3e56a621b31ad66d5cb3d3
+            clientId: 391614541718287
+            clientSecret: 9d35ecec40872ac17413d2666fd278e9
             redirectUriTemplate: "{baseUrl}/api/oauth2/callback/{registrationId}"
             scope:
               - email
