@@ -1,13 +1,13 @@
 package com.email.service;
 
-import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class EmailServiceApplicationTests {
-
-    @Test
-    void contextLoads() {
-    }
-
-}
+//@SpringBootTest
+//class EmailServiceApplicationTests {
+//
+//    @Test
+//    void contextLoads() {
+//    }
+//
+//}
