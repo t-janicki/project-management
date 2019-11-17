@@ -1,6 +1,6 @@
 package com.chat.domain;
 
-public enum Status {
+public enum ChatStatus {
     OFFLINE,
     ONLINE,
     AWAY,

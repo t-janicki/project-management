@@ -21,148 +21,148 @@ public class ChatController {
     public Chat getChatTest() {
         Chat chat = new Chat(1L);
 
-        Message message1 = new Message(1L);
-        message1.setMessage("Quickly come to the meeting room 1B, we have a big server issue");
-        message1.setTime(new Date());
-        message1.setUnread(Boolean.FALSE);
+        ChatMessage chatMessage1 = new ChatMessage(1L);
+        chatMessage1.setMessage("Quickly come to the meeting room 1B, we have a big server issue");
+        chatMessage1.setTime(new Date());
+        chatMessage1.setUnread(Boolean.FALSE);
 
-        Message message2 = new Message(2L);
-        message2.setMessage("We are losing money! Quick!");
-        message2.setTime(new Date());
-        message2.setUnread(Boolean.FALSE);
+        ChatMessage chatMessage2 = new ChatMessage(2L);
+        chatMessage2.setMessage("We are losing money! Quick!");
+        chatMessage2.setTime(new Date());
+        chatMessage2.setUnread(Boolean.FALSE);
 
-        Message message3 = new Message(3L);
-        message3.setMessage("Quickly come to the meeting room 1B, we have a big server issue");
-        message3.setTime(new Date());
-        message3.setUnread(Boolean.TRUE);
+        ChatMessage chatMessage3 = new ChatMessage(3L);
+        chatMessage3.setMessage("Quickly come to the meeting room 1B, we have a big server issue");
+        chatMessage3.setTime(new Date());
+        chatMessage3.setUnread(Boolean.TRUE);
 
-        Message message4 = new Message(4L);
-        message4.setMessage("You are the worst!");
-        message4.setTime(new Date());
-        message4.setUnread(Boolean.FALSE);
+        ChatMessage chatMessage4 = new ChatMessage(4L);
+        chatMessage4.setMessage("You are the worst!");
+        chatMessage4.setTime(new Date());
+        chatMessage4.setUnread(Boolean.FALSE);
 
-        Message message5 = new Message(5L);
-        message5.setMessage("Quickly come to the meeting room 1B, we have a big server issue");
-        message5.setTime(new Date());
-        message5.setUnread(Boolean.TRUE);
+        ChatMessage chatMessage5 = new ChatMessage(5L);
+        chatMessage5.setMessage("Quickly come to the meeting room 1B, we have a big server issue");
+        chatMessage5.setTime(new Date());
+        chatMessage5.setUnread(Boolean.TRUE);
 
-        Message message6 = new Message(6L);
-        message6.setMessage("We are losing money! Quick!");
-        message6.setTime(new Date());
-        message6.setUnread(Boolean.FALSE);
+        ChatMessage chatMessage6 = new ChatMessage(6L);
+        chatMessage6.setMessage("We are losing money! Quick!");
+        chatMessage6.setTime(new Date());
+        chatMessage6.setUnread(Boolean.FALSE);
 
-        Message message7 = new Message(7L);
-        message7.setMessage("It’s not my money, you know. I will eat my breakfast and then I will come to the meeting room.");
-        message7.setTime(new Date());
-        message7.setUnread(Boolean.TRUE);
+        ChatMessage chatMessage7 = new ChatMessage(7L);
+        chatMessage7.setMessage("It’s not my money, you know. I will eat my breakfast and then I will come to the meeting room.");
+        chatMessage7.setTime(new Date());
+        chatMessage7.setUnread(Boolean.TRUE);
 
-        Dialog dialog1 = new Dialog(1L);
-        dialog1.setContactId(1L);
-        dialog1.setLastMessageTime(new Date());
-        dialog1.setMessages(Arrays.asList(message1, message2, message3, message4, message5, message6, message7));
+        ChatDialog chatDialog1 = new ChatDialog(1L);
+        chatDialog1.setContactId(1L);
+        chatDialog1.setLastMessageTime(new Date());
+        chatDialog1.setChatMessages(Arrays.asList(chatMessage1, chatMessage2, chatMessage3, chatMessage4, chatMessage5, chatMessage6, chatMessage7));
 
 
-        Message message8 = new Message(8L);
-        message8.setMessage("We are losing brain! Quick!");
-        message8.setTime(new Date());
-        message8.setUnread(Boolean.FALSE);
+        ChatMessage chatMessage8 = new ChatMessage(8L);
+        chatMessage8.setMessage("We are losing brain! Quick!");
+        chatMessage8.setTime(new Date());
+        chatMessage8.setUnread(Boolean.FALSE);
 
-        Message message9 = new Message(9L);
-        message9.setMessage("Quickly come to the meeting room 1B, we have a big server issue");
-        message9.setTime(new Date());
-        message9.setUnread(Boolean.FALSE);
+        ChatMessage chatMessage9 = new ChatMessage(9L);
+        chatMessage9.setMessage("Quickly come to the meeting room 1B, we have a big server issue");
+        chatMessage9.setTime(new Date());
+        chatMessage9.setUnread(Boolean.FALSE);
 
-        Message message10 = new Message(10L);
-        message10.setMessage("We are losing brain! Quick!");
-        message10.setTime(new Date());
-        message10.setUnread(Boolean.TRUE);
+        ChatMessage chatMessage10 = new ChatMessage(10L);
+        chatMessage10.setMessage("We are losing brain! Quick!");
+        chatMessage10.setTime(new Date());
+        chatMessage10.setUnread(Boolean.TRUE);
 
-        Message message11 = new Message(11L);
-        message11.setMessage("I’m having breakfast right now, can’t you wait for 10 minutes?");
-        message11.setTime(new Date());
-        message11.setUnread(Boolean.FALSE);
+        ChatMessage chatMessage11 = new ChatMessage(11L);
+        chatMessage11.setMessage("I’m having breakfast right now, can’t you wait for 10 minutes?");
+        chatMessage11.setTime(new Date());
+        chatMessage11.setUnread(Boolean.FALSE);
 
-        Dialog dialog2 = new Dialog(2L);
-        dialog2.setContactId(2L);
-        dialog2.setLastMessageTime(new Date());
-        dialog2.setMessages(Arrays.asList(message8, message9, message10, message11, message5, message6, message7));
+        ChatDialog chatDialog2 = new ChatDialog(2L);
+        chatDialog2.setContactId(2L);
+        chatDialog2.setLastMessageTime(new Date());
+        chatDialog2.setChatMessages(Arrays.asList(chatMessage8, chatMessage9, chatMessage10, chatMessage11, chatMessage5, chatMessage6, chatMessage7));
 
-        chat.setDialog(Arrays.asList(dialog1, dialog2));
+        chat.setChatDialog(Arrays.asList(chatDialog1, chatDialog2));
         chat.setUnreadMessages(1L);
 
         return chat;
     }
 
-    @GetMapping(value = "contacts", produces = APPLICATION_JSON_VALUE)
-    public List<Contact> getContactsTest() {
-        Contact contact1 = new Contact(1L);
-        contact1.setAvatarUrl("/assets/images/avatar.jpg");
-        contact1.setDisplayName("Tomasz Janicki 1");
-        contact1.setStatus(Status.ONLINE);
-        contact1.setMood("Will be amazing day");
+    @GetMapping(value = "/contacts", produces = APPLICATION_JSON_VALUE)
+    public List<ChatContact> getContactsTest() {
+        ChatContact chatContact1 = new ChatContact(1L);
+        chatContact1.setAvatarUrl("/assets/images/avatar.jpg");
+        chatContact1.setDisplayName("Tomasz Janicki 1");
+        chatContact1.setChatStatus(ChatStatus.ONLINE);
+        chatContact1.setMood("Will be amazing day");
 
-        Contact contact2 = new Contact(2L);
-        contact2.setAvatarUrl("/assets/images/avatar.jpg");
-        contact2.setDisplayName("Tomasz Janicki 2");
-        contact2.setStatus(Status.ONLINE);
-        contact2.setMood("Will be amazing day");
+        ChatContact chatContact2 = new ChatContact(2L);
+        chatContact2.setAvatarUrl("/assets/images/avatar.jpg");
+        chatContact2.setDisplayName("Tomasz Janicki 2");
+        chatContact2.setChatStatus(ChatStatus.ONLINE);
+        chatContact2.setMood("Will be amazing day");
 
-        Contact contact3 = new Contact(3L);
-        contact3.setAvatarUrl("/assets/images/avatar.jpg");
-        contact3.setDisplayName("Tomasz Janicki 3");
-        contact3.setStatus(Status.ONLINE);
-        contact3.setMood("Will be amazing day");
+        ChatContact chatContact3 = new ChatContact(3L);
+        chatContact3.setAvatarUrl("/assets/images/avatar.jpg");
+        chatContact3.setDisplayName("Tomasz Janicki 3");
+        chatContact3.setChatStatus(ChatStatus.ONLINE);
+        chatContact3.setMood("Will be amazing day");
 
-        Contact contact4 = new Contact(4L);
-        contact4.setAvatarUrl("/assets/images/avatar.jpg");
-        contact4.setDisplayName("Tomasz Janicki 4");
-        contact4.setStatus(Status.ONLINE);
-        contact4.setMood("Will be amazing day");
+        ChatContact chatContact4 = new ChatContact(4L);
+        chatContact4.setAvatarUrl("/assets/images/avatar.jpg");
+        chatContact4.setDisplayName("Tomasz Janicki 4");
+        chatContact4.setChatStatus(ChatStatus.ONLINE);
+        chatContact4.setMood("Will be amazing day");
 
-        Contact contact5 = new Contact(5L);
-        contact5.setAvatarUrl("/assets/images/avatar.jpg");
-        contact5.setDisplayName("Tomasz Janicki 5");
-        contact5.setStatus(Status.ONLINE);
-        contact5.setMood("Will be amazing day");
+        ChatContact chatContact5 = new ChatContact(5L);
+        chatContact5.setAvatarUrl("/assets/images/avatar.jpg");
+        chatContact5.setDisplayName("Tomasz Janicki 5");
+        chatContact5.setChatStatus(ChatStatus.ONLINE);
+        chatContact5.setMood("Will be amazing day");
 
-        Contact contact6 = new Contact(6L);
-        contact6.setAvatarUrl("/assets/images/avatar.jpg");
-        contact6.setDisplayName("Tomasz Janicki");
-        contact6.setStatus(Status.ONLINE);
-        contact6.setMood("Will be amazing day");
+        ChatContact chatContact6 = new ChatContact(6L);
+        chatContact6.setAvatarUrl("/assets/images/avatar.jpg");
+        chatContact6.setDisplayName("Tomasz Janicki 6");
+        chatContact6.setChatStatus(ChatStatus.ONLINE);
+        chatContact6.setMood("Will be amazing day");
 
-        Contact contact7 = new Contact(7L);
-        contact7.setAvatarUrl("/assets/images/avatar.jpg");
-        contact7.setDisplayName("Tomasz Janicki");
-        contact7.setStatus(Status.ONLINE);
-        contact7.setMood("Will be amazing day");
+        ChatContact chatContact7 = new ChatContact(7L);
+        chatContact7.setAvatarUrl("/assets/images/avatar.jpg");
+        chatContact7.setDisplayName("Tomasz Janicki 7");
+        chatContact7.setChatStatus(ChatStatus.ONLINE);
+        chatContact7.setMood("Will be amazing day");
 
-        Contact contact8 = new Contact(8L);
-        contact8.setAvatarUrl("/assets/images/avatar.jpg");
-        contact8.setDisplayName("Tomasz Janicki");
-        contact8.setStatus(Status.ONLINE);
-        contact8.setMood("Will be amazing day");
+        ChatContact chatContact8 = new ChatContact(8L);
+        chatContact8.setAvatarUrl("/assets/images/avatar.jpg");
+        chatContact8.setDisplayName("Tomasz Janicki 8");
+        chatContact8.setChatStatus(ChatStatus.ONLINE);
+        chatContact8.setMood("Will be amazing day");
 
-        Contact contact9 = new Contact(9L);
-        contact9.setAvatarUrl("/assets/images/avatar.jpg");
-        contact9.setDisplayName("Tomasz Janicki");
-        contact9.setStatus(Status.ONLINE);
-        contact9.setMood("Will be amazing day");
+        ChatContact chatContact9 = new ChatContact(9L);
+        chatContact9.setAvatarUrl("/assets/images/avatar.jpg");
+        chatContact9.setDisplayName("Tomasz Janicki 9");
+        chatContact9.setChatStatus(ChatStatus.ONLINE);
+        chatContact9.setMood("Will be amazing day");
 
-        Contact contact10 = new Contact(10L);
-        contact10.setAvatarUrl("/assets/images/avatar.jpg");
-        contact10.setDisplayName("Tomasz Janicki");
-        contact10.setStatus(Status.ONLINE);
-        contact10.setMood("Will be amazing day");
+        ChatContact chatContact10 = new ChatContact(10L);
+        chatContact10.setAvatarUrl("/assets/images/avatar.jpg");
+        chatContact10.setDisplayName("Tomasz Janicki 10");
+        chatContact10.setChatStatus(ChatStatus.ONLINE);
+        chatContact10.setMood("Will be amazing day");
 
-        Contact contact11 = new Contact(11L);
-        contact11.setAvatarUrl("/assets/images/avatar.jpg");
-        contact11.setDisplayName("Tomasz Janicki");
-        contact11.setStatus(Status.ONLINE);
-        contact11.setMood("Will be amazing day");
+        ChatContact chatContact11 = new ChatContact(11L);
+        chatContact11.setAvatarUrl("/assets/images/avatar.jpg");
+        chatContact11.setDisplayName("Tomasz Janicki 11");
+        chatContact11.setChatStatus(ChatStatus.ONLINE);
+        chatContact11.setMood("Will be amazing day");
 
-        return Arrays.asList(contact1, contact2, contact3, contact4, contact5,
-                contact6, contact7, contact8, contact9, contact10, contact11);
+        return Arrays.asList(chatContact1, chatContact2, chatContact3, chatContact4, chatContact5,
+                chatContact6, chatContact7, chatContact8, chatContact9, chatContact10, chatContact11);
 
     }
 }

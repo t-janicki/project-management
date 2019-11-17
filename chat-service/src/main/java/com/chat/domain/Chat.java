@@ -14,7 +14,7 @@ public class Chat {
     private Long unreadMessages;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Dialog> dialog;
+    private List<ChatDialog> chatDialog;
 
     public Chat() {
     }
@@ -35,11 +35,11 @@ public class Chat {
         this.unreadMessages = unreadMessages;
     }
 
-    public List<Dialog> getDialog() {
-        return dialog;
+    public List<ChatDialog> getChatDialog() {
+        return chatDialog;
     }
 
-    public void setDialog(List<Dialog> dialog) {
-        this.dialog = dialog;
+    public void setChatDialog(List<ChatDialog> chatDialog) {
+        this.chatDialog = chatDialog;
     }
 }

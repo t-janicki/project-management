@@ -2,9 +2,8 @@ package com.chat.domain;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name = "contacts")
-public class Contact {
+@MappedSuperclass
+public class AbstractUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,21 +16,25 @@ public class Contact {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 60)
-    private Status status;
+    private ChatStatus chatStatus;
 
     @Column
     private String mood;
 
+    public AbstractUser() {
 
-    public Contact() {
     }
 
-    public Contact(Long id) {
+    public AbstractUser(Long id) {
         this.id = id;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDisplayName() {
@@ -50,12 +53,12 @@ public class Contact {
         this.avatarUrl = avatarUrl;
     }
 
-    public Status getStatus() {
-        return status;
+    public ChatStatus getChatStatus() {
+        return chatStatus;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setChatStatus(ChatStatus chatStatus) {
+        this.chatStatus = chatStatus;
     }
 
     public String getMood() {

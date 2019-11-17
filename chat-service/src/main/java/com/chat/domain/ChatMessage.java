@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "messages")
-public class Message {
+@Table(name = "chat_messages")
+public class ChatMessage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,11 +19,11 @@ public class Message {
     @Column
     private Boolean unread;
 
-    public Message() {
+    public ChatMessage() {
 
     }
 
-    public Message(Long id) {
+    public ChatMessage(Long id) {
         this.id = id;
     }
 

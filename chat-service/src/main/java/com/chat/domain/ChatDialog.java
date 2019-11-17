@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "dialogs")
-public class Dialog {
+@Table(name = "chat_dialogs")
+public class ChatDialog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,13 +18,13 @@ public class Dialog {
     private Date lastMessageTime;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Message> messages;
+    private List<ChatMessage> chatMessages;
 
-    public Dialog() {
+    public ChatDialog() {
 
     }
 
-    public Dialog(Long id) {
+    public ChatDialog(Long id) {
         this.id = id;
     }
 
@@ -49,11 +49,11 @@ public class Dialog {
         this.lastMessageTime = lastMessageTime;
     }
 
-    public List<Message> getMessages() {
-        return messages;
+    public List<ChatMessage> getChatMessages() {
+        return chatMessages;
     }
 
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
+    public void setChatMessages(List<ChatMessage> chatMessages) {
+        this.chatMessages = chatMessages;
     }
 }
