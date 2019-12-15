@@ -21,7 +21,6 @@ public class ChatDialog {
     private List<ChatMessage> chatMessages;
 
     public ChatDialog() {
-
     }
 
     public ChatDialog(Long id) {
